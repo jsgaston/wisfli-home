@@ -1,468 +1,451 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wisfli — MetaTrader 5 trading tools</title>
-<meta name="description" content="Wisfli builds MetaTrader 5 expert advisors and market analysis tools. Documented rules, stated limits, per-account licensing.">
-
-<meta property="og:title" content="Wisfli — MetaTrader 5 trading tools">
-<meta property="og:description" content="MetaTrader 5 expert advisors and market analysis tools, with documented rules and stated limits.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://wisfli.com/">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Armada — copy-trading signal by Wisfli</title>
+<meta name="description" content="One MetaTrader 5 account running ten of my own algorithms. Your terminal mirrors every position, sized to your balance. Live figures published straight from the account.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#E7E8E3;
-  --panel:#F5F5F2;
-  --ink:#16181A;
-  --muted:#5C6066;
-  --rule:#C9CAC3;
-  --signal:#1B3BC4;
+  --sea:#0F2C42;
+  --sea-deep:#091D2C;
+  --paper:#DFE5E3;
+  --panel:#F6F8F6;
+  --rule:rgba(15,44,66,.16);
+  --rule-strong:rgba(15,44,66,.34);
+  --muted:#5C7185;
+  --up:#1E6B57;
+  --down:#BE3A2B;
+  --brass:#E0A92C;
   --maxw:1080px;
 }
-
 *{box-sizing:border-box}
-
 html{-webkit-text-size-adjust:100%}
-
 body{
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font-family:"Archivo",system-ui,sans-serif;
-  font-size:17px;
-  line-height:1.6;
-  -webkit-font-smoothing:antialiased;
+  margin:0;background:var(--paper);color:var(--sea);
+  font-family:Spectral,Georgia,serif;font-size:17px;line-height:1.65;
+  font-variant-numeric:tabular-nums;
 }
-
-.wrap{
-  width:100%;
-  max-width:var(--maxw);
-  margin:0 auto;
-  padding:0 28px;
-}
-
-a{color:var(--signal)}
-
-a:focus-visible,
-button:focus-visible{
-  outline:2px solid var(--signal);
-  outline-offset:3px;
-}
+h1,h2,h3,.ui,button,th,.num{font-family:Archivo,system-ui,sans-serif;font-variant-numeric:tabular-nums}
+a{color:var(--sea);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
 
 /* ---------- masthead ---------- */
-
-.masthead{
-  border-bottom:1px solid var(--rule);
-}
-
-.masthead .wrap{
-  display:flex;
-  align-items:baseline;
-  justify-content:space-between;
-  gap:20px;
-  padding-top:22px;
-  padding-bottom:18px;
-}
-
-.wordmark{
-  font-weight:800;
-  font-size:1.3rem;
-  letter-spacing:-0.03em;
-  color:var(--ink);
-  text-decoration:none;
-}
-
-.masthead-note{
-  font-size:0.9rem;
-  color:var(--muted);
-}
+.masthead{border-bottom:1px solid var(--rule)}
+.masthead .wrap{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-top:20px;padding-bottom:20px}
+.brand{font-family:Archivo;font-weight:700;font-stretch:118%;letter-spacing:.06em;font-size:15px;text-decoration:none}
+.masthead nav{font-family:Archivo;font-size:14px;display:flex;gap:22px}
+.masthead nav a{text-decoration:none;color:var(--muted)}
+.masthead nav a:hover{color:var(--sea)}
 
 /* ---------- hero ---------- */
-
-.hero .wrap{
-  display:grid;
-  grid-template-columns:minmax(0,1.05fr) minmax(0,0.95fr);
-  gap:56px;
-  align-items:center;
-  padding-top:76px;
-  padding-bottom:84px;
+.hero{padding:64px 0 40px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:end}
+h1{
+  font-size:clamp(64px,12vw,148px);font-weight:800;font-stretch:122%;
+  line-height:.84;margin:0 0 18px;letter-spacing:-.02em;
 }
+.kicker{font-family:Archivo;font-size:14px;font-weight:500;color:var(--muted);margin:0 0 26px}
+.lead{font-size:20px;line-height:1.55;max-width:33em;margin:0}
+.hoist{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.hoist svg{width:42px;height:28px;display:block;box-shadow:0 1px 0 rgba(15,44,66,.25)}
+.hoist .dim{opacity:.28}
+.hoist-note{font-family:Archivo;font-size:13px;color:var(--muted);margin:0}
 
-.hero h1{
-  font-size:clamp(2.3rem,5.1vw,3.5rem);
-  font-weight:800;
-  letter-spacing:-0.035em;
-  line-height:1.04;
-  margin:0 0 22px;
+/* ---------- status rail ---------- */
+.rail{border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong);margin-top:52px}
+.rail .wrap{display:flex;flex-wrap:wrap;gap:0;padding:0}
+.rail-item{flex:1 1 0;min-width:150px;padding:18px 24px 20px;border-right:1px solid var(--rule)}
+.rail-item:last-child{border-right:0}
+.rail-item .t{font-family:Archivo;font-size:12px;font-weight:600;color:var(--muted);margin:0 0 4px}
+.rail-item .v{font-family:Archivo;font-size:27px;font-weight:700;font-stretch:108%;line-height:1.1;margin:0}
+.v.pos{color:var(--up)} .v.neg{color:var(--down)}
+
+/* ---------- sections ---------- */
+section{padding:72px 0}
+section + section{border-top:1px solid var(--rule)}
+h2{font-size:34px;font-weight:700;font-stretch:112%;line-height:1.1;margin:0 0 8px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 34px;max-width:40em}
+.prose p{max-width:34em}
+
+/* ---------- equity ---------- */
+.plot{background:var(--panel);border:1px solid var(--rule);padding:22px 20px 14px;position:relative}
+.plot svg{display:block;width:100%;height:auto}
+.plot-empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:260px;text-align:center;color:var(--muted);gap:8px;padding:24px
 }
-
-.hero-text p{
-  max-width:44ch;
-  margin:0 0 18px;
-  color:var(--muted);
+.readout{
+  position:absolute;top:16px;right:20px;font-family:Archivo;font-size:13px;
+  color:var(--muted);background:var(--panel);padding:2px 0 2px 10px
 }
+.readout b{color:var(--sea);font-weight:700}
+.stamp{font-family:Archivo;font-size:12.5px;color:var(--muted);margin:12px 0 0;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
-.hero-actions{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:24px;
-  margin-top:30px;
+/* ---------- metrics table ---------- */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:34px}
+.metrics div{background:var(--paper);padding:16px 18px}
+.metrics dt{font-family:Archivo;font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 3px}
+.metrics dd{font-family:Archivo;font-size:22px;font-weight:700;margin:0}
+
+/* ---------- roster ---------- */
+table.roster{width:100%;border-collapse:collapse;font-family:Archivo;font-size:15px}
+table.roster th{
+  text-align:left;font-size:12.5px;font-weight:600;color:var(--muted);
+  padding:0 12px 10px 0;border-bottom:1px solid var(--rule-strong)
 }
+table.roster td{padding:13px 12px 13px 0;border-bottom:1px solid var(--rule);vertical-align:middle}
+table.roster td:first-child{width:56px;padding-right:16px}
+table.roster svg{width:38px;height:25px;display:block;box-shadow:0 1px 0 rgba(15,44,66,.25)}
+.name{font-weight:600}
+.sym{color:var(--muted);font-size:14px}
+.st{font-size:13px;font-weight:600;white-space:nowrap}
+.st.live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--up);margin-right:7px;vertical-align:middle}
+.st.testing{color:var(--muted)}
+.st.testing::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;border:1px solid var(--rule-strong);margin-right:7px;vertical-align:middle}
+tr.pending td{opacity:.5}
 
-.cta{
-  display:inline-block;
-  background:var(--signal);
-  color:#fff;
-  text-decoration:none;
-  font-weight:600;
-  font-size:1rem;
-  padding:14px 26px;
-  border-radius:3px;
+/* ---------- steps ---------- */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;counter-reset:s}
+.step{counter-increment:s;border-top:2px solid var(--sea);padding-top:14px}
+.step h3{font-size:17px;margin:0 0 6px;font-weight:700}
+.step h3::before{content:counter(s);font-size:13px;color:var(--muted);margin-right:10px;font-weight:600}
+.step p{margin:0;font-size:16px;color:#324B60}
+
+/* ---------- price ---------- */
+.berth{background:var(--sea-deep);color:#E7EDEA;padding:44px 44px 40px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+.berth h2{color:#fff;margin-bottom:14px}
+.berth p{max-width:30em;color:#AFC2CE;margin:0 0 18px}
+.berth ul{list-style:none;margin:0;padding:0;font-family:Archivo;font-size:15px;color:#CFDCE4}
+.berth li{padding:7px 0 7px 22px;position:relative}
+.berth li::before{content:"";position:absolute;left:0;top:16px;width:10px;height:1px;background:var(--brass)}
+.price{text-align:right}
+.price .amt{font-family:Archivo;font-size:70px;font-weight:800;font-stretch:112%;line-height:1;color:#fff}
+.price .per{font-family:Archivo;font-size:15px;color:#AFC2CE;display:block;margin-top:6px}
+.buy{
+  display:inline-block;margin-top:22px;background:var(--brass);color:#1A1206;
+  font-family:Archivo;font-weight:700;font-size:17px;padding:15px 30px;
+  text-decoration:none;border:0;cursor:pointer
 }
+.buy:hover{background:#EFBB43}
+.price small{display:block;margin-top:14px;font-family:Archivo;font-size:12.5px;color:#8FA6B4;max-width:20em;margin-left:auto}
 
-.cta:hover{background:#152F9E}
+/* ---------- plain talk ---------- */
+.talk{display:grid;grid-template-columns:1fr 1fr;gap:44px}
+.talk h3{font-size:18px;margin:0 0 10px}
+.talk p{font-size:16px;margin:0 0 14px;color:#2C4356}
 
-.cta-aside{
-  font-size:0.92rem;
-  color:var(--muted);
-}
-
-/* ---------- candle grid ---------- */
-
-.grid-figure{margin:0}
-
-.grid-figure svg{
-  width:100%;
-  height:auto;
-  display:block;
-}
-
-@keyframes settle{
-  from{opacity:0;transform:translateY(9px)}
-  to{opacity:1;transform:none}
-}
-
-.candle{
-  opacity:0;
-  animation:settle 0.5s cubic-bezier(.2,.7,.3,1) forwards;
-  transform-box:fill-box;
-  transform-origin:center;
-}
-
-@media (prefers-reduced-motion:reduce){
-  .candle{animation:none;opacity:1}
-}
-
-/* ---------- catalogue ---------- */
-
-.catalogue{
-  border-top:1px solid var(--rule);
-  padding-top:64px;
-  padding-bottom:88px;
-}
-
-.section-head{
-  margin:0 0 34px;
-  font-size:1.05rem;
-  font-weight:600;
-  color:var(--muted);
-}
-
-.product{
-  background:var(--panel);
-  border:1px solid var(--rule);
-  border-radius:4px;
-  padding:40px;
-  display:grid;
-  grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
-  gap:48px;
-}
-
-.product + .product{margin-top:26px}
-
-.product h3{
-  margin:0 0 6px;
-  font-size:1.9rem;
-  font-weight:800;
-  letter-spacing:-0.03em;
-}
-
-.product-kind{
-  margin:0 0 20px;
-  color:var(--muted);
-  font-size:0.95rem;
-}
-
-.product-body p{
-  margin:0 0 16px;
-  max-width:52ch;
-}
-
-.spec{
-  margin:0;
-  border-top:1px solid var(--rule);
-}
-
-.spec div{
-  display:flex;
-  justify-content:space-between;
-  gap:18px;
-  padding:11px 0;
-  border-bottom:1px solid var(--rule);
-  font-size:0.95rem;
-}
-
-.spec dt{color:var(--muted)}
-
-.spec dd{
-  margin:0;
-  text-align:right;
-  font-weight:500;
-}
-
-.spec .num{
-  font-family:"IBM Plex Mono",ui-monospace,monospace;
-  font-weight:500;
-}
-
-.product-buy{
-  margin-top:26px;
-}
-
-/* ---------- upcoming ---------- */
-
-.upcoming{
-  margin-top:40px;
-  border-top:1px solid var(--rule);
-}
-
-.upcoming-row{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:baseline;
-  gap:8px 18px;
-  padding:20px 0;
-  border-bottom:1px solid var(--rule);
-}
-
-.upcoming-row h4{
-  margin:0;
-  font-size:1.15rem;
-  font-weight:600;
-  letter-spacing:-0.02em;
-}
-
-.upcoming-row p{
-  margin:0;
-  color:var(--muted);
-  font-size:0.95rem;
-  flex:1 1 320px;
-}
-
-.status{
-  font-family:"IBM Plex Mono",ui-monospace,monospace;
-  font-size:0.82rem;
-  color:var(--muted);
-  border:1px solid var(--rule);
-  border-radius:2px;
-  padding:3px 9px;
-  white-space:nowrap;
-}
-
-/* ---------- footer ---------- */
-
-.site-footer{
-  border-top:1px solid var(--rule);
-  background:var(--panel);
-}
-
-.site-footer .wrap{
-  padding-top:40px;
-  padding-bottom:48px;
-}
-
-.risk{
-  max-width:70ch;
-  margin:0 0 26px;
-  font-size:0.88rem;
-  line-height:1.65;
-  color:var(--muted);
-}
-
-.footer-line{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:space-between;
-  gap:12px;
-  font-size:0.88rem;
-  color:var(--muted);
-}
-
-/* ---------- responsive ---------- */
+footer{border-top:1px solid var(--rule-strong);padding:34px 0 70px;font-family:Archivo;font-size:13px;color:var(--muted)}
+footer p{max-width:52em;margin:0 0 10px}
 
 @media (max-width:860px){
-  .hero .wrap{
-    grid-template-columns:1fr;
-    gap:44px;
-    padding-top:52px;
-    padding-bottom:60px;
-  }
-  .grid-figure{order:2}
-  .product{
-    grid-template-columns:1fr;
-    gap:32px;
-    padding:30px 24px;
-  }
+  .hero{padding:44px 0 30px}
+  .hero-grid{grid-template-columns:1fr;gap:34px;align-items:start}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:1fr;gap:26px}
+  .berth{grid-template-columns:1fr;padding:32px 26px;gap:26px}
+  .price{text-align:left}.price small{margin-left:0}
+  .talk{grid-template-columns:1fr;gap:26px}
+  .rail-item{border-right:0;border-bottom:1px solid var(--rule)}
+  .masthead nav{gap:16px}
 }
-
-@media (max-width:560px){
-  .wrap{padding:0 20px}
-  body{font-size:16px}
-}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 
 <header class="masthead">
   <div class="wrap">
-    <a class="wordmark" href="/">Wisfli</a>
-    <span class="masthead-note">Trading tools for MetaTrader 5</span>
+    <a class="brand" href="https://wisfli.com">WISFLI</a>
+    <nav>
+      <a href="#fleet">The fleet</a>
+      <a href="#how">How it works</a>
+      <a href="setup.html">Setup guide</a>
+      <a href="#berth">Subscribe</a>
+    </nav>
   </div>
 </header>
 
-<main>
-
-  <section class="hero">
-    <div class="wrap">
-
-      <div class="hero-text">
-        <h1>Trading tools that show their work.</h1>
-        <p>
-          Wisfli builds expert advisors and market analysis tools for MetaTrader 5.
-          Each one ships with its rules written down, its parameters explained,
-          and its limits stated plainly.
-        </p>
-        <p>
-          Everything here is built and maintained by one developer, so what you read
-          on this page is what the software actually does.
-        </p>
-        <div class="hero-actions">
-          <a class="cta" href="#catalogue">See both products</a>
-          <span class="cta-aside">Two products available today. Two more in development.</span>
-        </div>
-      </div>
-
-      <figure class="grid-figure">
-        <svg viewBox="0 0 480 360" role="img" aria-label="A grid of twelve candlestick figures, one marked in blue." xmlns="http://www.w3.org/2000/svg"><g class="candle" style="animation-delay:0.00s"><line x1="60" y1="32" x2="60" y2="88" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="52" y="42" width="17" height="36" rx="1" fill="none" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.05s"><line x1="180" y1="28" x2="180" y2="92" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="172" y="37" width="17" height="47" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.10s"><line x1="300" y1="26" x2="300" y2="94" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="292" y="38" width="17" height="43" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.15s"><line x1="420" y1="32" x2="420" y2="88" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="412" y="46" width="17" height="28" rx="1" fill="none" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.20s"><line x1="60" y1="153" x2="60" y2="207" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="52" y="166" width="17" height="27" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.25s"><line x1="180" y1="157" x2="180" y2="203" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="172" y="166" width="17" height="28" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.30s"><line x1="300" y1="142" x2="300" y2="218" stroke="var(--signal)" stroke-width="1.4" opacity="1"/><rect x="292" y="160" width="17" height="40" rx="1" fill="var(--signal)" stroke="var(--signal)" stroke-width="1.4" opacity="1"/></g><g class="candle" style="animation-delay:0.35s"><line x1="420" y1="154" x2="420" y2="206" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="412" y="165" width="17" height="30" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.40s"><line x1="60" y1="258" x2="60" y2="342" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="52" y="277" width="17" height="46" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.45s"><line x1="180" y1="265" x2="180" y2="335" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="172" y="278" width="17" height="44" rx="1" fill="none" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.50s"><line x1="300" y1="263" x2="300" y2="337" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="292" y="271" width="17" height="57" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.55s"><line x1="420" y1="262" x2="420" y2="338" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="412" y="273" width="17" height="53" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g></svg>
-      </figure>
-
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Armada</h1>
+      <p class="kicker">A MetaTrader&nbsp;5 copy-trading signal</p>
+      <p class="lead">One account, ten algorithms. I am putting the first ten trading bots I build into this single signal, adding each one only after it finishes validation. Your terminal mirrors every position the account takes, scaled to your own balance.</p>
     </div>
-  </section>
-
-  <section class="catalogue" id="catalogue">
-    <div class="wrap">
-      <h2 class="section-head">Available now</h2>
-
-      <article class="product">
-        <div class="product-body">
-          <h3>CandleGrid Pro</h3>
-          <p class="product-kind">Expert advisor for MetaTrader 5</p>
-          <p>
-            A grid-based system for reading market structure, momentum and candle
-            behaviour, and acting on it automatically. Built for traders who want to
-            see exactly which conditions open a position and which close it.
-          </p>
-          <p>
-            Fourteen candlestick patterns across seven timeframes, each timeframe
-            running as its own independent system with its own magic number.
-          </p>
-          <p class="product-buy">
-            <a class="cta" href="https://jsgaston.github.io/candlegrid-web-en">Product details and pricing</a>
-          </p>
-        </div>
-
-        <dl class="spec">
-          <div><dt>Platform</dt><dd>MetaTrader 5</dd></div>
-          <div><dt>Approach</dt><dd>Candlestick patterns</dd></div>
-          <div><dt>Timeframes</dt><dd class="num">7</dd></div>
-          <div><dt>Licensing</dt><dd>1 account per licence</dd></div>
-          <div><dt>Payment</dt><dd>Stripe or PayPal</dd></div>
-          <div><dt>Support</dt><dd>Direct by email</dd></div>
-        </dl>
-      </article>
-
-      <article class="product">
-        <div class="product-body">
-          <h3>RegimeSwitch Pro</h3>
-          <p class="product-kind">Expert advisor for MetaTrader 5</p>
-          <p>
-            A robot that works out what kind of market it is in before it decides
-            whether to trade. It fits a hidden Markov model to the price history in
-            your own terminal, estimates the probability of the next state, and
-            combines that with a volume-confirmed reversal rule.
-          </p>
-          <p>
-            Every symbol and timeframe has to pass an out-of-sample edge test before
-            it is allowed to place a trade. The ones that fail sit out and say so in
-            the journal.
-          </p>
-          <p class="product-buy">
-            <a class="cta" href="https://jsgaston.github.io/regimeswitch-web-en">Product details and pricing</a>
-          </p>
-        </div>
-
-        <dl class="spec">
-          <div><dt>Platform</dt><dd>MetaTrader 5</dd></div>
-          <div><dt>Approach</dt><dd>Regime model + reversal</dd></div>
-          <div><dt>Contexts per chart</dt><dd class="num">80</dd></div>
-          <div><dt>Licensing</dt><dd>1 account per licence</dd></div>
-          <div><dt>Payment</dt><dd>Stripe or PayPal</dd></div>
-          <div><dt>Support</dt><dd>Direct by email</dd></div>
-        </dl>
-      </article>
-
-      <div class="upcoming">
-        <h2 class="section-head" style="margin-top:40px">In development</h2>
-
-        <div class="upcoming-row">
-          <h4>Trading signals</h4>
-          <p>Entries and exits from the same systems, delivered to your terminal.</p>
-          <span class="status">Next up</span>
-        </div>
-
-        <div class="upcoming-row">
-          <h4>Written research</h4>
-          <p>Notes on how these systems are built, tested and taken apart.</p>
-          <span class="status">Later</span>
-        </div>
-      </div>
-
+    <div>
+      <div class="hoist" id="hoist"></div>
+      <p class="hoist-note" id="hoist-note">Each bot sails under its own flag.</p>
     </div>
-  </section>
+  </div>
+  <div class="rail">
+    <div class="wrap">
+      <div class="rail-item"><p class="t">Since inception</p><p class="v" id="r-total">—</p></div>
+      <div class="rail-item"><p class="t">This month</p><p class="v" id="r-month">—</p></div>
+      <div class="rail-item"><p class="t">Deepest drawdown</p><p class="v" id="r-dd">—</p></div>
+      <div class="rail-item"><p class="t">Bots sailing</p><p class="v" id="r-fleet">—</p></div>
+    </div>
+  </div>
+</div>
 
-</main>
-
-<footer class="site-footer">
+<section id="record">
   <div class="wrap">
-    <p class="risk">
-      Trading foreign exchange, CFDs and other leveraged instruments carries a high
-      level of risk and can result in the loss of all of your capital. Past performance,
-      including backtested results, does not indicate future results. Nothing on this
-      site is investment advice. Only trade with money you can afford to lose.
-    </p>
-    <div class="footer-line">
-      <span>© 2026 Wisfli</span>
-      <span><a href="mailto:info@wisfli.com">jsgastoniriartecabrera@gmail.com</a></span>
+    <h2>The account, as it stands</h2>
+    <p class="sub">Published directly from the trading account every 15 minutes. The curve starts at 100 on day one, so it reads the same whatever size the account is. Open positions are never shown here — that part is what subscribers receive.</p>
+
+    <div class="plot" id="plot">
+      <div class="plot-empty" id="plot-empty">
+        <p style="margin:0;font-family:Archivo;font-weight:600;color:var(--sea)">The fleet hasn't sailed yet.</p>
+        <p style="margin:0;font-size:15px">The first figures appear here the day the account takes its first trade.</p>
+      </div>
+      <div class="readout" id="readout" hidden></div>
     </div>
+    <p class="stamp">
+      <span id="stamp-updated">Waiting for first publication</span>
+      <span id="stamp-verify"></span>
+    </p>
+
+    <dl class="metrics" id="metrics"></dl>
+  </div>
+</section>
+
+<section id="fleet">
+  <div class="wrap">
+    <h2>The fleet</h2>
+    <p class="sub">Ten bots, added one at a time. A bot joins the account only once it has passed out-of-sample testing and a period of live trading on my own money. Until then it stays in the yard, and you can see it here.</p>
+    <table class="roster">
+      <thead><tr><th>Flag</th><th>Bot</th><th>Instruments</th><th>Approach</th><th>Status</th></tr></thead>
+      <tbody id="roster"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2>How copying works</h2>
+    <p class="sub">You keep your own broker, your own account and your own money. Nothing leaves your side — an Expert Advisor in your terminal reads what my account is doing and reproduces it.</p>
+    <div class="steps">
+      <div class="step">
+        <h3>Subscribe and get your token</h3>
+        <p>After payment you receive a private access token and the follower EA by email, usually within a few hours.</p>
+      </div>
+      <div class="step">
+        <h3>Load the EA on a VPS</h3>
+        <p>Drop it on any chart in your MT5, paste the token, choose your risk factor. The setup guide walks through every field.</p>
+      </div>
+      <div class="step">
+        <h3>It mirrors from then on</h3>
+        <p>Opens, closes, stop-loss and take-profit changes are followed within a second or two, at a lot size proportional to your balance.</p>
+      </div>
+    </div>
+    <p style="margin-top:30px;font-family:Archivo;font-size:15px"><a href="setup.html">Read the full setup guide before subscribing →</a></p>
+  </div>
+</section>
+
+<section id="berth">
+  <div class="wrap">
+    <div class="berth">
+      <div>
+        <h2>Take a berth</h2>
+        <p>The founding rate is open while the fleet is still being assembled. It is fixed for as long as you stay subscribed, including after the tenth bot joins and the rate goes to €99.</p>
+        <ul>
+          <li>All bots on the account, present and future</li>
+          <li>Follower EA, access token and setup support</li>
+          <li>Monthly note on what changed and why</li>
+          <li>Cancel from your receipt at any time</li>
+        </ul>
+      </div>
+      <div class="price">
+        <div class="amt">€59</div>
+        <span class="per">per month, first 100 accounts</span>
+        <a class="buy" href="STRIPE_PAYMENT_LINK_HERE">Subscribe to Armada</a>
+        <small>Standard rate €99/month once all ten bots are sailing. Suggested account size €2,000 or more — see the setup guide for why.</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="plain">
+  <div class="wrap">
+    <h2>Read this before you pay</h2>
+    <div class="talk" style="margin-top:26px">
+      <div>
+        <h3>What you are buying</h3>
+        <p>Access to the positions of one live account, for as long as you subscribe. Not a course, not a bot licence, not advice about what you personally should do with your money.</p>
+        <p>Every figure on this page comes out of that account automatically. There are no backtests on this page and no simulated results. Where a number is missing, it is missing because the account has not produced it yet.</p>
+      </div>
+      <div>
+        <h3>What can go wrong</h3>
+        <p>Losing months happen, and a losing month is not a malfunction. Your results will also differ from mine: a different broker, spread, execution speed or account size all move the outcome, and copying is never exact.</p>
+        <p>Leveraged trading can cost you more than you put in. Subscribe with money you can afford to lose, start at a reduced risk factor, and stop if it stops suiting you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Armada is operated by Wisfli, Alicante, Spain. Past performance does not indicate future results. Nothing here is investment advice or a personal recommendation, and no return is promised or implied.</p>
+    <p><a href="https://wisfli.com">wisfli.com</a> · <a href="setup.html">Setup guide</a> · <a href="mailto:support@wisfli.com">support@wisfli.com</a></p>
   </div>
 </footer>
 
+<script>
+/* ---------- international code of signals, A–J ---------- */
+const F = {
+  A:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30L46 20l14 20H30z" fill="#14528C"/><path d="M0 0h30v40H0z" fill="none" stroke="rgba(15,44,66,.25)"/>',
+  B:'<path d="M0 0h60L46 20l14 20H0z" fill="#C8322A"/>',
+  C:'<path d="M0 0h60v8H0z" fill="#14528C"/><path d="M0 8h60v8H0z" fill="#fff"/><path d="M0 16h60v8H0z" fill="#C8322A"/><path d="M0 24h60v8H0z" fill="#fff"/><path d="M0 32h60v8H0z" fill="#14528C"/>',
+  D:'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M0 11h60v18H0z" fill="#14528C"/>',
+  E:'<path d="M0 0h60v20H0z" fill="#14528C"/><path d="M0 20h60v20H0z" fill="#C8322A"/>',
+  F:'<path d="M0 0h60v40H0z" fill="#fff"/><path d="M30 3 57 20 30 37 3 20z" fill="#C8322A"/><path d="M0 0h60v40H0z" fill="none" stroke="rgba(15,44,66,.25)"/>',
+  G:'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M10 0h10v40H10z" fill="#14528C"/><path d="M30 0h10v40H30z" fill="#14528C"/><path d="M50 0h10v40H50z" fill="#14528C"/>',
+  H:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30v40H30z" fill="#C8322A"/><path d="M0 0h60v40H0z" fill="none" stroke="rgba(15,44,66,.25)"/>',
+  I:'<path d="M0 0h60v40H0z" fill="#F2C230"/><circle cx="30" cy="20" r="11" fill="#101820"/>',
+  J:'<path d="M0 0h60v40H0z" fill="#14528C"/><path d="M0 13h60v14H0z" fill="#fff"/>'
+};
+const LETTERS = ['A','B','C','D','E','F','G','H','I','J'];
+const flagSVG = l => '<svg viewBox="0 0 60 40" role="img" aria-label="Signal flag '+l+'">'+F[l]+'</svg>';
+
+/* ---------- fallback roster (overridden by stats.json) ---------- */
+const FALLBACK = LETTERS.map((l,i)=>({flag:l,name:'Bot '+(i+1),symbols:'—',style:'—',status:'yard'}));
+
+const pct = n => (n>0?'+':'') + n.toFixed(1) + '%';
+const cls = n => n>0?'pos':(n<0?'neg':'');
+
+function ago(iso){
+  const m = Math.round((Date.now()-new Date(iso))/60000);
+  if(m<2) return 'just now';
+  if(m<60) return m+' minutes ago';
+  const h=Math.round(m/60); if(h<24) return h+(h===1?' hour ago':' hours ago');
+  const d=Math.round(h/24); return d+(d===1?' day ago':' days ago');
+}
+
+function drawHoist(strats){
+  const wrap=document.getElementById('hoist');
+  wrap.innerHTML = strats.map(s=>{
+    const live = s.status==='live';
+    return '<span class="'+(live?'':'dim')+'" title="'+s.name+'">'+flagSVG(s.flag)+'</span>';
+  }).join('');
+  const live=strats.filter(s=>s.status==='live').length;
+  document.getElementById('hoist-note').textContent =
+    live===0 ? 'Ten flags, none flying yet.' :
+    'Flying: '+live+' of 10. The faded flags are still in the yard.';
+}
+
+function drawRoster(strats){
+  document.getElementById('roster').innerHTML = strats.map(s=>{
+    const live = s.status==='live';
+    return '<tr class="'+(live?'':'pending')+'">'+
+      '<td>'+flagSVG(s.flag)+'</td>'+
+      '<td class="name">'+s.name+'</td>'+
+      '<td class="sym">'+s.symbols+'</td>'+
+      '<td class="sym">'+s.style+'</td>'+
+      '<td class="st '+(live?'live':'testing')+'">'+(live?'Sailing since '+(s.since||'—'):'In the yard')+'</td>'+
+    '</tr>';
+  }).join('');
+}
+
+function drawMetrics(m){
+  const rows=[
+    ['Closed trades', m.trades ?? '—'],
+    ['Winning trades', m.win_rate_pct!=null ? m.win_rate_pct.toFixed(1)+'%' : '—'],
+    ['Profit factor', m.profit_factor!=null ? m.profit_factor.toFixed(2) : '—'],
+    ['Best month', m.best_month_pct!=null ? pct(m.best_month_pct) : '—'],
+    ['Worst month', m.worst_month_pct!=null ? pct(m.worst_month_pct) : '—'],
+    ['Average hold', m.avg_hold_hours!=null ? m.avg_hold_hours.toFixed(1)+' h' : '—'],
+    ['Trades per week', m.trades_per_week!=null ? m.trades_per_week.toFixed(1) : '—'],
+    ['Days live', m.days_live ?? '—']
+  ];
+  document.getElementById('metrics').innerHTML =
+    rows.map(r=>'<div><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>').join('');
+}
+
+function drawPlot(eq){
+  if(!eq || eq.length<2) return;
+  document.getElementById('plot-empty').remove();
+  const W=1000,H=300,PL=8,PR=54,PT=18,PB=26;
+  const vs=eq.map(p=>p.v);
+  let lo=Math.min(100,...vs), hi=Math.max(100,...vs);
+  const pad=(hi-lo)*.12 || 2; lo-=pad; hi+=pad;
+  const X=i=>PL+(i/(eq.length-1))*(W-PL-PR);
+  const Y=v=>PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);
+
+  let line='', area='';
+  eq.forEach((p,i)=>{ line += (i?'L':'M')+X(i).toFixed(1)+' '+Y(p.v).toFixed(1)+' '; });
+  area = line+'L'+X(eq.length-1).toFixed(1)+' '+Y(lo)+' L'+X(0)+' '+Y(lo)+' Z';
+
+  const ticks=[lo,(lo+hi)/2,hi].map(v=>
+    '<line x1="'+PL+'" x2="'+(W-PR)+'" y1="'+Y(v).toFixed(1)+'" y2="'+Y(v).toFixed(1)+'" stroke="rgba(15,44,66,.10)"/>'+
+    '<text x="'+(W-PR+9)+'" y="'+(Y(v)+4).toFixed(1)+'" font-family="Archivo" font-size="13" fill="#5C7185">'+v.toFixed(0)+'</text>'
+  ).join('');
+
+  const base='<line x1="'+PL+'" x2="'+(W-PR)+'" y1="'+Y(100).toFixed(1)+'" y2="'+Y(100).toFixed(1)+'" stroke="rgba(15,44,66,.45)" stroke-dasharray="3 3"/>';
+  const first=eq[0].d, last=eq[eq.length-1].d;
+
+  document.getElementById('plot').insertAdjacentHTML('afterbegin',
+    '<svg id="eq" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" style="height:300px">'+
+      ticks+base+
+      '<path d="'+area+'" fill="rgba(30,107,87,.10)"/>'+
+      '<path d="'+line+'" fill="none" stroke="#1E6B57" stroke-width="2.2" stroke-linejoin="round"/>'+
+      '<line id="cross" y1="'+PT+'" y2="'+(H-PB)+'" stroke="#0F2C42" stroke-width="1" opacity="0"/>'+
+      '<circle id="dot" r="4" fill="#1E6B57" opacity="0"/>'+
+      '<text x="'+PL+'" y="'+(H-6)+'" font-family="Archivo" font-size="13" fill="#5C7185">'+first+'</text>'+
+      '<text x="'+(W-PR)+'" y="'+(H-6)+'" text-anchor="end" font-family="Archivo" font-size="13" fill="#5C7185">'+last+'</text>'+
+    '</svg>');
+
+  const svg=document.getElementById('eq'), ro=document.getElementById('readout');
+  const cross=document.getElementById('cross'), dot=document.getElementById('dot');
+  svg.addEventListener('pointermove',e=>{
+    const r=svg.getBoundingClientRect();
+    const i=Math.round(((e.clientX-r.left)/r.width*W-PL)/(W-PL-PR)*(eq.length-1));
+    const p=eq[Math.max(0,Math.min(eq.length-1,i))]; if(!p) return;
+    const x=X(eq.indexOf(p));
+    cross.setAttribute('x1',x); cross.setAttribute('x2',x); cross.setAttribute('opacity','.35');
+    dot.setAttribute('cx',x); dot.setAttribute('cy',Y(p.v)); dot.setAttribute('opacity','1');
+    ro.hidden=false; ro.innerHTML=p.d+' &nbsp;<b>'+pct(p.v-100)+'</b>';
+  });
+  svg.addEventListener('pointerleave',()=>{
+    cross.setAttribute('opacity','0'); dot.setAttribute('opacity','0'); ro.hidden=true;
+  });
+}
+
+function setRail(s){
+  const set=(id,txt,c)=>{const el=document.getElementById(id);el.textContent=txt;if(c)el.classList.add(c);};
+  const h=s.headline||{};
+  if(h.return_since_inception_pct!=null) set('r-total',pct(h.return_since_inception_pct),cls(h.return_since_inception_pct));
+  if(h.month_to_date_pct!=null) set('r-month',pct(h.month_to_date_pct),cls(h.month_to_date_pct));
+  if(h.max_drawdown_pct!=null) set('r-dd','−'+Math.abs(h.max_drawdown_pct).toFixed(1)+'%');
+  const live=(s.strategies||[]).filter(x=>x.status==='live').length;
+  set('r-fleet',live+' of 10');
+}
+
+(async function(){
+  let s=null;
+  try{
+    const res=await fetch('stats.json?t='+Date.now(),{cache:'no-store'});
+    if(res.ok) s=await res.json();
+  }catch(e){ /* page stays in its waiting state */ }
+
+  const strats=(s&&s.strategies&&s.strategies.length===10)?s.strategies:FALLBACK;
+  drawHoist(strats); drawRoster(strats);
+  drawMetrics((s&&s.metrics)||{});
+
+  if(s){
+    setRail(s);
+    drawPlot(s.equity);
+    if(s.updated_utc){
+      document.getElementById('stamp-updated').textContent='Published from the account '+ago(s.updated_utc)+'.';
+    }
+    if(s.verified_url){
+      document.getElementById('stamp-verify').innerHTML='<a href="'+s.verified_url+'">Independently verified record</a>';
+    }
+  }
+})();
+</script>
 </body>
 </html>
