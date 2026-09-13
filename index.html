@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wisfli — MetaTrader 5 trading tools</title>
 <meta name="description" content="Wisfli builds MetaTrader 5 expert advisors and market analysis tools. Documented rules, stated limits, per-account licensing.">
@@ -144,14 +144,13 @@ button:focus-visible{
   display:block;
 }
 
-.candle{opacity:0}
-
 @keyframes settle{
   from{opacity:0;transform:translateY(9px)}
   to{opacity:1;transform:none}
 }
 
 .candle{
+  opacity:0;
   animation:settle 0.5s cubic-bezier(.2,.7,.3,1) forwards;
   transform-box:fill-box;
   transform-origin:center;
@@ -161,7 +160,7 @@ button:focus-visible{
   .candle{animation:none;opacity:1}
 }
 
-/* ---------- product ---------- */
+/* ---------- catalogue ---------- */
 
 .catalogue{
   border-top:1px solid var(--rule);
@@ -185,6 +184,8 @@ button:focus-visible{
   grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
   gap:48px;
 }
+
+.product + .product{margin-top:26px}
 
 .product h3{
   margin:0 0 6px;
@@ -353,86 +354,20 @@ button:focus-visible{
           on this page is what the software actually does.
         </p>
         <div class="hero-actions">
-          <a class="cta" href="https://jsgaston.github.io/candlegrid-web-en">See CandleGrid Pro</a>
-          <span class="cta-aside">One product available today. Two more in development.</span>
+          <a class="cta" href="#catalogue">See both products</a>
+          <span class="cta-aside">Two products available today. Two more in development.</span>
         </div>
       </div>
 
       <figure class="grid-figure">
-        <svg viewBox="0 0 480 360" role="img" aria-label="A grid of twelve candlestick figures, one marked in blue.">
-          <rect x="0.5" y="0.5" width="479" height="359" fill="none" stroke="var(--rule)"/>
-          <g stroke="var(--rule)" stroke-width="1">
-            <line x1="120.5" y1="0" x2="120.5" y2="360"/>
-            <line x1="240.5" y1="0" x2="240.5" y2="360"/>
-            <line x1="360.5" y1="0" x2="360.5" y2="360"/>
-            <line x1="0" y1="120.5" x2="480" y2="120.5"/>
-            <line x1="0" y1="240.5" x2="480" y2="240.5"/>
-          </g>
-
-          <g stroke="var(--ink)" stroke-width="2">
-            <!-- row 1 -->
-            <g class="candle" style="animation-delay:.05s">
-              <line x1="60" y1="26" x2="60" y2="100"/>
-              <rect x="47" y="40" width="26" height="46" fill="var(--ink)"/>
-            </g>
-            <g class="candle" style="animation-delay:.10s">
-              <line x1="180" y1="30" x2="180" y2="96"/>
-              <rect x="167" y="44" width="26" height="26" fill="var(--panel)"/>
-            </g>
-            <g class="candle" style="animation-delay:.15s">
-              <line x1="300" y1="22" x2="300" y2="92"/>
-              <rect x="287" y="36" width="26" height="42" fill="var(--panel)"/>
-            </g>
-            <g class="candle" style="animation-delay:.20s">
-              <line x1="420" y1="34" x2="420" y2="104"/>
-              <rect x="407" y="52" width="26" height="36" fill="var(--ink)"/>
-            </g>
-
-            <!-- row 2 -->
-            <g class="candle" style="animation-delay:.25s">
-              <line x1="60" y1="148" x2="60" y2="218"/>
-              <rect x="47" y="158" width="26" height="36" fill="var(--panel)"/>
-            </g>
-            <g class="candle" style="animation-delay:.30s">
-              <line x1="180" y1="144" x2="180" y2="210"/>
-              <rect x="167" y="166" width="26" height="34" fill="var(--ink)"/>
-            </g>
-            <g class="candle" style="animation-delay:.35s" stroke="var(--signal)">
-              <line x1="300" y1="140" x2="300" y2="222"/>
-              <rect x="287" y="152" width="26" height="52" fill="var(--signal)"/>
-            </g>
-            <g class="candle" style="animation-delay:.40s">
-              <line x1="420" y1="152" x2="420" y2="214"/>
-              <rect x="407" y="168" width="26" height="28" fill="var(--panel)"/>
-            </g>
-
-            <!-- row 3 -->
-            <g class="candle" style="animation-delay:.45s">
-              <line x1="60" y1="270" x2="60" y2="340"/>
-              <rect x="47" y="282" width="26" height="40" fill="var(--ink)"/>
-            </g>
-            <g class="candle" style="animation-delay:.50s">
-              <line x1="180" y1="266" x2="180" y2="328"/>
-              <rect x="167" y="280" width="26" height="26" fill="var(--panel)"/>
-            </g>
-            <g class="candle" style="animation-delay:.55s">
-              <line x1="300" y1="276" x2="300" y2="338"/>
-              <rect x="287" y="294" width="26" height="32" fill="var(--ink)"/>
-            </g>
-            <g class="candle" style="animation-delay:.60s">
-              <line x1="420" y1="264" x2="420" y2="334"/>
-              <rect x="407" y="274" width="26" height="38" fill="var(--panel)"/>
-            </g>
-          </g>
-        </svg>
+        <svg viewBox="0 0 480 360" role="img" aria-label="A grid of twelve candlestick figures, one marked in blue." xmlns="http://www.w3.org/2000/svg"><g class="candle" style="animation-delay:0.00s"><line x1="60" y1="32" x2="60" y2="88" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="52" y="42" width="17" height="36" rx="1" fill="none" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.05s"><line x1="180" y1="28" x2="180" y2="92" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="172" y="37" width="17" height="47" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.10s"><line x1="300" y1="26" x2="300" y2="94" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="292" y="38" width="17" height="43" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.15s"><line x1="420" y1="32" x2="420" y2="88" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="412" y="46" width="17" height="28" rx="1" fill="none" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.20s"><line x1="60" y1="153" x2="60" y2="207" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="52" y="166" width="17" height="27" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.25s"><line x1="180" y1="157" x2="180" y2="203" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="172" y="166" width="17" height="28" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.30s"><line x1="300" y1="142" x2="300" y2="218" stroke="var(--signal)" stroke-width="1.4" opacity="1"/><rect x="292" y="160" width="17" height="40" rx="1" fill="var(--signal)" stroke="var(--signal)" stroke-width="1.4" opacity="1"/></g><g class="candle" style="animation-delay:0.35s"><line x1="420" y1="154" x2="420" y2="206" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="412" y="165" width="17" height="30" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.40s"><line x1="60" y1="258" x2="60" y2="342" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="52" y="277" width="17" height="46" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.45s"><line x1="180" y1="265" x2="180" y2="335" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="172" y="278" width="17" height="44" rx="1" fill="none" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.50s"><line x1="300" y1="263" x2="300" y2="337" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="292" y="271" width="17" height="57" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g><g class="candle" style="animation-delay:0.55s"><line x1="420" y1="262" x2="420" y2="338" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/><rect x="412" y="273" width="17" height="53" rx="1" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4" opacity="0.82"/></g></svg>
       </figure>
 
     </div>
   </section>
 
-  <section class="catalogue">
+  <section class="catalogue" id="catalogue">
     <div class="wrap">
-
       <h2 class="section-head">Available now</h2>
 
       <article class="product">
@@ -445,8 +380,8 @@ button:focus-visible{
             see exactly which conditions open a position and which close it.
           </p>
           <p>
-            Your license is tied to one MetaTrader account number. Change accounts and
-            the license moves with you — write in and we reissue it.
+            Fourteen candlestick patterns across seven timeframes, each timeframe
+            running as its own independent system with its own magic number.
           </p>
           <p class="product-buy">
             <a class="cta" href="https://jsgaston.github.io/candlegrid-web-en">Product details and pricing</a>
@@ -455,21 +390,53 @@ button:focus-visible{
 
         <dl class="spec">
           <div><dt>Platform</dt><dd>MetaTrader 5</dd></div>
-          <div><dt>Licensing</dt><dd><span class="num">1</span> account per license</dd></div>
+          <div><dt>Approach</dt><dd>Candlestick patterns</dd></div>
+          <div><dt>Timeframes</dt><dd class="num">7</dd></div>
+          <div><dt>Licensing</dt><dd>1 account per licence</dd></div>
           <div><dt>Payment</dt><dd>Stripe or PayPal</dd></div>
-          <div><dt>Delivery</dt><dd>Instant download</dd></div>
           <div><dt>Support</dt><dd>Direct by email</dd></div>
         </dl>
       </article>
 
-      <h2 class="section-head" style="margin-top:64px">In development</h2>
+      <article class="product">
+        <div class="product-body">
+          <h3>RegimeSwitch Pro</h3>
+          <p class="product-kind">Expert advisor for MetaTrader 5</p>
+          <p>
+            A robot that works out what kind of market it is in before it decides
+            whether to trade. It fits a hidden Markov model to the price history in
+            your own terminal, estimates the probability of the next state, and
+            combines that with a volume-confirmed reversal rule.
+          </p>
+          <p>
+            Every symbol and timeframe has to pass an out-of-sample edge test before
+            it is allowed to place a trade. The ones that fail sit out and say so in
+            the journal.
+          </p>
+          <p class="product-buy">
+            <a class="cta" href="https://jsgaston.github.io/regimeswitch-web-en">Product details and pricing</a>
+          </p>
+        </div>
+
+        <dl class="spec">
+          <div><dt>Platform</dt><dd>MetaTrader 5</dd></div>
+          <div><dt>Approach</dt><dd>Regime model + reversal</dd></div>
+          <div><dt>Contexts per chart</dt><dd class="num">80</dd></div>
+          <div><dt>Licensing</dt><dd>1 account per licence</dd></div>
+          <div><dt>Payment</dt><dd>Stripe or PayPal</dd></div>
+          <div><dt>Support</dt><dd>Direct by email</dd></div>
+        </dl>
+      </article>
 
       <div class="upcoming">
+        <h2 class="section-head" style="margin-top:40px">In development</h2>
+
         <div class="upcoming-row">
           <h4>Trading signals</h4>
           <p>Entries and exits from the same systems, delivered to your terminal.</p>
           <span class="status">Next up</span>
         </div>
+
         <div class="upcoming-row">
           <h4>Written research</h4>
           <p>Notes on how these systems are built, tested and taken apart.</p>
