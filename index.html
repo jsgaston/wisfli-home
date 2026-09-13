@@ -1,97 +1,500 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wisfli — Trading Tools</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #0f0f0f;
-            color: #eaeaea;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        header {
-            padding: 40px 20px;
-            text-align: center;
-        }
-        h1 {
-            font-size: 2.4rem;
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 1.1rem;
-            max-width: 600px;
-            line-height: 1.6;
-        }
-        .products {
-            margin-top: 40px;
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-        }
-        .product-card {
-            background: #1a1a1a;
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #333;
-        }
-        .product-card h2 {
-            margin-top: 0;
-        }
-        a.button {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 12px 22px;
-            background: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-        a.button:hover {
-            background: #45a049;
-        }
-        footer {
-            margin-top: 60px;
-            padding: 20px;
-            font-size: 0.9rem;
-            opacity: 0.6;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wisfli — MetaTrader 5 trading tools</title>
+<meta name="description" content="Wisfli builds MetaTrader 5 expert advisors and market analysis tools. Documented rules, stated limits, per-account licensing.">
+
+<meta property="og:title" content="Wisfli — MetaTrader 5 trading tools">
+<meta property="og:description" content="MetaTrader 5 expert advisors and market analysis tools, with documented rules and stated limits.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://wisfli.com/">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#E7E8E3;
+  --panel:#F5F5F2;
+  --ink:#16181A;
+  --muted:#5C6066;
+  --rule:#C9CAC3;
+  --signal:#1B3BC4;
+  --maxw:1080px;
+}
+
+*{box-sizing:border-box}
+
+html{-webkit-text-size-adjust:100%}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Archivo",system-ui,sans-serif;
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{
+  width:100%;
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:0 28px;
+}
+
+a{color:var(--signal)}
+
+a:focus-visible,
+button:focus-visible{
+  outline:2px solid var(--signal);
+  outline-offset:3px;
+}
+
+/* ---------- masthead ---------- */
+
+.masthead{
+  border-bottom:1px solid var(--rule);
+}
+
+.masthead .wrap{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:20px;
+  padding-top:22px;
+  padding-bottom:18px;
+}
+
+.wordmark{
+  font-weight:800;
+  font-size:1.3rem;
+  letter-spacing:-0.03em;
+  color:var(--ink);
+  text-decoration:none;
+}
+
+.masthead-note{
+  font-size:0.9rem;
+  color:var(--muted);
+}
+
+/* ---------- hero ---------- */
+
+.hero .wrap{
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,0.95fr);
+  gap:56px;
+  align-items:center;
+  padding-top:76px;
+  padding-bottom:84px;
+}
+
+.hero h1{
+  font-size:clamp(2.3rem,5.1vw,3.5rem);
+  font-weight:800;
+  letter-spacing:-0.035em;
+  line-height:1.04;
+  margin:0 0 22px;
+}
+
+.hero-text p{
+  max-width:44ch;
+  margin:0 0 18px;
+  color:var(--muted);
+}
+
+.hero-actions{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:24px;
+  margin-top:30px;
+}
+
+.cta{
+  display:inline-block;
+  background:var(--signal);
+  color:#fff;
+  text-decoration:none;
+  font-weight:600;
+  font-size:1rem;
+  padding:14px 26px;
+  border-radius:3px;
+}
+
+.cta:hover{background:#152F9E}
+
+.cta-aside{
+  font-size:0.92rem;
+  color:var(--muted);
+}
+
+/* ---------- candle grid ---------- */
+
+.grid-figure{margin:0}
+
+.grid-figure svg{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+.candle{opacity:0}
+
+@keyframes settle{
+  from{opacity:0;transform:translateY(9px)}
+  to{opacity:1;transform:none}
+}
+
+.candle{
+  animation:settle 0.5s cubic-bezier(.2,.7,.3,1) forwards;
+  transform-box:fill-box;
+  transform-origin:center;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .candle{animation:none;opacity:1}
+}
+
+/* ---------- product ---------- */
+
+.catalogue{
+  border-top:1px solid var(--rule);
+  padding-top:64px;
+  padding-bottom:88px;
+}
+
+.section-head{
+  margin:0 0 34px;
+  font-size:1.05rem;
+  font-weight:600;
+  color:var(--muted);
+}
+
+.product{
+  background:var(--panel);
+  border:1px solid var(--rule);
+  border-radius:4px;
+  padding:40px;
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
+  gap:48px;
+}
+
+.product h3{
+  margin:0 0 6px;
+  font-size:1.9rem;
+  font-weight:800;
+  letter-spacing:-0.03em;
+}
+
+.product-kind{
+  margin:0 0 20px;
+  color:var(--muted);
+  font-size:0.95rem;
+}
+
+.product-body p{
+  margin:0 0 16px;
+  max-width:52ch;
+}
+
+.spec{
+  margin:0;
+  border-top:1px solid var(--rule);
+}
+
+.spec div{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  padding:11px 0;
+  border-bottom:1px solid var(--rule);
+  font-size:0.95rem;
+}
+
+.spec dt{color:var(--muted)}
+
+.spec dd{
+  margin:0;
+  text-align:right;
+  font-weight:500;
+}
+
+.spec .num{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-weight:500;
+}
+
+.product-buy{
+  margin-top:26px;
+}
+
+/* ---------- upcoming ---------- */
+
+.upcoming{
+  margin-top:40px;
+  border-top:1px solid var(--rule);
+}
+
+.upcoming-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:8px 18px;
+  padding:20px 0;
+  border-bottom:1px solid var(--rule);
+}
+
+.upcoming-row h4{
+  margin:0;
+  font-size:1.15rem;
+  font-weight:600;
+  letter-spacing:-0.02em;
+}
+
+.upcoming-row p{
+  margin:0;
+  color:var(--muted);
+  font-size:0.95rem;
+  flex:1 1 320px;
+}
+
+.status{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:0.82rem;
+  color:var(--muted);
+  border:1px solid var(--rule);
+  border-radius:2px;
+  padding:3px 9px;
+  white-space:nowrap;
+}
+
+/* ---------- footer ---------- */
+
+.site-footer{
+  border-top:1px solid var(--rule);
+  background:var(--panel);
+}
+
+.site-footer .wrap{
+  padding-top:40px;
+  padding-bottom:48px;
+}
+
+.risk{
+  max-width:70ch;
+  margin:0 0 26px;
+  font-size:0.88rem;
+  line-height:1.65;
+  color:var(--muted);
+}
+
+.footer-line{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:12px;
+  font-size:0.88rem;
+  color:var(--muted);
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width:860px){
+  .hero .wrap{
+    grid-template-columns:1fr;
+    gap:44px;
+    padding-top:52px;
+    padding-bottom:60px;
+  }
+  .grid-figure{order:2}
+  .product{
+    grid-template-columns:1fr;
+    gap:32px;
+    padding:30px 24px;
+  }
+}
+
+@media (max-width:560px){
+  .wrap{padding:0 20px}
+  body{font-size:16px}
+}
+</style>
 </head>
 <body>
 
-<header>
-    <h1>Wisfli</h1>
-    <p>
-        Wisfli creates powerful and practical tools for traders.  
-        Our products are designed to help you analyze markets faster, make better decisions,  
-        and improve your trading workflow.
-    </p>
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/">Wisfli</a>
+    <span class="masthead-note">Trading tools for MetaTrader 5</span>
+  </div>
 </header>
 
-<section class="products">
-    <div class="product-card">
-        <h2>Candlegrid Pro</h2>
-        <p>
-            A visual grid-based system for analyzing market structure, momentum,  
-            and candle behavior. Built for traders who want clarity and precision.
-        </p>
-        <a class="button" href="https://jsgaston.github.io/candlegrid-web-en" target="_blank">
-            Visit Candlegrid Pro
-        </a>
-    </div>
-</section>
+<main>
 
-<footer>
-    © 2026 Wisfli — Trading Tools
+  <section class="hero">
+    <div class="wrap">
+
+      <div class="hero-text">
+        <h1>Trading tools that show their work.</h1>
+        <p>
+          Wisfli builds expert advisors and market analysis tools for MetaTrader 5.
+          Each one ships with its rules written down, its parameters explained,
+          and its limits stated plainly.
+        </p>
+        <p>
+          Everything here is built and maintained by one developer, so what you read
+          on this page is what the software actually does.
+        </p>
+        <div class="hero-actions">
+          <a class="cta" href="https://jsgaston.github.io/candlegrid-web-en">See CandleGrid Pro</a>
+          <span class="cta-aside">One product available today. Two more in development.</span>
+        </div>
+      </div>
+
+      <figure class="grid-figure">
+        <svg viewBox="0 0 480 360" role="img" aria-label="A grid of twelve candlestick figures, one marked in blue.">
+          <rect x="0.5" y="0.5" width="479" height="359" fill="none" stroke="var(--rule)"/>
+          <g stroke="var(--rule)" stroke-width="1">
+            <line x1="120.5" y1="0" x2="120.5" y2="360"/>
+            <line x1="240.5" y1="0" x2="240.5" y2="360"/>
+            <line x1="360.5" y1="0" x2="360.5" y2="360"/>
+            <line x1="0" y1="120.5" x2="480" y2="120.5"/>
+            <line x1="0" y1="240.5" x2="480" y2="240.5"/>
+          </g>
+
+          <g stroke="var(--ink)" stroke-width="2">
+            <!-- row 1 -->
+            <g class="candle" style="animation-delay:.05s">
+              <line x1="60" y1="26" x2="60" y2="100"/>
+              <rect x="47" y="40" width="26" height="46" fill="var(--ink)"/>
+            </g>
+            <g class="candle" style="animation-delay:.10s">
+              <line x1="180" y1="30" x2="180" y2="96"/>
+              <rect x="167" y="44" width="26" height="26" fill="var(--panel)"/>
+            </g>
+            <g class="candle" style="animation-delay:.15s">
+              <line x1="300" y1="22" x2="300" y2="92"/>
+              <rect x="287" y="36" width="26" height="42" fill="var(--panel)"/>
+            </g>
+            <g class="candle" style="animation-delay:.20s">
+              <line x1="420" y1="34" x2="420" y2="104"/>
+              <rect x="407" y="52" width="26" height="36" fill="var(--ink)"/>
+            </g>
+
+            <!-- row 2 -->
+            <g class="candle" style="animation-delay:.25s">
+              <line x1="60" y1="148" x2="60" y2="218"/>
+              <rect x="47" y="158" width="26" height="36" fill="var(--panel)"/>
+            </g>
+            <g class="candle" style="animation-delay:.30s">
+              <line x1="180" y1="144" x2="180" y2="210"/>
+              <rect x="167" y="166" width="26" height="34" fill="var(--ink)"/>
+            </g>
+            <g class="candle" style="animation-delay:.35s" stroke="var(--signal)">
+              <line x1="300" y1="140" x2="300" y2="222"/>
+              <rect x="287" y="152" width="26" height="52" fill="var(--signal)"/>
+            </g>
+            <g class="candle" style="animation-delay:.40s">
+              <line x1="420" y1="152" x2="420" y2="214"/>
+              <rect x="407" y="168" width="26" height="28" fill="var(--panel)"/>
+            </g>
+
+            <!-- row 3 -->
+            <g class="candle" style="animation-delay:.45s">
+              <line x1="60" y1="270" x2="60" y2="340"/>
+              <rect x="47" y="282" width="26" height="40" fill="var(--ink)"/>
+            </g>
+            <g class="candle" style="animation-delay:.50s">
+              <line x1="180" y1="266" x2="180" y2="328"/>
+              <rect x="167" y="280" width="26" height="26" fill="var(--panel)"/>
+            </g>
+            <g class="candle" style="animation-delay:.55s">
+              <line x1="300" y1="276" x2="300" y2="338"/>
+              <rect x="287" y="294" width="26" height="32" fill="var(--ink)"/>
+            </g>
+            <g class="candle" style="animation-delay:.60s">
+              <line x1="420" y1="264" x2="420" y2="334"/>
+              <rect x="407" y="274" width="26" height="38" fill="var(--panel)"/>
+            </g>
+          </g>
+        </svg>
+      </figure>
+
+    </div>
+  </section>
+
+  <section class="catalogue">
+    <div class="wrap">
+
+      <h2 class="section-head">Available now</h2>
+
+      <article class="product">
+        <div class="product-body">
+          <h3>CandleGrid Pro</h3>
+          <p class="product-kind">Expert advisor for MetaTrader 5</p>
+          <p>
+            A grid-based system for reading market structure, momentum and candle
+            behaviour, and acting on it automatically. Built for traders who want to
+            see exactly which conditions open a position and which close it.
+          </p>
+          <p>
+            Your license is tied to one MetaTrader account number. Change accounts and
+            the license moves with you — write in and we reissue it.
+          </p>
+          <p class="product-buy">
+            <a class="cta" href="https://jsgaston.github.io/candlegrid-web-en">Product details and pricing</a>
+          </p>
+        </div>
+
+        <dl class="spec">
+          <div><dt>Platform</dt><dd>MetaTrader 5</dd></div>
+          <div><dt>Licensing</dt><dd><span class="num">1</span> account per license</dd></div>
+          <div><dt>Payment</dt><dd>Stripe or PayPal</dd></div>
+          <div><dt>Delivery</dt><dd>Instant download</dd></div>
+          <div><dt>Support</dt><dd>Direct by email</dd></div>
+        </dl>
+      </article>
+
+      <h2 class="section-head" style="margin-top:64px">In development</h2>
+
+      <div class="upcoming">
+        <div class="upcoming-row">
+          <h4>Trading signals</h4>
+          <p>Entries and exits from the same systems, delivered to your terminal.</p>
+          <span class="status">Next up</span>
+        </div>
+        <div class="upcoming-row">
+          <h4>Written research</h4>
+          <p>Notes on how these systems are built, tested and taken apart.</p>
+          <span class="status">Later</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="risk">
+      Trading foreign exchange, CFDs and other leveraged instruments carries a high
+      level of risk and can result in the loss of all of your capital. Past performance,
+      including backtested results, does not indicate future results. Nothing on this
+      site is investment advice. Only trade with money you can afford to lose.
+    </p>
+    <div class="footer-line">
+      <span>© 2026 Wisfli</span>
+      <span><a href="mailto:info@wisfli.com">jsgastoniriartecabrera@gmail.com</a></span>
+    </div>
+  </div>
 </footer>
 
 </body>
