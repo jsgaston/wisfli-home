@@ -197,36 +197,198 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap;margin-top:6px}
 </section>
 
 <div class="armada" id="armada">
-  <div class="wrap">
+  <!-- ================================================================
+     ARMADA — section for wisfli.com
+     Paste anywhere in the page body. Everything is scoped to .wf-armada
+     so it cannot collide with your existing styles. It reads the live
+     stats file and lets visitors switch between the whole account and
+     each bot / magic number.
+     Change ARMADA_BASE below if the Armada page lives somewhere else.
+     ================================================================ -->
+
+<section class="wf-armada" id="signals">
+  <style>
+  .wf-armada{
+    --a-deep:#091D2C;--a-panel:#0F2C42;--a-rule:rgba(255,255,255,.16);--a-muted:#9FB6C4;
+    --a-brass:#E0A92C;--a-up:#5FBF9E;--a-down:#F08A7B;
+    background:var(--a-deep);color:#E7EDEA;padding:76px 0;
+    font-family:Spectral,Georgia,serif;font-variant-numeric:tabular-nums;
+  }
+  .wf-armada *{box-sizing:border-box}
+  .wf-armada .a-wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .wf-armada .a-top{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:end}
+  .wf-armada h2{font-family:Archivo,system-ui,sans-serif;font-weight:800;font-stretch:120%;font-size:clamp(48px,8vw,96px);line-height:.86;margin:0 0 14px;color:#fff;letter-spacing:-.02em}
+  .wf-armada .a-kicker{font-family:Archivo,sans-serif;font-size:13.5px;color:var(--a-muted);margin:0 0 20px}
+  .wf-armada .a-lead{font-size:19px;line-height:1.6;color:#C9D8E1;max-width:32em;margin:0}
+  .wf-armada .a-hoist{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+  .wf-armada .a-hoist svg{width:44px;height:29px;display:block}
+  .wf-armada .a-hoist .dim{opacity:.3}
+  .wf-armada .a-note{font-family:Archivo,sans-serif;font-size:13px;color:var(--a-muted);margin:0}
+
+  .wf-armada .a-pick{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin:48px 0 0;padding:14px 0;border-top:1px solid var(--a-rule)}
+  .wf-armada .a-pick label{font-family:Archivo,sans-serif;font-size:13px;color:var(--a-muted)}
+  .wf-armada .a-pick select{
+    font:700 15px Archivo,sans-serif;color:#fff;background:var(--a-panel);border:1px solid rgba(255,255,255,.25);
+    padding:8px 34px 8px 12px;min-width:250px;max-width:100%;appearance:none;cursor:pointer;
+    background-image:linear-gradient(45deg,transparent 50%,#E0A92C 50%),linear-gradient(135deg,#E0A92C 50%,transparent 50%);
+    background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;background-size:5px 5px;background-repeat:no-repeat
+  }
+  .wf-armada .a-pick select:focus-visible,.wf-armada a:focus-visible{outline:2px solid var(--a-brass);outline-offset:2px}
+  .wf-armada .a-sub{font-family:Archivo,sans-serif;font-size:13px;color:var(--a-muted)}
+  .wf-armada .a-spark{margin-left:auto}
+  .wf-armada .a-spark svg{display:block}
+
+  .wf-armada .a-rail{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--a-rule);border-top:1px solid var(--a-rule);border-bottom:1px solid var(--a-rule);margin:0 0 40px}
+  .wf-armada .a-rail div{background:var(--a-deep);padding:16px 18px 18px}
+  .wf-armada .a-rail p{margin:0}
+  .wf-armada .a-rail .t{font-family:Archivo,sans-serif;font-size:12px;font-weight:600;color:var(--a-muted);margin-bottom:4px}
+  .wf-armada .a-rail .v{font-family:Archivo,sans-serif;font-size:24px;font-weight:700;color:#fff;white-space:nowrap}
+  .wf-armada .a-rail .s{font-family:Archivo,sans-serif;font-size:12px;color:var(--a-muted);margin-top:2px;white-space:nowrap}
+  .wf-armada .pos{color:var(--a-up)!important} .wf-armada .neg{color:var(--a-down)!important}
+
+  .wf-armada .a-foot{display:flex;flex-wrap:wrap;align-items:center;gap:20px 28px}
+  .wf-armada .a-cta{display:inline-block;background:var(--a-brass);color:#1A1206;text-decoration:none;font-family:Archivo,sans-serif;font-weight:700;font-size:16px;padding:14px 28px}
+  .wf-armada .a-cta:hover{background:#EFBB43}
+  .wf-armada .a-alt{font-family:Archivo,sans-serif;font-size:15px;color:#C9D8E1;text-underline-offset:3px}
+  .wf-armada .a-price{font-family:Archivo,sans-serif;font-size:14.5px;color:var(--a-muted)}
+  .wf-armada .a-price b{color:#fff;font-weight:700}
+  .wf-armada .a-disc{font-family:Archivo,sans-serif;font-size:12.5px;color:#7E96A6;margin:30px 0 0;max-width:60em;line-height:1.55}
+  @media (max-width:900px){ .wf-armada .a-rail{grid-template-columns:repeat(3,1fr)} }
+  @media (max-width:760px){
+    .wf-armada{padding:54px 0}
+    .wf-armada .a-top{grid-template-columns:1fr;gap:30px;align-items:start}
+    .wf-armada .a-rail{grid-template-columns:repeat(2,1fr)}
+    .wf-armada .a-pick select{width:100%;min-width:0}
+    .wf-armada .a-spark{margin-left:0}
+  }
+  </style>
+
+  <div class="a-wrap">
     <div class="a-top">
       <div>
-        <p class="big">Armada</p>
-        <p class="kicker">Copy-trading signal for MetaTrader 5</p>
-        <p class="lead">One account, ten algorithms. I'm putting the first ten bots I build into a single signal, adding each one as it finishes validation. Your terminal mirrors every position it takes, scaled to your balance.</p>
+        <h2>Armada</h2>
+        <p class="a-kicker">Copy-trading signal for MetaTrader 5</p>
+        <p class="a-lead">One account, ten algorithms. I'm putting the first ten bots I build into a single signal, adding each one as it finishes validation. Your terminal mirrors every position it takes, scaled to your balance.</p>
       </div>
       <div>
-        <div class="hoist" id="hoist"></div>
-        <p class="hoist-note" id="hoist-note">Each bot sails under its own flag.</p>
+        <div class="a-hoist" id="wfa-hoist"></div>
+        <p class="a-note" id="wfa-note">Each bot sails under its own flag.</p>
       </div>
     </div>
 
-    <div class="rail">
-      <div><p class="t">Since inception</p><p class="v" id="r-total">—</p></div>
-      <div><p class="t">This month</p><p class="v" id="r-month">—</p></div>
-      <div><p class="t">Deepest drawdown</p><p class="v" id="r-dd">—</p></div>
-      <div><p class="t">Bots sailing</p><p class="v" id="r-fleet">—</p></div>
+    <div class="a-pick" id="wfa-pick" hidden>
+      <label for="wfa-scope">Results for</label>
+      <select id="wfa-scope"></select>
+      <span class="a-sub" id="wfa-sub"></span>
+      <span class="a-spark" id="wfa-spark"></span>
+    </div>
+
+    <div class="a-rail" id="wfa-rail">
+      <div><p class="t">Return</p><p class="v" id="wfa-ret">—</p><p class="s" id="wfa-ret-s">&nbsp;</p></div>
+      <div><p class="t">Profit factor</p><p class="v" id="wfa-pf">—</p><p class="s" id="wfa-pf-s">&nbsp;</p></div>
+      <div><p class="t">Hits</p><p class="v" id="wfa-hits">—</p><p class="s" id="wfa-hits-s">&nbsp;</p></div>
+      <div><p class="t">Max drawdown</p><p class="v" id="wfa-dd">—</p><p class="s" id="wfa-dd-s">&nbsp;</p></div>
+      <div><p class="t">Recovery factor</p><p class="v" id="wfa-rec">—</p><p class="s" id="wfa-rec-s">&nbsp;</p></div>
+      <div><p class="t">Sharpe ratio</p><p class="v" id="wfa-sh">—</p><p class="s" id="wfa-sh-s">&nbsp;</p></div>
+      <div><p class="t">Streaks</p><p class="v" id="wfa-str">—</p><p class="s" id="wfa-str-s">&nbsp;</p></div>
+      <div><p class="t">Expectancy</p><p class="v" id="wfa-exp">—</p><p class="s" id="wfa-exp-s">&nbsp;</p></div>
+      <div><p class="t">This month</p><p class="v" id="wfa-mtd">—</p><p class="s" id="wfa-mtd-s">&nbsp;</p></div>
+      <div><p class="t">Bots sailing</p><p class="v" id="wfa-fleet">—</p><p class="s" id="wfa-upd">&nbsp;</p></div>
     </div>
 
     <div class="a-foot">
-      <a class="cta" href="https://jsgaston.github.io/armada/">See the live record</a>
-      <a class="a-alt" href="https://jsgaston.github.io/armada/setup.html">Setup guide</a>
-      <span class="a-price">From <b>€59/month</b> · first 100 accounts · cancel anytime</span>
+      <a class="a-cta" id="wfa-cta" href="/armada/">See the full record</a>
+      <a class="a-alt" href="/armada/setup.html">Setup guide</a>
+      <span class="a-price">From <b>€59/month</b> for the first 100 accounts, cancel anytime</span>
     </div>
 
-    <p style="font-family:Archivo;font-size:12.5px;color:#7E96A6;margin:30px 0 0;max-width:56em;line-height:1.55">
-      Figures above are published automatically from the trading account every 15 minutes and stay blank until the account produces them. No return is promised or implied.
-    </p>
+    <p class="a-disc" id="wfa-disc">Figures above are published automatically from the trading account every 15 minutes and stay blank until the account produces them. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.</p>
   </div>
+
+  <script>
+  (function(){
+    var ARMADA_BASE = '/armada/';
+    var F={
+      A:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30L46 20l14 20H30z" fill="#14528C"/>',
+      B:'<path d="M0 0h60L46 20l14 20H0z" fill="#C8322A"/>',
+      C:'<path d="M0 0h60v8H0z" fill="#14528C"/><path d="M0 8h60v8H0z" fill="#fff"/><path d="M0 16h60v8H0z" fill="#C8322A"/><path d="M0 24h60v8H0z" fill="#fff"/><path d="M0 32h60v8H0z" fill="#14528C"/>',
+      D:'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M0 11h60v18H0z" fill="#14528C"/>',
+      E:'<path d="M0 0h60v20H0z" fill="#14528C"/><path d="M0 20h60v20H0z" fill="#C8322A"/>',
+      F:'<path d="M0 0h60v40H0z" fill="#fff"/><path d="M30 3 57 20 30 37 3 20z" fill="#C8322A"/>',
+      G:'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M10 0h10v40H10z" fill="#14528C"/><path d="M30 0h10v40H30z" fill="#14528C"/><path d="M50 0h10v40H50z" fill="#14528C"/>',
+      H:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30v40H30z" fill="#C8322A"/>',
+      I:'<path d="M0 0h60v40H0z" fill="#F2C230"/><circle cx="30" cy="20" r="11" fill="#101820"/>',
+      J:'<path d="M0 0h60v40H0z" fill="#14528C"/><path d="M0 13h60v14H0z" fill="#fff"/>'
+    };
+    var LETTERS='ABCDEFGHIJ'.split('');
+    function $(id){return document.getElementById(id);}
+    function flag(l){return F[l]?'<svg viewBox="0 0 60 40" role="img" aria-label="Signal flag '+l+'">'+F[l]+'</svg>':'';}
+    function nil(v){return v===null||v===undefined;}
+    function pct(n,d){d=d==null?1:d;return nil(n)?'—':(n>0?'+':(n<0?'−':''))+Math.abs(n).toFixed(d)+'%';}
+    function num(n){return nil(n)?'—':(n<0?'−':'')+Math.abs(n).toFixed(2);}
+    function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+    function set(id,txt,sign){var el=$(id);el.textContent=txt;el.classList.remove('pos','neg');if(sign>0)el.classList.add('pos');if(sign<0)el.classList.add('neg');}
+
+    function hoist(strats){
+      $('wfa-hoist').innerHTML=strats.map(function(s){return '<span class="'+(s.status==='live'?'':'dim')+'" title="'+esc(s.name)+'">'+flag(s.flag)+'</span>';}).join('');
+      var live=strats.filter(function(s){return s.status==='live';}).length;
+      $('wfa-note').textContent=live===0?'Ten flags, none flying yet.':'Flying: '+live+' of 10.';
+      $('wfa-fleet').textContent=live+' of 10';
+    }
+    hoist(LETTERS.map(function(l,i){return {flag:l,name:'Bot '+(i+1),status:'yard'};}));
+
+    function spark(sc){
+      var e=sc.equity||[]; if(e.length<2) return '';
+      var W=150,H=34,vs=e.map(function(p){return p.v;}),lo=Math.min.apply(null,vs.concat([100])),hi=Math.max.apply(null,vs.concat([100])),sp=hi-lo||1;
+      var d=e.map(function(p,i){return (i?'L':'M')+(i/(e.length-1)*W).toFixed(1)+' '+(H-2-(p.v-lo)/sp*(H-4)).toFixed(1);}).join('');
+      return '<svg width="'+W+'" height="'+H+'" aria-hidden="true"><path d="'+d+'" fill="none" stroke="'+(vs[vs.length-1]>=100?'#5FBF9E':'#F08A7B')+'" stroke-width="1.8"/></svg>';
+    }
+
+    function show(sc){
+      var R=sc.returns||{},K=sc.risk||{},T=sc.trades||{};
+      set('wfa-ret',pct(R.total_pct,2),R.total_pct); $('wfa-ret-s').textContent=nil(R.cagr_pct)?'since first trade':'annualised '+pct(R.cagr_pct);
+      set('wfa-pf',num(T.profit_factor),0); $('wfa-pf-s').textContent=nil(T.payoff_ratio)?'\u00a0':'payoff '+num(T.payoff_ratio);
+      set('wfa-hits',nil(T.win_rate_pct)?'—':T.win_rate_pct.toFixed(1)+'%',0); $('wfa-hits-s').textContent=nil(T.trades)?'\u00a0':T.trades+' closed trades';
+      set('wfa-dd',nil(K.max_drawdown_pct)?'—':(K.max_drawdown_pct>0?'−':'')+K.max_drawdown_pct.toFixed(2)+'%',0); $('wfa-dd-s').textContent=nil(K.current_drawdown_pct)?'\u00a0':(K.current_drawdown_pct>0?'now −'+K.current_drawdown_pct.toFixed(2)+'%':'at a new high');
+      set('wfa-rec',num(K.recovery_factor),0); $('wfa-rec-s').textContent=nil(K.longest_underwater_days)?'\u00a0':'longest under water '+K.longest_underwater_days+'d';
+      set('wfa-sh',num(K.sharpe),0); $('wfa-sh-s').textContent=nil(K.sortino)?'\u00a0':'Sortino '+num(K.sortino);
+      set('wfa-str',nil(T.max_consec_wins)?'—':T.max_consec_wins+' / '+T.max_consec_losses,0); $('wfa-str-s').textContent=nil(T.current_streak)?'\u00a0':'most won / lost, now '+(T.current_streak>0?T.current_streak+' won':Math.abs(T.current_streak)+' lost');
+      set('wfa-exp',pct(T.expectancy_pct,3),T.expectancy_pct); $('wfa-exp-s').textContent='per trade, % of balance';
+      set('wfa-mtd',pct(R.month_pct,2),R.month_pct); $('wfa-mtd-s').textContent=nil(R.best_month_pct)?'\u00a0':'best '+pct(R.best_month_pct)+', worst '+pct(R.worst_month_pct);
+      $('wfa-sub').textContent=sc.kind==='account'?'all bots together':(sc.magics?(sc.magics.length===1?'magic '+sc.magics[0]:'magics '+sc.magics.join(', ')):'')+(nil(R.share_of_profit_pct)?'':', '+R.share_of_profit_pct.toFixed(1)+'% of account profit');
+      $('wfa-spark').innerHTML=spark(sc);
+      $('wfa-cta').href=ARMADA_BASE+(sc.id==='all'?'':'#bot='+sc.id);
+      $('wfa-cta').textContent=sc.id==='all'?'See the full record':'Full record for '+sc.name;
+    }
+
+    fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
+      .then(function(r){return r.ok?r.json():null;})
+      .then(function(s){
+        if(!s) return;
+        if(s.strategies&&s.strategies.length===10) hoist(s.strategies);
+        if(s.account&&s.account.type==='demo') $('wfa-disc').textContent='Figures come from a demo account and are published automatically every 15 minutes. Demo execution is usually better than real-money execution. '+$('wfa-disc').textContent.replace(/^Figures above[^.]*\.\s*/,'');
+        if(s.updated_utc){var m=Math.round((Date.now()-new Date(s.updated_utc))/60000);$('wfa-upd').textContent='updated '+(m<60?m+' min ago':Math.round(m/60)+' h ago');}
+        var scopes=(s.scopes||[]).filter(function(x){return !x.empty;});
+        if(!scopes.length) return;
+        var sel=$('wfa-scope'), opt=function(sc){return '<option value="'+esc(sc.id)+'">'+esc(sc.name)+'</option>';};
+        var g=scopes.filter(function(x){return x.kind==='group';}), mg=scopes.filter(function(x){return x.kind==='magic';});
+        sel.innerHTML=scopes.filter(function(x){return x.kind==='account';}).map(opt).join('')+
+          (g.length?'<optgroup label="Bots and groups">'+g.map(opt).join('')+'</optgroup>':'')+
+          (mg.length?'<optgroup label="Magic numbers">'+mg.map(opt).join('')+'</optgroup>':'');
+        sel.onchange=function(){for(var i=0;i<scopes.length;i++) if(scopes[i].id===sel.value) show(scopes[i]);};
+        $('wfa-pick').hidden=false;
+        show(scopes[0]);
+      })
+      .catch(function(){});
+  })();
+  </script>
+</section>
+
+<!-- If your page doesn't already load them, add these two fonts in <head>:
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=Spectral:wght@300;400;600&display=swap" rel="stylesheet">
+-->
+
 </div>
 
 <section id="writing">
