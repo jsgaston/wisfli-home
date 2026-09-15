@@ -536,7 +536,7 @@ $('brandflag2').innerHTML=$('brandflag').innerHTML;
 function rng(seed){return function(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};}
 
 function artCandles(){
-  var el=$('art-candle'), W=600, H=420, r=rng(7), rows=7, labels=['M1','M5','M15','M30','H1','H4','D1'];
+  var el=$('art-candle'), W=600, H=420, r=rng(7), rows=7, labels=['M30','H1','H2','H4','H8','H12','D1'];
   var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
   var top=34, rowH=(H-80)/rows;
   for(var i=0;i<rows;i++){
@@ -783,6 +783,6 @@ fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
   })
   .catch(function(){});
 </script>
-  <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "9883292d5ecd43ee8afb16ec3d174805"}'></script><!-- End Cloudflare Web Analytics -->
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "9883292d5ecd43ee8afb16ec3d174805"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
