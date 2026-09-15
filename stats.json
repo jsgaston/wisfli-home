@@ -1,0 +1,122 @@
+{
+  "updated_utc": "2026-09-15T17:09:37Z",
+  "inception": "2026-09-13",
+  "verified_url": null,
+  "headline": {
+    "return_since_inception_pct": -0.01,
+    "month_to_date_pct": -0.01,
+    "max_drawdown_pct": 0.01
+  },
+  "metrics": {
+    "trades": 3,
+    "win_rate_pct": 66.7,
+    "profit_factor": 0.75,
+    "avg_hold_hours": 0.4,
+    "trades_per_week": 10.5,
+    "days_live": 2,
+    "best_month_pct": -0.01,
+    "worst_month_pct": -0.01
+  },
+  "equity": [
+    {
+      "d": "2026-09-13",
+      "v": 100.0
+    },
+    {
+      "d": "2026-09-14",
+      "v": 100.0
+    },
+    {
+      "d": "2026-09-15",
+      "v": 99.99
+    }
+  ],
+  "monthly": [
+    {
+      "m": "2026-09",
+      "r": -0.01
+    }
+  ],
+  "strategies": [
+    {
+      "flag": "A",
+      "name": "Alfa",
+      "symbols": "XAUUSD",
+      "style": "Mean reversion, multitimeframe",
+      "status": "yard",
+      "since": null
+    },
+    {
+      "flag": "B",
+      "name": "Bravo",
+      "symbols": "EURUSD, GBPUSD, USDCAD, USDCHF, USDJPY",
+      "style": "Regime filter, HMM",
+      "status": "yard",
+      "since": null
+    },
+    {
+      "flag": "C",
+      "name": "Charlie",
+      "symbols": "XAUUSD",
+      "style": "Breakout continuation",
+      "status": "yard",
+      "since": null
+    },
+    {
+      "flag": "D",
+      "name": "Delta",
+      "symbols": "USDJPY",
+      "style": "Stochastic and volume reversal",
+      "status": "yard",
+      "since": null
+    },
+    {
+      "flag": "E",
+      "name": "Echo",
+      "symbols": "US500, GER40",
+      "style": "Session open range",
+      "status": "yard",
+      "since": null
+    },
+    {
+      "flag": "F",
+      "name": "Foxtrot",
+      "symbols": "EURUSD, USDCHF",
+      "style": "Trend following, H4",
+      "status": "yard",
+      "since": null
+    },
+    {
+      "flag": "G",
+      "name": "Golf",
+      "symbols": "AUDUSD, NZDUSD",
+      "style": "Pair divergence",
+      "status": "yard",
+      "since": null
+    },
+    {
+      "flag": "H",
+      "name": "Hotel",
+      "symbols": "XAUUSD",
+      "style": "Volatility contraction",
+      "status": "yard",
+      "since": null
+    },
+    {
+      "flag": "I",
+      "name": "India",
+      "symbols": "GBPJPY",
+      "style": "Momentum, M30",
+      "status": "yard",
+      "since": null
+    },
+    {
+      "flag": "J",
+      "name": "Juliett",
+      "symbols": "Portfolio overlay",
+      "style": "Exposure and correlation brake",
+      "status": "yard",
+      "since": null
+    }
+  ]
+}
