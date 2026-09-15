@@ -196,7 +196,7 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap;margin-top:6px}
   </div>
 </section>
 
-<div class="armada" id="armada">
+<div id="armada">
   <!-- ================================================================
      ARMADA — section for wisfli.com
      Paste anywhere in the page body. Everything is scoped to .wf-armada
@@ -297,8 +297,8 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap;margin-top:6px}
     </div>
 
     <div class="a-foot">
-      <a class="a-cta" id="wfa-cta" href="/armada/">See the full record</a>
-      <a class="a-alt" href="/armada/setup.html">Setup guide</a>
+      <a class="a-cta" id="wfa-cta" href="https://jsgaston.github.io/armada/">See the full record</a>
+      <a class="a-alt" href="https://jsgaston.github.io/armada/setup.html">Setup guide</a>
       <span class="a-price">From <b>€59/month</b> for the first 100 accounts, cancel anytime</span>
     </div>
 
@@ -307,7 +307,7 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap;margin-top:6px}
 
   <script>
   (function(){
-    var ARMADA_BASE = '/armada/';
+    var ARMADA_BASE = 'https://jsgaston.github.io/armada/';
     var F={
       A:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30L46 20l14 20H30z" fill="#14528C"/>',
       B:'<path d="M0 0h60L46 20l14 20H0z" fill="#C8322A"/>',
@@ -455,49 +455,6 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap;margin-top:6px}
 
 <script>
 document.getElementById('yr').textContent = new Date().getFullYear();
-
-/* international code of signals, A–J */
-var F={
-  A:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30L46 20l14 20H30z" fill="#14528C"/>',
-  B:'<path d="M0 0h60L46 20l14 20H0z" fill="#C8322A"/>',
-  C:'<path d="M0 0h60v8H0z" fill="#14528C"/><path d="M0 8h60v8H0z" fill="#fff"/><path d="M0 16h60v8H0z" fill="#C8322A"/><path d="M0 24h60v8H0z" fill="#fff"/><path d="M0 32h60v8H0z" fill="#14528C"/>',
-  D:'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M0 11h60v18H0z" fill="#14528C"/>',
-  E:'<path d="M0 0h60v20H0z" fill="#14528C"/><path d="M0 20h60v20H0z" fill="#C8322A"/>',
-  F:'<path d="M0 0h60v40H0z" fill="#fff"/><path d="M30 3 57 20 30 37 3 20z" fill="#C8322A"/>',
-  G:'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M10 0h10v40H10z" fill="#14528C"/><path d="M30 0h10v40H30z" fill="#14528C"/><path d="M50 0h10v40H50z" fill="#14528C"/>',
-  H:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30v40H30z" fill="#C8322A"/>',
-  I:'<path d="M0 0h60v40H0z" fill="#F2C230"/><circle cx="30" cy="20" r="11" fill="#101820"/>',
-  J:'<path d="M0 0h60v40H0z" fill="#14528C"/><path d="M0 13h60v14H0z" fill="#fff"/>'
-};
-var LETTERS='ABCDEFGHIJ'.split('');
-function flag(l){return '<svg viewBox="0 0 60 40" role="img" aria-label="Signal flag '+l+'">'+F[l]+'</svg>';}
-function pct(n){return (n>0?'+':'')+n.toFixed(1)+'%';}
-
-function render(strats){
-  document.getElementById('hoist').innerHTML = strats.map(function(s){
-    return '<span class="'+(s.status==='live'?'':'dim')+'" title="'+s.name+'">'+flag(s.flag)+'</span>';
-  }).join('');
-  var live=strats.filter(function(s){return s.status==='live';}).length;
-  document.getElementById('hoist-note').textContent =
-    live===0 ? 'Ten flags, none flying yet.' : 'Flying: '+live+' of 10.';
-  document.getElementById('r-fleet').textContent = live+' of 10';
-}
-render(LETTERS.map(function(l,i){return {flag:l,name:'Bot '+(i+1),status:'yard'};}));
-
-fetch('/armada/stats.json?t='+Date.now(),{cache:'no-store'})
-  .then(function(r){return r.ok?r.json():null;})
-  .then(function(s){
-    if(!s) return;
-    if(s.strategies && s.strategies.length===10) render(s.strategies);
-    var h=s.headline||{};
-    function set(id,val,pos){
-      var el=document.getElementById(id); el.textContent=val; if(pos) el.classList.add('pos');
-    }
-    if(h.return_since_inception_pct!=null) set('r-total',pct(h.return_since_inception_pct),h.return_since_inception_pct>0);
-    if(h.month_to_date_pct!=null) set('r-month',pct(h.month_to_date_pct),h.month_to_date_pct>0);
-    if(h.max_drawdown_pct!=null) set('r-dd','−'+Math.abs(h.max_drawdown_pct).toFixed(1)+'%');
-  })
-  .catch(function(){});
 </script>
 </body>
 </html>
