@@ -297,20 +297,6 @@ footer .legal p{margin:0 0 8px;max-width:70em}
   *{animation:none!important;transition:none!important}
   .draw{stroke-dashoffset:0}.fade{opacity:1}
 }
-
-/* ================= Enhanced performance charts ================= */
-.performance-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;margin-top:28px}
-.perf-card{background:rgba(10,33,48,.55);border:1px solid var(--drule-2);padding:0;min-height:250px;position:relative}
-.perf-card.wide{grid-row:span 2}
-.perf-card h3{margin:0;padding:16px 18px 0;font:700 14px Archivo;color:#fff;letter-spacing:.01em}
-.perf-card .perf-sub{padding:3px 18px 0;font:500 11.5px Archivo;color:var(--dmuted)}
-.perf-chart{height:240px;padding:6px 10px 10px}
-.perf-card.wide .perf-chart{height:500px}
-.perf-chart svg{display:block;width:100%;height:100%}
-.perf-legend{display:flex;gap:14px;flex-wrap:wrap;padding:0 18px 14px;font:500 11.5px Archivo;color:var(--dmuted)}
-.perf-legend i{display:inline-block;width:18px;height:2px;vertical-align:middle;margin-right:5px;background:currentColor}
-@media(max-width:900px){.performance-grid{grid-template-columns:1fr}.perf-card.wide{grid-row:auto}.perf-card.wide .perf-chart{height:330px}}
-
 </style>
 </head>
 <body>
@@ -455,11 +441,6 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <div class="months" id="a-months" aria-label="Last 12 months"></div>
       </div>
       <dl class="figs" id="a-figs"></dl>
-    </div>
-    <div class="performance-grid" id="a-performance-grid" hidden>
-      <article class="perf-card wide"><h3>Growth curve</h3><div class="perf-sub">Published equity observations, rebased to 100 at the selected record start.</div><div class="perf-chart" id="a-perf-equity"></div></article>
-      <article class="perf-card"><h3>Drawdown</h3><div class="perf-sub">Distance from the running high.</div><div class="perf-chart" id="a-perf-dd"></div></article>
-      <article class="perf-card"><h3>Monthly return</h3><div class="perf-sub">Closed-trade result by month when available.</div><div class="perf-chart" id="a-perf-month"></div></article>
     </div>
 
     <div class="a-cta">
@@ -758,6 +739,31 @@ function hoist(strats){
 }
 hoist(LETTERS.map(function(l,i){return {flag:l,name:'Bot '+(i+1),status:'yard'};}));
 
+/* monotone cubic curve: smooth, but never invents a peak the data doesn't have */
+function smoothPath(P){
+  var n=P.length; if(!n) return '';
+  if(n<3) return P.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1);}).join('');
+  var dx=[],dy=[],m=[],t=[],i;
+  for(i=0;i<n-1;i++){ dx[i]=(P[i+1][0]-P[i][0])||1e-6; dy[i]=P[i+1][1]-P[i][1]; m[i]=dy[i]/dx[i]; }
+  t[0]=m[0]; t[n-1]=m[n-2];
+  for(i=1;i<n-1;i++) t[i]= m[i-1]*m[i]<=0 ? 0 : 3*(dx[i-1]+dx[i])/((2*dx[i]+dx[i-1])/m[i-1]+(dx[i]+2*dx[i-1])/m[i]);
+  var d='M'+P[0][0].toFixed(1)+' '+P[0][1].toFixed(1);
+  for(i=0;i<n-1;i++){ var h=dx[i]/3;
+    d+='C'+(P[i][0]+h).toFixed(1)+' '+(P[i][1]+t[i]*h).toFixed(1)+' '+(P[i+1][0]-h).toFixed(1)+' '+(P[i+1][1]-t[i+1]*h).toFixed(1)+' '+P[i+1][0].toFixed(1)+' '+P[i+1][1].toFixed(1); }
+  return d;
+}
+/* trade-by-trade curve while the record is young, daily curve once it has history */
+function curveSeries(sc){
+  var eq=sc.equity||[], tl=sc.tl;
+  if(tl && tl.t && tl.t.length>=2 && eq.length<60){
+    var pts=[{d:eq.length?eq[0].d:new Date(tl.t[0]*1000).toISOString().slice(0,10),v:100,p:0,dd:0,t:null}], v=100, p=0, pk=100;
+    for(var i=0;i<tl.t.length;i++){ v*=1+tl.r[i]/100; if(tl.p) p+=tl.p[i]; pk=Math.max(pk,v);
+      pts.push({d:new Date(tl.t[i]*1000).toISOString().slice(0,10), t:tl.t[i]*1000, v:v, p:tl.p?p:null, dd:(v/pk-1)*100, r:tl.r[i], n:i+1}); }
+    pts.byTrade=true; return pts;
+  }
+  var out=eq.slice(); if(out.length===1) out=[{d:out[0].d,v:100,dd:0},out[0]]; return out;
+}
+
 function lineChart(eq, W, H, opts){
   var PL=opts.pl||0, PR=opts.pr||0, PT=opts.pt||10, PB=opts.pb||10;
   var vs=eq.map(function(p){return p.v;});
@@ -765,9 +771,9 @@ function lineChart(eq, W, H, opts){
   var pad=(hi-lo)*.12||1; lo-=pad; hi+=pad;
   var n=eq.length-1||1;
   var X=function(i){return PL+i/n*(W-PL-PR);}, Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
-  var d=eq.map(function(p,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(p.v).toFixed(1);}).join('');
+  var d=smoothPath(eq.map(function(p,i){return [X(i),Y(p.v)];}));
   var len=0; for(var i=1;i<eq.length;i++){ var dx=X(i)-X(i-1), dy=Y(eq[i].v)-Y(eq[i-1].v); len+=Math.sqrt(dx*dx+dy*dy); }
-  return {d:d, area:d+'L'+X(n).toFixed(1)+' '+(H-PB)+'L'+X(0).toFixed(1)+' '+(H-PB)+'Z', X:X, Y:Y, lo:lo, hi:hi, len:Math.ceil(len)+10, up:vs[vs.length-1]>=100};
+  return {d:d, area:d+'L'+X(n).toFixed(1)+' '+(H-PB)+'L'+X(0).toFixed(1)+' '+(H-PB)+'Z', X:X, Y:Y, lo:lo, hi:hi, len:Math.ceil(len*1.15)+20, up:vs[vs.length-1]>=100};
 }
 
 function drawHero(sc, s){
@@ -779,8 +785,7 @@ function drawHero(sc, s){
   $('h-hits').textContent=upct(T.win_rate_pct);
   $('h-dd').textContent=dd(K.max_drawdown_pct);
   $('h-trades').textContent=nil(T.trades)?'—':T.trades;
-  var eq=sc.equity||[];
-  if(eq.length===1) eq=[{d:eq[0].d,v:100},eq[0]];
+  var eq=curveSeries(sc);
   if(eq.length>=2){
     var box=$('h-chart'), W=Math.max(300,box.clientWidth||520), H=170;
     var c=lineChart(eq,W,H,{pt:14,pb:6});
@@ -809,26 +814,6 @@ function chips(){
   Array.prototype.forEach.call($('a-chips').querySelectorAll('.chip'),function(b){
     b.addEventListener('click',function(){ select(b.dataset.id); });
   });
-}
-
-
-function simpleSeriesSVG(vals,W,H,color,zero){
-  if(!vals.length) return '<div style="font:500 12px Archivo;color:#8DA4B4;padding:28px">No published observations yet.</div>';
-  var PL=12,PR=42,PT=14,PB=24,lo=Math.min.apply(null,vals.concat([zero])),hi=Math.max.apply(null,vals.concat([zero])),pad=(hi-lo)*.12||.5;lo-=pad;hi+=pad;
-  var n=vals.length-1||1,X=i=>PL+i/n*(W-PL-PR),Y=v=>PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);
-  var d=vals.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join('');
-  var z=Y(zero);
-  return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><line x1="'+PL+'" x2="'+(W-PR)+'" y1="'+z.toFixed(1)+'" y2="'+z.toFixed(1)+'" stroke="rgba(214,230,240,.18)" stroke-dasharray="3 4"/><path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><text x="'+(W-PR+5)+'" y="'+(Y(hi)+4)+'" font-family="Archivo" font-size="10" fill="#8DA4B4">'+pct(hi,1)+'</text><text x="'+(W-PR+5)+'" y="'+(Y(lo)+4)+'" font-family="Archivo" font-size="10" fill="#8DA4B4">'+pct(lo,1)+'</text></svg>';
-}
-function renderWisfliExtraCharts(sc){
-  var grid=$('a-performance-grid'); if(!grid) return;
-  var eq=normEquity(sc.equity||[],ACC.starting_balance);deriveDD(eq);
-  if(eq.length<1){grid.hidden=true;return;} grid.hidden=false;
-  var ebox=$('a-perf-equity'),W=Math.max(360,ebox.clientWidth||700),H=470;
-  ebox.innerHTML=perfChartSVG(eq,W,H,true);
-  var dd=(eq.map(p=>finiteNum(p.dd)?p.dd:0)); $('a-perf-dd').innerHTML=simpleSeriesSVG(dd,Math.max(260,$('a-perf-dd').clientWidth||340),220,'#E8715F',0);
-  var mon=(sc.monthly||[]).slice(); var mv=mon.map(x=>Number(x.r)).filter(Number.isFinite);
-  $('a-perf-month').innerHTML=simpleSeriesSVG(mv,Math.max(260,$('a-perf-month').clientWidth||340),220,'#45C29A',0);
 }
 
 function select(id){
@@ -866,13 +851,11 @@ function select(id){
 
   drawBoardChart(sc);
   drawMonths(sc);
-  renderWisfliExtraCharts(sc);
 }
 
 function drawBoardChart(sc){
-  var box=$('a-chart'), eq=(sc.equity||[]).slice();
+  var box=$('a-chart'), eq=curveSeries(sc);
   if(!eq.length){ box.innerHTML='<div class="empty"><b>No closed trades yet.</b><span>This bot\'s record starts with its first closed trade.</span></div>'; return; }
-  if(eq.length===1) eq=[{d:eq[0].d,v:100,dd:0},eq[0]];
   var W=Math.max(300,box.clientWidth||700), H=W<560?250:320, PR=W<560?52:62, DDH=56;
   var c=lineChart(eq,W,H-DDH,{pl:22,pr:PR,pt:22,pb:24});
   var col=c.up?'#45C29A':'#E8715F';
@@ -883,14 +866,24 @@ function drawBoardChart(sc){
       '<text x="'+(W-PR+8)+'" y="'+(y+4).toFixed(1)+'" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+pct(v-100,1)+'</text>';
   }
   var xl='', last='', lastX=-99;
-  eq.forEach(function(p,i){ var m=p.d.slice(0,7); if(m!==last){ last=m; var x=c.X(i); if(x-lastX>50 && x<W-PR-16){ xl+='<text x="'+x.toFixed(1)+'" y="'+(H-DDH-6)+'" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+MONTHS[+m.slice(5)-1]+'</text>'; lastX=x; } } });
+  if(eq.byTrade || eq.length<45){
+    var nl=W<560?3:5, seen={};
+    for(var k=0;k<=nl;k++){ var ii=Math.round(k/nl*(eq.length-1)), lab=fdate(eq[ii].d).replace(/ \d{4}$/,'');
+      if(eq.byTrade && ii>0) lab='#'+eq[ii].n+'  '+lab;
+      if(seen[lab]) continue; seen[lab]=1;
+      xl+='<text x="'+Math.min(Math.max(c.X(ii),40),W-PR-40).toFixed(1)+'" y="'+(H-DDH-6)+'" text-anchor="middle" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+lab+'</text>'; }
+  } else {
+    eq.forEach(function(p,i){ var m=p.d.slice(0,7); if(m!==last){ last=m; var x=c.X(i); if(x-lastX>50 && x<W-PR-16){ xl+='<text x="'+x.toFixed(1)+'" y="'+(H-DDH-6)+'" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+MONTHS[+m.slice(5)-1]+'</text>'; lastX=x; } } });
+  }
+  var dots='';
+  if(eq.byTrade && eq.length<=60) eq.forEach(function(p,i){ if(p.r==null) return; dots+='<circle cx="'+c.X(i).toFixed(1)+'" cy="'+c.Y(p.v).toFixed(1)+'" r="3.2" fill="'+(p.r>=0?'#45C29A':'#E8715F')+'" stroke="#06141F" stroke-width="1.5"/>'; });
   var dmin=Math.min.apply(null,eq.map(function(p){return p.dd||0;}).concat([-0.5]))*1.1;
   var DY=function(v){return H-DDH+6+(v/dmin)*(DDH-12);};
-  var dpath='M'+c.X(0).toFixed(1)+' '+DY(0)+eq.map(function(p,i){return 'L'+c.X(i).toFixed(1)+' '+DY(p.dd||0).toFixed(1);}).join('')+'L'+c.X(eq.length-1).toFixed(1)+' '+DY(0)+'Z';
+  var dpath=smoothPath(eq.map(function(p,i){return [c.X(i),DY(p.dd||0)];}))+'L'+c.X(eq.length-1).toFixed(1)+' '+DY(0)+'L'+c.X(0).toFixed(1)+' '+DY(0)+'Z';
   box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="Growth and drawdown curve">'+
     '<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+col+'" stop-opacity=".25"/><stop offset="1" stop-color="'+col+'" stop-opacity="0"/></linearGradient></defs>'+
     ticks+'<line x1="22" x2="'+(W-PR)+'" y1="'+c.Y(100).toFixed(1)+'" y2="'+c.Y(100).toFixed(1)+'" stroke="rgba(214,230,240,.3)" stroke-dasharray="3 4"/>'+
-    '<path d="'+c.area+'" fill="url(#bg)"/><path d="'+c.d+'" fill="none" stroke="'+col+'" stroke-width="2.2" stroke-linejoin="round"/>'+xl+
+    '<path d="'+c.area+'" fill="url(#bg)"/><path d="'+c.d+'" fill="none" stroke="'+col+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>'+dots+xl+
     '<line x1="22" x2="'+(W-PR)+'" y1="'+DY(0)+'" y2="'+DY(0)+'" stroke="rgba(214,230,240,.15)"/>'+
     '<path d="'+dpath+'" fill="rgba(232,113,95,.3)" stroke="#E8715F" stroke-width="1"/>'+
     '<text x="'+(W-PR+8)+'" y="'+(DY(dmin/1.1)+4).toFixed(1)+'" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+pct(dmin/1.1,1)+'</text>'+
@@ -903,7 +896,7 @@ function drawBoardChart(sc){
     var p=eq[i], x=c.X(i);
     bx.setAttribute('x1',x); bx.setAttribute('x2',x); bx.setAttribute('opacity','.25');
     dot.setAttribute('cx',x); dot.setAttribute('cy',c.Y(p.v)); dot.setAttribute('opacity','1');
-    ro.hidden=false; ro.innerHTML=fdate(p.d)+' &nbsp;<b>'+pct(p.v-100)+'</b>'+(!nil(p.p)&&ACC.publish_money?' &nbsp;'+money(p.p,true):'')+(p.dd<0?' &nbsp;DD '+pct(p.dd):'');
+    ro.hidden=false; ro.innerHTML=(p.n?'Trade #'+p.n+' &nbsp;':'')+fdate(p.d)+(p.r!=null?' &nbsp;<b style="color:'+(p.r>=0?'#45C29A':'#E8715F')+'">'+pct(p.r,3)+'</b>':'')+' &nbsp;growth <b>'+pct(p.v-100)+'</b>'+(!nil(p.p)&&ACC.publish_money?' &nbsp;'+money(p.p,true):'')+(p.dd<0?' &nbsp;DD '+pct(p.dd):'');
   });
   svg.addEventListener('pointerleave',function(){ bx.setAttribute('opacity','0'); dot.setAttribute('opacity','0'); ro.hidden=true; });
 }
@@ -922,108 +915,7 @@ function drawMonths(sc){
   $('a-months').innerHTML=cells.join('');
 }
 
-
-/* ---------- enhanced Armada data/chart adapter ---------- */
-function finiteNum(v){ return v!==null && v!==undefined && Number.isFinite(Number(v)); }
-function normEquity(raw, starting){
-  if(!Array.isArray(raw)) return [];
-  var sb=finiteNum(starting)?Number(starting):null, rows=[];
-  raw.forEach(function(p){
-    if(!p) return;
-    var d=p.d||p.date||p.day||p.time; if(!d) return;
-    var v=finiteNum(p.v)?Number(p.v):null;
-    var b=finiteNum(p.b)?Number(p.b):(finiteNum(p.balance)?Number(p.balance):(finiteNum(p.equity)?Number(p.equity):null));
-    var profit=finiteNum(p.p)?Number(p.p):(finiteNum(p.profit)?Number(p.profit):null);
-    rows.push({d:String(d).slice(0,10),rawv:v,b:b,p:profit,dd:finiteNum(p.dd)?Number(p.dd):null});
-  });
-  rows.sort(function(x,y){return x.d.localeCompare(y.d);});
-  if(!rows.length) return [];
-
-  /* v can be a daily signed return or an already normalised 100-based level. */
-  var vs=rows.map(function(r){return r.rawv;}).filter(function(x){return finiteNum(x);});
-  var hasNear100=vs.some(function(x){return x>=80 && x<=120;});
-  var looksDailyReturn=vs.length>0 && !hasNear100 && vs.every(function(x){return Math.abs(x)<=50;});
-  var out=[];
-
-  if(looksDailyReturn){
-    var idx=100;
-    rows.forEach(function(r){
-      var level=null;
-      if(finiteNum(r.b) && sb!==null && sb!==0) level=r.b/sb*100;
-      else if(finiteNum(r.rawv)){
-        /* -x% is represented as 100-x% on the first day, then compounded. */
-        idx*=1+r.rawv/100;
-        level=idx;
-      }else if(finiteNum(r.p) && sb!==null && sb!==0) level=100+r.p/sb*100;
-      if(finiteNum(level)) out.push({d:r.d,v:level,b:r.b,p:r.p,dd:r.dd});
-    });
-  }else{
-    rows.forEach(function(r){
-      var level=null;
-      if(finiteNum(r.b) && sb!==null && sb!==0) level=r.b/sb*100;
-      else if(finiteNum(r.rawv)){
-        var x=r.rawv;
-        if(x>=80 && x<=120) level=x;
-        else if(Math.abs(x)<=50) level=100+x;
-        else if(sb!==null && sb!==0) level=x/sb*100;
-      }
-      if(level===null && finiteNum(r.p) && sb!==null && sb!==0) level=100+r.p/sb*100;
-      if(finiteNum(level)) out.push({d:r.d,v:level,b:r.b,p:r.p,dd:r.dd});
-    });
-  }
-  return out;
-}
-function deriveDD(eq){
-  var peak=-Infinity;
-  eq.forEach(function(p){peak=Math.max(peak,p.v); if(!finiteNum(p.dd)) p.dd=(p.v/peak-1)*100;});
-}
-function pathSmooth(points,X,Y){
-  if(points.length<3) return points.map(function(p,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(p.v).toFixed(1);}).join('');
-  var d='M'+X(0).toFixed(1)+' '+Y(points[0].v).toFixed(1);
-  for(var i=1;i<points.length;i++){
-    var p0=points[i-1], p1=points[i];
-    var xm=(X(i-1)+X(i))/2;
-    d+=' C'+xm.toFixed(1)+' '+Y(p0.v).toFixed(1)+' '+xm.toFixed(1)+' '+Y(p1.v).toFixed(1)+' '+X(i).toFixed(1)+' '+Y(p1.v).toFixed(1);
-  }
-  return d;
-}
-function perfChartSVG(eq, W, H, dark){
-  if(!eq.length) return '';
-  var padL=dark?10:30,padR=dark?12:52,padT=16,padB=28;
-  var vals=eq.map(function(p){return p.v;}), lo=Math.min.apply(null,vals.concat([100])),hi=Math.max.apply(null,vals.concat([100]));
-  var span=hi-lo||1, pad=span*.10; lo-=pad;hi+=pad;
-  var n=eq.length-1||1, X=function(i){return padL+i/n*(W-padL-padR);},Y=function(v){return padT+(1-(v-lo)/(hi-lo))*(H-padT-padB);};
-  var col=vals[vals.length-1]>=100?(dark?'#45C29A':'#1E6B57'):(dark?'#E8715F':'#BE3A2B');
-  var line=pathSmooth(eq,X,Y), area=line+'L'+X(n).toFixed(1)+' '+(H-padB)+'L'+X(0).toFixed(1)+' '+(H-padB)+'Z';
-  var ticks='';
-  for(var i=0;i<5;i++){var v=lo+(hi-lo)*i/4; ticks+='<line x1="'+padL+'" x2="'+(W-padR)+'" y1="'+Y(v).toFixed(1)+'" y2="'+Y(v).toFixed(1)+'" stroke="'+(dark?'rgba(214,230,240,.08)':'rgba(15,44,66,.09)')+'"/><text x="'+(W-padR+6)+'" y="'+(Y(v)+4).toFixed(1)+'" font-family="Archivo" font-size="10.5" fill="'+(dark?'#8DA4B4':'#607487')+'">'+pct(v-100,1)+'</text>';}
-  return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="Equity curve">'+ticks+'<line x1="'+padL+'" x2="'+(W-padR)+'" y1="'+Y(100).toFixed(1)+'" y2="'+Y(100).toFixed(1)+'" stroke="'+(dark?'rgba(214,230,240,.25)':'rgba(15,44,66,.28)')+'" stroke-dasharray="4 4"/><path d="'+area+'" fill="'+col+'" opacity=".09"/><path class="eq-line" d="'+line+'" fill="none" stroke="'+col+'" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>';
-}
-function drawEnhancedWisfliArmada(sc){
-  var host=document.getElementById('a-chart'); if(!host) return;
-  var eq=normEquity(sc.equity||[], ACC.starting_balance); deriveDD(eq);
-  if(!eq.length){ return; }
-  var old=host.querySelector('.enhanced-note'); if(old) old.remove();
-  host.innerHTML=perfChartSVG(eq,Math.max(360,host.clientWidth||720),320,true)+'<div class="enhanced-note" style="font:500 11px Archivo;color:#8DA4B4;padding:0 18px 12px">Curve uses the published equity points; the line is visually interpolated between observations.</div>';
-}
-
 artCandles(); artRegime(); drawTools(); drawPosts();
-
-
-/* ---------- replace Armada mini-chart with higher-resolution curve ---------- */
-function drawBoardChart(sc){
-  var box=$('a-chart'), eq=normEquity(sc.equity||[], ACC.starting_balance);
-  deriveDD(eq);
-  if(!eq.length){ box.innerHTML='<div class="empty"><b>No closed trades yet.</b><span>This bot\'s record starts with its first closed trade.</span></div>'; return; }
-  var W=Math.max(320,box.clientWidth||720),H=W<560?270:360;
-  box.innerHTML=perfChartSVG(eq,W,H,true)+'<div class="readout" id="bro" hidden></div><div class="enhanced-note" style="font:500 11px Archivo;color:#8DA4B4;padding:0 22px 14px">Published observations: '+eq.length+' · visual interpolation only; no values are added to the record.</div>';
-  var svg=box.querySelector('svg'),ro=box.querySelector('#bro'),n=eq.length-1||1;
-  svg.addEventListener('pointermove',function(e){
-    var r=svg.getBoundingClientRect(),i=Math.round((e.clientX-r.left)/r.width*n);i=Math.max(0,Math.min(n,i));
-    var p=eq[i];ro.hidden=false;ro.innerHTML=fdate(p.d)+' &nbsp;<b>'+pct(p.v-100)+'</b>'+(finiteNum(p.p)&&ACC.publish_money?' &nbsp;'+money(p.p,true):'')+(p.dd<0?' &nbsp;DD '+pct(p.dd):'');
-  });
-  svg.addEventListener('pointerleave',function(){ro.hidden=true;});
-}
 
 fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
   .then(function(r){return r.ok?r.json():null;})
