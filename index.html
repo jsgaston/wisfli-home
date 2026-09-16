@@ -1,19 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wisfli — trading systems I build and run myself</title>
-<meta name="description" content="MetaTrader 5 Expert Advisors, a copy-trading signal with every statistic published, and notes on building them. Made in Alicante by one person who trades the same systems he sells.">
+<title>CandleGrid Pro — Candlestick Pattern Expert Advisor for MetaTrader 5</title>
+<meta name="description" content="An MT5 Expert Advisor that trades 14 candlestick patterns across seven timeframes in parallel. Hard stop loss on every entry, no grid, no martingale. Free to test in demo and in the Strategy Tester.">
+<link rel="canonical" href="https://www.wisfli.com/candlegrid">
 <meta name="theme-color" content="#06141F">
-<meta property="og:title" content="Wisfli — trading tools that show their work">
-<meta property="og:description" content="MetaTrader 5 Expert Advisors and Armada, a copy-trading signal that publishes every number it produces.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://wisfli.com/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'%3E%3Cpath d='M0 0h30v40H0z' fill='%23fff'/%3E%3Cpath d='M30 0h30L46 20l14 20H30z' fill='%2314528C'/%3E%3C/svg%3E">
+<meta property="og:type" content="product">
+<meta property="og:title" content="CandleGrid Pro — Expert Advisor for MetaTrader 5">
+<meta property="og:description" content="Fourteen candlestick patterns, seven timeframes, one robot. Every entry carries a hard stop. Test it free in demo before you buy.">
+<meta property="og:url" content="https://www.wisfli.com/candlegrid">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2306141F'/><rect x='9' y='7' width='4' height='18' fill='%2345C29A'/><rect x='19' y='11' width='4' height='14' fill='%23E0A92C'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
   --abyss:#06141F; --abyss-2:#0A2130; --sea:#0F2C42; --chart:#E4EAE8; --panel:#F7F9F8;
@@ -26,43 +28,30 @@
   --maxw:1200px;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:70px}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:74px}
 body{margin:0;background:var(--chart);color:var(--ink);font:400 17.5px/1.68 Spectral,Georgia,serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
-h1,h2,h3,h4,nav,button,select,.ui,table{font-family:Archivo,system-ui,sans-serif}
+h1,h2,h3,h4,nav,button,summary,table,.ui{font-family:Archivo,system-ui,sans-serif}
 a{color:inherit;text-underline-offset:3px;text-decoration-thickness:1px}
 :focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+img{max-width:100%;height:auto;display:block}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
-.pos{color:var(--up)} .neg{color:var(--down)}
-.dark .pos{color:var(--sig)} .dark .neg{color:var(--sig-down)}
 .skip{position:absolute;left:-999px;top:0;background:var(--brass);color:#1A1206;padding:8px 14px;font-family:Archivo;z-index:99}
 .skip:focus{left:12px;top:12px}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:.9em}
 
-/* ---------- nav ---------- */
-.top{position:sticky;top:0;z-index:50;background:rgba(6,20,31,.9);backdrop-filter:saturate(140%) blur(10px);-webkit-backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--drule)}
+/* nav */
+.top{position:sticky;top:0;z-index:50;background:rgba(6,20,31,.92);backdrop-filter:saturate(140%) blur(10px);-webkit-backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--drule)}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:20px}
-.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:#fff;font:700 16px Archivo;font-stretch:122%;letter-spacing:.09em}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:#fff;font:700 16px Archivo;font-stretch:122%;letter-spacing:.09em;white-space:nowrap}
 .brand svg{width:27px;height:18px;display:block}
-.top nav{display:flex;align-items:center;gap:28px;font-size:14.5px}
-.top nav a{text-decoration:none;color:var(--dmuted);font-weight:500}
+.brand .prod{font-stretch:100%;letter-spacing:0;font-weight:500;color:var(--dmuted)}
+.top nav{display:flex;align-items:center;gap:24px;font-size:14.5px}
+.top nav a{text-decoration:none;color:var(--dmuted);font-weight:500;white-space:nowrap}
 .top nav a:hover{color:#fff}
-.top nav a.pill{color:#1A1206;background:var(--brass);padding:8px 16px;font-weight:700}
-.top nav a.pill:hover{background:var(--brass-2);color:#1A1206}
+.top nav a.pill{color:#1A1206;background:var(--brass);padding:8px 18px;font-weight:700}
+.top nav a.pill:hover{background:var(--brass-2)}
 
-/* ---------- hero ---------- */
-.hero{position:relative;background:var(--abyss);color:var(--dtext);overflow:hidden;isolation:isolate}
-.hero::before{
-  content:"";position:absolute;inset:0;z-index:-1;opacity:.55;
-  background-image:linear-gradient(var(--drule) 1px,transparent 1px),linear-gradient(90deg,var(--drule) 1px,transparent 1px);
-  background-size:64px 64px;background-position:-1px -1px;
-  mask-image:radial-gradient(ellipse 90% 80% at 70% 40%,#000 25%,transparent 75%);
-  -webkit-mask-image:radial-gradient(ellipse 90% 80% at 70% 40%,#000 25%,transparent 75%);
-}
-.hero .wrap{display:grid;grid-template-columns:1.08fr .92fr;gap:64px;align-items:center;padding-top:96px;padding-bottom:104px}
-.hero .where{font:500 14px Archivo;color:var(--dmuted);margin:0 0 26px;display:flex;align-items:center;gap:10px}
-.hero .where i{display:block;width:26px;height:1px;background:var(--brass)}
-.hero h1{margin:0 0 28px;color:#fff;font-weight:800;font-stretch:112%;font-size:clamp(46px,6.4vw,90px);line-height:.96;letter-spacing:-.025em}
-.hero .lede{font-size:21px;line-height:1.55;color:#BCCDD8;max-width:30em;margin:0 0 40px;font-weight:300}
-.actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+/* buttons */
 .btn{display:inline-flex;align-items:center;gap:10px;font:700 16px Archivo;text-decoration:none;padding:15px 26px;border:1px solid transparent;cursor:pointer;transition:background .15s,border-color .15s}
 .btn.brass{background:var(--brass);color:#1A1206}
 .btn.brass:hover{background:var(--brass-2)}
@@ -72,36 +61,48 @@ a{color:inherit;text-underline-offset:3px;text-decoration-thickness:1px}
 .btn.ink:hover{background:#17405E}
 .btn.ghost{color:var(--ink);border-color:var(--rule-2)}
 .btn.ghost:hover{border-color:var(--ink)}
+.actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.aside{font:500 13.5px Archivo;color:var(--dmuted)}
 
-/* live instrument */
+/* hero */
+.hero{position:relative;background:var(--abyss);color:var(--dtext);overflow:hidden;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.55;
+  background-image:linear-gradient(var(--drule) 1px,transparent 1px),linear-gradient(90deg,var(--drule) 1px,transparent 1px);
+  background-size:64px 64px;background-position:-1px -1px;
+  mask-image:radial-gradient(ellipse 90% 80% at 70% 40%,#000 25%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 80% at 70% 40%,#000 25%,transparent 75%)}
+.hero > .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;padding-top:92px;padding-bottom:100px}
+.where{font:500 14px Archivo;color:var(--dmuted);margin:0 0 26px;display:flex;align-items:center;gap:10px}
+.where i{display:block;width:26px;height:1px;background:var(--brass);flex:none}
+.hero h1{margin:0 0 28px;color:#fff;font-weight:800;font-stretch:110%;font-size:clamp(42px,5.6vw,80px);line-height:.98;letter-spacing:-.025em}
+.hero h1.long{font-size:clamp(34px,4.1vw,56px);line-height:1.04}
+.lede{font-size:20.5px;line-height:1.55;color:#BCCDD8;max-width:31em;margin:0 0 20px;font-weight:300}
+.lede + .actions,.lede:last-of-type{margin-bottom:38px}
+
 .instrument{background:linear-gradient(180deg,rgba(15,44,66,.72),rgba(10,33,48,.9));border:1px solid var(--drule-2);box-shadow:0 30px 80px -30px rgba(0,0,0,.7)}
 .instrument header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--drule)}
 .instrument header b{font:700 15px Archivo;color:#fff;font-stretch:112%;letter-spacing:.02em}
-.live{display:inline-flex;align-items:center;gap:8px;font:600 12.5px Archivo;color:var(--dmuted)}
-.live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sig);box-shadow:0 0 0 0 rgba(69,194,154,.6);animation:pulse 2.4s infinite}
-.live.off::before{background:var(--dmuted);animation:none}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(69,194,154,.55)}70%{box-shadow:0 0 0 9px rgba(69,194,154,0)}100%{box-shadow:0 0 0 0 rgba(69,194,154,0)}}
+.instrument header span{font:500 12.5px Archivo;color:var(--dmuted)}
 .badge{font:700 11px Archivo;letter-spacing:.04em;color:#1A1206;background:var(--brass);padding:2px 7px;margin-left:8px;vertical-align:2px}
 .inst-big{padding:22px 20px 0;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 .inst-big .num{font:800 54px/1 Archivo;font-stretch:108%;color:#fff;letter-spacing:-.02em}
 .inst-big .lab{font:500 13.5px Archivo;color:var(--dmuted)}
-.inst-chart{height:170px;padding:10px 0 0;position:relative}
+.inst-chart{height:180px;padding:10px 0 0}
 .inst-chart svg{display:block;width:100%;height:100%}
-.inst-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--drule)}
+.inst-fig{padding:18px 20px 6px}
+.inst-fig svg{display:block;width:100%;height:auto}
+.inst-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--drule);margin:0}
 .inst-grid div{padding:14px 16px 16px;border-right:1px solid var(--drule)}
 .inst-grid div:last-child{border-right:0}
 .inst-grid dt{font:500 12px Archivo;color:var(--dmuted);margin:0 0 3px}
-.inst-grid dd{font:700 19px Archivo;color:#fff;margin:0;white-space:nowrap}
-.inst-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;border-top:1px solid var(--drule);font:500 12.5px Archivo;color:var(--dmuted)}
-.inst-foot .flags{display:flex;gap:4px}
-.inst-foot .flags svg{width:24px;height:16px;display:block}
-.inst-foot .flags .dim{opacity:.25}
+.inst-grid dd{font:700 20px Archivo;color:#fff;margin:0;white-space:nowrap}
+.inst-foot{padding:12px 20px;border-top:1px solid var(--drule);font:400 12.5px/1.5 Archivo;color:var(--dmuted);margin:0}
 .draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 1.8s .25s cubic-bezier(.6,.05,.25,1) forwards}
-.fade{opacity:0;animation:fadein .8s 1.6s forwards}
+.fade{opacity:0;animation:fadein .8s 1.5s forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes fadein{to{opacity:1}}
 
-/* ---------- principles ---------- */
+/* principles strip */
 .principles{background:var(--abyss-2);color:var(--dtext);border-top:1px solid var(--drule)}
 .principles .wrap{display:grid;grid-template-columns:repeat(3,1fr)}
 .principles div{padding:34px 34px 36px 0;margin-right:34px;border-right:1px solid var(--drule)}
@@ -109,139 +110,127 @@ a{color:inherit;text-underline-offset:3px;text-decoration-thickness:1px}
 .principles h3{margin:0 0 6px;font-size:18px;font-weight:700;color:#fff;font-stretch:106%}
 .principles p{margin:0;font-size:15.5px;color:var(--dmuted);line-height:1.6}
 
-/* ---------- sections ---------- */
-section{padding:112px 0}
-.head{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;margin-bottom:56px}
-h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-stretch:110%;letter-spacing:-.02em}
-.head p{margin:0;color:var(--ink-2);font-size:18px;max-width:34em}
+/* sections */
+section{padding:108px 0}
+section.panel{background:var(--panel);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+section.dark{background:var(--abyss);color:var(--dtext)}
+.head{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;margin-bottom:54px}
+.head.solo{grid-template-columns:1fr;max-width:52em}
+h2{margin:0;font-size:clamp(34px,4.3vw,58px);line-height:1.02;font-weight:800;font-stretch:108%;letter-spacing:-.02em}
+.head p{margin:0;color:var(--ink-2);font-size:18px;max-width:36em}
+.dark h2,.dark h3{color:#fff}
+.dark .head p,.dark p{color:#B4C6D2}
+h3{font-size:20px;line-height:1.25;margin:0 0 8px;font-weight:700}
+.prose p{max-width:40em;margin:0 0 18px}
+.prose p:last-child{margin-bottom:0}
+.dark a{color:#fff}
 
-/* ---------- products ---------- */
-.product{display:grid;grid-template-columns:1fr 1.05fr;background:var(--panel);border:1px solid var(--rule)}
-.product + .product{margin-top:28px}
-.product .art{background:var(--sea);position:relative;min-height:420px;border-right:1px solid var(--rule)}
-.product .art svg{position:absolute;inset:0;width:100%;height:100%;display:block}
-.product .art figcaption{position:absolute;left:20px;bottom:16px;font:500 12.5px Archivo;color:var(--dmuted)}
-.product .body{padding:44px 44px 40px;display:flex;flex-direction:column}
-.status{display:inline-flex;align-items:center;gap:8px;font:600 13px Archivo;color:var(--up);margin:0 0 14px}
-.status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--up)}
-.product h3{margin:0 0 14px;font-size:38px;line-height:1;font-weight:800;font-stretch:108%;letter-spacing:-.015em}
-.product p.desc{margin:0 0 24px;color:var(--ink-2);font-size:17px}
-.specs{width:100%;border-collapse:collapse;font-size:14.5px;margin:0 0 30px}
-.specs th{text-align:left;font-weight:500;color:var(--muted);padding:9px 16px 9px 0;border-top:1px solid var(--rule);width:36%;vertical-align:top}
-.specs td{padding:9px 0;border-top:1px solid var(--rule);font-weight:600}
-.inarmada{display:flex;align-items:center;gap:12px;font:500 14px/1.5 Archivo;color:var(--ink-2);background:var(--chart);border-left:3px solid var(--brass);padding:11px 14px;margin:-12px 0 28px}
-.inarmada svg{width:27px;height:18px;flex:none;display:block;box-shadow:0 1px 0 rgba(15,44,66,.25)}
-.inarmada b{color:var(--ink);font-weight:700}
-.inarmada a{color:var(--ink);font-weight:600}
-.inarmada .pos{color:var(--up)} .inarmada .neg{color:var(--down)}
-.buy{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--rule-2)}
-.price{font:800 44px/1 Archivo;font-stretch:106%;letter-spacing:-.02em}
-.price small{display:block;font:500 14px Archivo;color:var(--muted);margin-top:6px;letter-spacing:0}
+/* features */
+.feat-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.art{margin:0;background:var(--sea);border:1px solid var(--rule);position:sticky;top:96px}
+.art svg{display:block;width:100%;height:auto}
+.art figcaption{padding:12px 18px;font:500 13px Archivo;color:var(--dmuted);border-top:1px solid var(--drule);background:var(--abyss-2)}
+.feats > div{padding:26px 0;border-top:1px solid var(--rule-2)}
+.feats > div:last-child{border-bottom:1px solid var(--rule-2)}
+.feats p{margin:0;color:var(--ink-2);font-size:16.5px}
+.cols-2{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:56px;border-top:1px solid var(--rule-2)}
+.cols-3 > div{padding:26px 28px 0 0;margin-right:28px;border-right:1px solid var(--rule)}
+.cols-3 > div:last-child{border-right:0;margin-right:0}
+.cols-3 p{margin:0;font-size:16px;color:var(--ink-2)}
+.dark .cols-3{border-color:var(--drule-2)}
+.dark .cols-3 > div{border-color:var(--drule)}
+.dark .cols-3 p{color:var(--dmuted)}
 
-/* ---------- armada ---------- */
-.armada{background:var(--abyss);color:var(--dtext);position:relative;overflow:hidden}
-.armada h2{color:#fff;font-size:clamp(64px,10vw,150px);line-height:.82;font-stretch:125%}
-.armada .head p{color:#B4C6D2}
-.armada .hoist{display:flex;gap:7px;flex-wrap:wrap;margin:22px 0 8px}
-.armada .hoist span{display:block;transition:transform .2s}
-.armada .hoist svg{width:46px;height:31px;display:block;box-shadow:0 2px 0 rgba(0,0,0,.35)}
-.armada .hoist .dim{opacity:.22}
-.armada .hoist-note{font:500 13.5px Archivo;color:var(--dmuted);margin:0}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 22px}
-.chip{display:inline-flex;align-items:center;gap:8px;font:600 14px Archivo;color:var(--dtext);background:transparent;border:1px solid var(--drule-2);padding:8px 14px;cursor:pointer}
-.chip svg{width:21px;height:14px;display:block}
-.chip small{font-weight:500;color:var(--dmuted)}
-.chip:hover{border-color:#fff}
-.chip[aria-pressed="true"]{background:#fff;color:var(--abyss);border-color:#fff}
-.chip[aria-pressed="true"] small{color:var(--muted)}
-.board{display:grid;grid-template-columns:1.55fr 1fr;border:1px solid var(--drule-2);background:rgba(15,44,66,.35)}
-.board .chart{border-right:1px solid var(--drule-2);position:relative;min-height:420px;display:flex;flex-direction:column}
-.chart-top{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;padding:20px 22px 0}
-.chart-top .name{font:700 20px Archivo;color:#fff;font-stretch:106%}
-.chart-top .meta{font:500 13px Archivo;color:var(--dmuted)}
-#a-chart{flex:1;min-height:300px;position:relative}
-#a-chart svg{display:block;width:100%}
-.readout{position:absolute;top:8px;right:22px;font:500 12.5px Archivo;color:var(--dmuted);background:rgba(6,20,31,.85);padding:4px 9px;pointer-events:none}
-.readout b{color:#fff}
-.months{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;padding:0 22px 22px}
-.months div{text-align:center;font:600 11.5px Archivo;padding:7px 0 6px;color:var(--dtext);background:rgba(214,230,240,.05)}
-.months div small{display:block;font-weight:500;color:var(--dmuted);font-size:10.5px}
-.figs{display:grid;grid-template-columns:1fr 1fr;align-content:start}
-.figs div{padding:18px 22px 18px;border-bottom:1px solid var(--drule);border-right:1px solid var(--drule)}
-.figs div:nth-child(2n){border-right:0}
-.figs dt{font:500 12.5px Archivo;color:var(--dmuted);margin:0 0 4px}
-.figs dt[title]{cursor:help;text-decoration:underline dotted rgba(214,230,240,.35);text-underline-offset:4px}
-.figs dd{margin:0;font:700 26px/1.1 Archivo;color:#fff;font-stretch:104%;white-space:nowrap}
-.figs dd small{display:block;font:500 12px Archivo;color:var(--dmuted);margin-top:4px;white-space:normal}
-.a-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:34px}
-.a-price{font:500 15px Archivo;color:var(--dmuted)}
-.a-price b{font:800 30px Archivo;color:#fff;margin-right:6px;vertical-align:-3px}
-.disc{font:400 13px/1.6 Archivo;color:#6F8797;max-width:62em;margin:28px 0 0}
-.empty{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;height:100%;min-height:280px;text-align:center;color:var(--dmuted);font-family:Archivo;padding:30px}
-.empty b{color:#fff;font-size:18px}
+/* data boards */
+.board{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--drule-2);background:rgba(15,44,66,.35);margin:0 0 40px}
+.board div{padding:22px 22px 24px;border-right:1px solid var(--drule)}
+.board div:last-child{border-right:0}
+.board b{display:block;font:800 40px/1 Archivo;color:#fff;font-stretch:106%;letter-spacing:-.02em}
+.board span{display:block;font:500 13px Archivo;color:var(--dmuted);margin-top:8px}
+section:not(.dark) .board{background:var(--abyss)}
 
-/* ---------- tools ---------- */
-.tools{background:var(--panel);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.tool{display:grid;grid-template-columns:1.05fr .95fr;gap:0;border:1px solid var(--rule);background:#fff}
-.tool + .tool{margin-top:28px}
-.tool .body{padding:44px 44px 40px;display:flex;flex-direction:column}
-.tool .kind{display:inline-flex;align-items:center;gap:8px;font:600 13px Archivo;color:var(--muted);margin:0 0 14px}
-.tool .kind::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--brass)}
-.tool h3{margin:0 0 14px;font-size:38px;line-height:1;font-weight:800;font-stretch:108%;letter-spacing:-.015em}
-.tool p.desc{margin:0 0 26px;color:var(--ink-2);font-size:17px}
-.tool .feats{list-style:none;margin:0 0 28px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0 28px;font:15px/1.45 Archivo}
-.tool .feats li{padding:11px 0 11px 22px;border-top:1px solid var(--rule);position:relative}
-.tool .feats li::before{content:"";position:absolute;left:1px;top:18px;width:9px;height:5px;border-left:2px solid var(--up);border-bottom:2px solid var(--up);transform:rotate(-45deg)}
-.tool .setup{font:400 14px/1.55 Archivo;color:var(--muted);margin:0 0 28px;padding:14px 16px;background:var(--chart);border-left:3px solid var(--brass)}
-.tool .setup code{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;color:var(--ink);background:rgba(15,44,66,.07);padding:1px 5px}
-.tool .buy{margin-top:auto}
-.tool .price{font-size:40px}
-.phone{background:var(--abyss);display:flex;align-items:center;justify-content:center;padding:40px 28px;position:relative;overflow:hidden}
-.phone::before{content:"";position:absolute;inset:0;opacity:.5;
-  background-image:linear-gradient(var(--drule) 1px,transparent 1px),linear-gradient(90deg,var(--drule) 1px,transparent 1px);background-size:48px 48px}
-.chat{position:relative;width:100%;max-width:360px;background:#0E2231;border:1px solid var(--drule-2);box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
-.chat-head{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--drule);background:#12293A}
-.chat-head .av{width:34px;height:34px;border-radius:50%;background:#2AABEE;display:flex;align-items:center;justify-content:center;flex:none}
-.chat-head .av svg{width:18px;height:18px}
-.chat-head b{display:block;font:600 14.5px Archivo;color:#fff}
-.chat-head small{display:block;font:400 12px Archivo;color:var(--dmuted)}
-.chat-body{padding:14px 12px 16px;display:flex;flex-direction:column;gap:9px}
-.msg{align-self:flex-start;max-width:92%;background:#1B3A4E;color:#E7EEF2;font:400 13.5px/1.45 Archivo;padding:9px 12px 7px;border-radius:2px 12px 12px 12px;white-space:pre-line;opacity:0;transform:translateY(6px);animation:msgin .45s forwards}
-.msg b{font-weight:700;color:#fff}
-.msg .up{color:var(--sig);font-weight:700} .msg .dn{color:var(--sig-down);font-weight:700}
-.msg time{display:block;text-align:right;font-size:11px;color:var(--dmuted);margin-top:2px}
-.msg .shot{display:block;margin:6px 0 2px;background:#0A1B27;border:1px solid var(--drule)}
-.msg .shot svg{display:block;width:100%;height:auto}
-@keyframes msgin{to{opacity:1;transform:none}}
+table.data{width:100%;border-collapse:collapse;font-size:15.5px}
+table.data caption{text-align:left;font:700 15px Archivo;padding:0 0 12px;color:inherit}
+table.data th,table.data td{text-align:left;padding:13px 16px 13px 0;border-top:1px solid var(--rule);vertical-align:top}
+table.data thead th{font-size:13px;font-weight:600;color:var(--muted);border-top:0;border-bottom:1px solid var(--rule-2);padding-bottom:10px}
+table.data tbody tr:last-child td,table.data tbody tr:last-child th{border-bottom:1px solid var(--rule)}
+table.data td.v{text-align:right;font-weight:700;white-space:nowrap;padding-right:0}
+table.data tbody th{font-weight:500;color:var(--muted);width:38%}
+.dark table.data th,.dark table.data td{border-color:var(--drule)}
+.dark table.data thead th{color:var(--dmuted);border-color:var(--drule-2)}
+.dark table.data td{color:var(--dtext)}
+.dark table.data td.v{color:#fff}
+.dark table.data caption{color:#fff}
+.table-scroll{overflow-x:auto}
 
-/* ---------- writing ---------- */
-.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
-.post{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--rule);text-decoration:none;transition:border-color .15s}
-.post:hover{border-color:var(--ink)}
-.post .cover{height:150px;background:var(--sea);position:relative;overflow:hidden}
-.post .cover svg{position:absolute;inset:0;width:100%;height:100%}
-.post .txt{padding:22px 24px 26px}
-.post .when{font:500 13px Archivo;color:var(--muted);margin:0 0 8px}
-.post h3{margin:0 0 10px;font-size:21px;line-height:1.2;font-weight:700}
-.post p{margin:0;font-size:16px;color:var(--ink-2)}
-.post.feature{grid-column:span 3;flex-direction:row}
-.post.feature .cover{height:auto;flex:0 0 42%}
-.post.feature .txt{padding:40px 44px}
-.post.feature h3{font-size:30px}
-.more{margin:30px 0 0;font:600 15.5px Archivo}
+.spec{display:grid;grid-template-columns:1fr 1fr;column-gap:56px;border-top:1px solid var(--rule-2)}
+.spec div{display:flex;justify-content:space-between;gap:24px;padding:15px 0;border-bottom:1px solid var(--rule)}
+.spec dt{color:var(--muted);font:500 15px Archivo}
+.spec dd{margin:0;font:600 15px Archivo;text-align:right}
 
-/* ---------- about ---------- */
-.about{border-top:1px solid var(--rule)}
-.about .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:72px;align-items:start}
-.about p{margin:0 0 18px;max-width:35em}
-.about p.big{font-size:25px;line-height:1.45;color:var(--ink)}
-.facts{border:1px solid var(--rule);background:var(--panel)}
-.facts div{display:flex;justify-content:space-between;gap:20px;padding:15px 22px;border-bottom:1px solid var(--rule);font:15px Archivo}
-.facts div:last-child{border-bottom:0}
-.facts span:first-child{color:var(--muted)}
-.facts span:last-child{font-weight:600;text-align:right;word-break:break-word}
+.caveat{border-left:3px solid var(--brass);background:rgba(224,169,44,.08);padding:26px 30px;margin:40px 0 0;max-width:62em}
+.caveat h3{margin-top:0}
+.caveat p{margin:0 0 14px;font-size:16.5px}
+.caveat p:last-child{margin-bottom:0}
+.dark .caveat{background:rgba(224,169,44,.07)}
+.dark .caveat p{color:#C9D8E1}
 
-/* ---------- footer ---------- */
+pre{background:var(--abyss);color:#DCE6EC;border:1px solid var(--drule-2);padding:22px 24px;overflow-x:auto;font:400 14px/1.65 "IBM Plex Mono",ui-monospace,monospace;margin:28px 0 10px}
+.dark pre{background:#030C13}
+pre .c{color:#6F8797} pre .k{color:#F0BD48} pre .s{color:#45C29A}
+.code-caption{font:400 13.5px/1.55 Archivo;color:var(--muted);margin:0 0 30px;max-width:56em}
+.dark .code-caption{color:var(--dmuted)}
+
+/* pricing */
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch}
+.plan{background:var(--panel);border:1px solid var(--rule);padding:38px 36px 34px;display:flex;flex-direction:column;position:relative}
+.plan h3{font-size:22px;margin:0 0 6px}
+.plan .who{margin:0 0 22px;color:var(--ink-2);font-size:16px}
+.plan .price{font:800 58px/1 Archivo;font-stretch:106%;letter-spacing:-.02em;margin:0 0 8px}
+.plan .price small,.plan .price em{font:500 16px Archivo;color:var(--muted);font-style:normal;letter-spacing:0}
+.plan .was{font:500 13.5px Archivo;color:var(--muted);margin:0 0 24px}
+.plan ul{list-style:none;margin:0 0 28px;padding:0;font:15.5px/1.5 Archivo}
+.plan li{padding:9px 0 9px 26px;border-top:1px solid var(--rule);position:relative}
+.plan li::before{content:"";position:absolute;left:2px;top:17px;width:10px;height:5px;border-left:2px solid var(--up);border-bottom:2px solid var(--up);transform:rotate(-45deg)}
+.plan .pay-slot{margin-top:auto;min-height:56px}
+.plan.pick{background:var(--abyss);color:var(--dtext);border-color:var(--abyss)}
+.plan.pick h3,.plan.pick .price{color:#fff}
+.plan.pick .who{color:#B4C6D2}
+.plan.pick .price small,.plan.pick .price em,.plan.pick .was{color:var(--dmuted)}
+.plan.pick li{border-color:var(--drule)}
+.plan.pick li::before{border-color:var(--sig)}
+.plan .tag{position:absolute;top:-1px;right:28px;transform:translateY(-50%);background:var(--brass);color:#1A1206;font:700 12.5px Archivo;padding:5px 12px}
+.hint{font:400 14.5px/1.6 Archivo;color:var(--muted);margin:26px 0 0;max-width:60em}
+
+/* steps: real sequences only */
+ol.steps{list-style:none;counter-reset:st;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:0 56px}
+ol.steps li{counter-increment:st;position:relative;padding:26px 0 26px 64px;border-top:1px solid var(--rule-2)}
+ol.steps li::before{content:counter(st);position:absolute;left:0;top:22px;font:800 38px/1 Archivo;font-stretch:108%;color:var(--brass)}
+ol.steps li b,ol.steps li strong:first-child{display:block;font:700 18px/1.3 Archivo;margin:0 0 6px}
+ol.steps li p{margin:0;color:var(--ink-2);font-size:16px}
+ol.steps li{font-size:16px;color:var(--ink-2)}
+
+/* faq */
+.faq-list{border-top:1px solid var(--rule-2);max-width:880px}
+details{border-bottom:1px solid var(--rule-2)}
+summary{list-style:none;cursor:pointer;padding:22px 48px 22px 0;font:600 18.5px/1.35 Archivo;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";position:absolute;right:8px;top:50%;width:14px;height:14px;margin-top:-7px;
+  background:linear-gradient(currentColor,currentColor) center/14px 2px no-repeat,linear-gradient(currentColor,currentColor) center/2px 14px no-repeat;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+summary:hover{color:var(--up)}
+details p{margin:0 0 24px;max-width:46em;color:var(--ink-2)}
+details code{background:rgba(15,44,66,.07);padding:1px 5px}
+
+/* contact strip */
+.contact{background:var(--brass);color:#1A1206;padding:72px 0}
+.contact .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.contact h2{font-size:clamp(30px,3.6vw,46px)}
+.contact p{margin:0;font-size:18px}
+.contact a.mail{font:700 20px Archivo;word-break:break-word}
+
+/* footer */
 footer{background:var(--abyss);color:var(--dmuted);font:14px/1.6 Archivo;padding:72px 0 56px}
 footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px;padding-bottom:44px;border-bottom:1px solid var(--drule)}
 footer h4{margin:0 0 14px;color:#fff;font-size:14px;font-weight:600}
@@ -251,57 +240,60 @@ footer a{text-decoration:none;color:var(--dtext)}
 footer a:hover{color:#fff;text-decoration:underline}
 footer .brand{margin-bottom:16px}
 footer .legal{padding-top:28px;font-size:12.5px;color:#6F8797}
-footer .legal p{margin:0 0 8px;max-width:70em}
+footer .legal p{margin:0 0 10px;max-width:74em}
+footer .legal strong{color:var(--dmuted)}
 
 @media (max-width:1040px){
-  .tool{grid-template-columns:1fr}
-  .phone{padding:36px 20px}
-  .hero .wrap{grid-template-columns:1fr;gap:56px;padding-top:72px;padding-bottom:80px}
-  .board{grid-template-columns:1fr}
-  .board .chart{border-right:0;border-bottom:1px solid var(--drule-2)}
-  .figs{grid-template-columns:repeat(3,1fr)}
-  .figs div:nth-child(2n){border-right:1px solid var(--drule)}
-  .figs div:nth-child(3n){border-right:0}
-  .product{grid-template-columns:1fr}
-  .product .art{min-height:300px;border-right:0;border-bottom:1px solid var(--rule)}
+  .hero > .wrap{grid-template-columns:1fr;gap:56px;padding-top:70px;padding-bottom:80px}
+  .feat-grid{grid-template-columns:1fr;gap:36px}
+  .art{position:static}
+  .top nav a.opt{display:none}
 }
 @media (max-width:760px){
-  .tool .body{padding:30px 24px}
-  .tool h3{font-size:31px}
-  .tool .feats{grid-template-columns:1fr}
   body{font-size:16.5px}
   .wrap{padding:0 20px}
   .top nav a:not(.pill){display:none}
-  section{padding:76px 0}
-  .head{grid-template-columns:1fr;gap:18px;margin-bottom:38px}
-  .principles .wrap{grid-template-columns:1fr}
+  .brand .prod{display:none}
+  section{padding:72px 0}
+  .head{grid-template-columns:1fr;gap:16px;margin-bottom:36px}
+  .principles .wrap,.cols-2,.cols-3,.plans,.spec,ol.steps,.contact .wrap,footer .cols{grid-template-columns:1fr}
   .principles div{border-right:0;margin-right:0;padding:24px 0;border-bottom:1px solid var(--drule)}
   .principles div:last-child{border-bottom:0}
-  .inst-grid{grid-template-columns:repeat(2,1fr)}
-  .inst-grid div:nth-child(2){border-right:0}
-  .inst-grid div:nth-child(-n+2){border-bottom:1px solid var(--drule)}
+  .cols-3 > div{border-right:0;margin-right:0;padding:22px 0;border-bottom:1px solid var(--rule)}
+  .cols-2{gap:28px}
+  .inst-grid,.board{grid-template-columns:repeat(2,1fr)}
+  .inst-grid div:nth-child(2),.board div:nth-child(2){border-right:0}
+  .inst-grid div:nth-child(-n+2),.board div:nth-child(-n+2){border-bottom:1px solid var(--drule)}
   .inst-big .num{font-size:44px}
-  .product .body{padding:30px 24px}
-  .product h3{font-size:31px}
-  .figs{grid-template-columns:1fr 1fr}
-  .figs div:nth-child(3n){border-right:1px solid var(--drule)}
-  .figs div:nth-child(2n){border-right:0}
-  .figs dd{font-size:22px}
-  .months{grid-template-columns:repeat(6,1fr)}
-  .posts{grid-template-columns:1fr}
-  .post.feature{grid-column:auto;flex-direction:column}
-  .post.feature .cover{height:160px;flex:none}
-  .post.feature .txt{padding:24px}
-  .post.feature h3{font-size:23px}
-  .about .grid{grid-template-columns:1fr;gap:36px}
-  .about p.big{font-size:21px}
-  footer .cols{grid-template-columns:1fr;gap:32px}
+  .board b{font-size:32px}
+  .plan{padding:30px 24px}
+  .plan .price{font-size:48px}
+  ol.steps li{padding-left:52px}
+  .contact{padding:56px 0}
+  .contact .wrap{gap:18px}
+  footer .cols{gap:32px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *{animation:none!important;transition:none!important}
   .draw{stroke-dashoffset:0}.fade{opacity:1}
 }
+/* live record from Armada (this bot only) */
+.live-card .lv-flag svg{width:27px;height:18px;display:inline-block;vertical-align:-3px;margin-right:10px}
+.lv-body{display:grid;grid-template-columns:.9fr 1.1fr;gap:0;align-items:stretch;border-bottom:1px solid var(--drule)}
+.lv-body .inst-big{padding:24px 22px 18px;border-right:1px solid var(--drule);display:block}
+.lv-body .inst-big .num{display:block;margin:0 0 10px}
+.lv-body .inst-big .lab{display:block;line-height:1.5}
+.lv-side{margin:18px 0 0;padding:0;list-style:none;font:500 13px/1.5 Archivo;color:var(--dmuted)}
+.lv-side li{padding:7px 0;border-top:1px solid var(--drule);display:flex;justify-content:space-between;gap:14px}
+.lv-side li b{color:var(--dtext);font-weight:600;text-align:right}
+.lv-chart{position:relative;padding:14px 12px 6px;min-height:230px}
+.lv-chart svg{display:block;width:100%;height:auto}
+.lv-cap{font:500 12px Archivo;color:var(--dmuted);margin:4px 10px 8px}
+.lv-empty{grid-column:1/-1;padding:44px 22px;text-align:center;font:500 14.5px/1.6 Archivo;color:var(--dmuted)}
+.lv-empty b{display:block;color:#fff;font-size:17px;margin-bottom:6px}
+.live-card .pos{color:var(--sig)} .live-card .neg{color:var(--sig-down)}
+@media (max-width:760px){.lv-body{grid-template-columns:1fr}.lv-body .inst-big{border-right:0;border-bottom:1px solid var(--drule)}}
 </style>
 </head>
 <body>
@@ -309,14 +301,15 @@ footer .legal p{margin:0 0 8px;max-width:70em}
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="/" aria-label="Wisfli home"><span id="brandflag"></span>WISFLI</a>
-    <nav aria-label="Main">
-      <a href="#bots">Bots</a>
-      <a href="#armada">Armada</a>
-      <a href="#tools">Tools</a>
-      <a href="#writing">Writing</a>
-      <a href="#about">About</a>
-      <a class="pill" href="#armada">Live signal</a>
+    <a class="brand" href="https://wisfli.com/"><svg viewBox="0 0 60 40" aria-hidden="true"><path d="M0 0h60v40H0z" fill="#14528C"/><path d="M8 8h44v24H8z" fill="#fff"/><path d="M18 14h24v12H18z" fill="#C8322A"/></svg>WISFLI <span class="prod">/ CandleGrid Pro</span></a>
+    <nav aria-label="Page">
+      <a href="#what">What it is</a>
+      <a href="#live">Live in Armada</a>
+      <a href="#test">Test results</a>
+      <a href="#spec" class="opt">Specification</a>
+      <a href="#licence" class="opt">Licence</a>
+      <a href="#faq" class="opt">FAQ</a>
+      <a class="pill" href="#pricing">Buy</a>
     </nav>
   </div>
 </header>
@@ -326,182 +319,290 @@ footer .legal p{margin:0 0 8px;max-width:70em}
 <div class="hero">
   <div class="wrap">
     <div>
-      <p class="where"><i></i>Alicante, Spain. MetaTrader 5.</p>
-      <h1>Trading tools that show their work.</h1>
-      <p class="lede">Expert Advisors with their rules written down, their parameters explained and their limits stated plainly. A copy-trading signal that runs ten of them in one account and publishes every number it produces.</p>
+      <p class="where"><i></i>Expert Advisor for MetaTrader 5, tuned for XAUUSD</p>
+      <h1>Fourteen candlestick patterns, seven timeframes, one robot</h1>
+      <p class="lede">CandleGrid Pro runs M30, H1, H2, H4, H8, H12 and D1 in parallel, each timeframe as an independent system with its own magic number and its own position management. Every entry carries a hard stop. Nothing is averaged down, nothing is doubled up.</p>
       <div class="actions">
-        <a class="btn brass" href="#armada">See the live signal</a>
-        <a class="btn line" href="#bots">Browse the bots</a>
+        <a class="btn brass" href="#pricing">See pricing</a>
+        <a class="btn line" href="#test">Read the test results</a>
       </div>
     </div>
 
-    <aside class="instrument" aria-label="Armada account summary">
-      <header>
-        <b>Armada<span class="badge" id="h-badge" hidden>DEMO</span></b>
-        <span class="live off" id="h-live">Waiting for data</span>
-      </header>
-      <div class="inst-big">
-        <span class="num" id="h-ret">—</span>
-        <span class="lab" id="h-ret-lab">return since the first trade</span>
+    <aside class="instrument" aria-label="Backtest summary">
+      <header><b>Strategy Tester<span class="badge">XAUUSD</span></b><span>Jan 2025 to Aug 2026</span></header>
+      <div class="inst-big"><span class="num">1.29</span><span class="lab">profit factor over 392 trades</span></div>
+      <div class="inst-chart">
+        <svg viewBox="0 0 1000 230" preserveAspectRatio="none" role="img" aria-label="Shape of the backtest equity curve on XAUUSD between January 2025 and August 2026">
+          <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#45C29A" stop-opacity=".3"/><stop offset="1" stop-color="#45C29A" stop-opacity="0"/></linearGradient></defs>
+          <path class="fade" id="curveFill" fill="url(#cg)"></path>
+          <path class="draw" id="curveLine" fill="none" stroke="#45C29A" stroke-width="2.4" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path>
+        </svg>
       </div>
-      <div class="inst-chart" id="h-chart"></div>
       <dl class="inst-grid">
-        <div><dt>Profit factor</dt><dd id="h-pf">—</dd></div>
-        <div><dt>Hits</dt><dd id="h-hits">—</dd></div>
-        <div><dt>Max drawdown</dt><dd id="h-dd">—</dd></div>
-        <div><dt>Trades</dt><dd id="h-trades">—</dd></div>
+        <div><dt>Trades</dt><dd>392</dd></div>
+        <div><dt>Winning trades</dt><dd>48.21%</dd></div>
+        <div><dt>Max equity DD</dt><dd>14.07%</dd></div>
+        <div><dt>Real tick data</dt><dd>100%</dd></div>
       </dl>
-      <div class="inst-foot">
-        <span class="flags" id="h-flags"></span>
-        <span id="h-fleet">Ten bots, one account</span>
-      </div>
+      <p class="inst-foot">Shape of the backtest equity curve at 1% risk per trade. The exact test conditions, and what they leave out, are set out in full below.</p>
     </aside>
   </div>
 </div>
 
 <div class="principles">
   <div class="wrap">
-    <div>
-      <h3>Every entry carries a hard stop</h3>
-      <p>Nothing is averaged down, nothing is doubled up. Risk sets the lot size, never the other way round.</p>
-    </div>
-    <div>
-      <h3>Validated before it trades</h3>
-      <p>Each system has to pass out-of-sample testing. Contexts that fail it are switched off, not tuned until they pass.</p>
-    </div>
-    <div>
-      <h3>Results published unedited</h3>
-      <p>Armada's figures go from the trading account to this site automatically, every 15 minutes, without passing through my hands.</p>
-    </div>
+    <div><h3>A hard stop on every entry</h3><p>Stop loss and take profit sit on the broker's server from the first tick, so a dead VPS never leaves a position unprotected.</p></div>
+    <div><h3>The grid is timeframes, not orders</h3><p>No averaging down, no lot multiplication, no second position opened to rescue the first.</p></div>
+    <div><h3>Free to test, in full</h3><p>The Strategy Tester and demo accounts need no key, with every feature enabled and no time limit.</p></div>
   </div>
 </div>
 
-<section id="bots">
+<section id="what">
   <div class="wrap">
     <div class="head">
-      <h2>The bots</h2>
-      <p>Each one is a compiled Expert Advisor, licensed to your account number, shipped with the settings I actually use rather than the ones that make a backtest look good. You get the .ex5, a configuration file and the reasoning behind it.</p>
+      <h2>What it is</h2>
+      <p>An Expert Advisor that looks for fourteen Japanese candlestick patterns (engulfing, harami, morning and evening star, piercing line, dark cloud cover, three soldiers, three crows, tasuki gaps, hammer, shooting star) across seven timeframes at once. Each timeframe keeps its own magic number, its own filters and its own position management, so what M30 does never interferes with what D1 does.</p>
     </div>
 
-    <article class="product">
-      <figure class="art" id="art-candle" style="margin:0"><figcaption>Seven timeframes read at once</figcaption></figure>
-      <div class="body">
-        <p class="status">Available now</p>
-        <h3>CandleGrid Pro</h3>
-        <p class="desc">Fourteen candlestick patterns read across seven timeframes at once, each timeframe an independent system with its own magic number. Every entry carries a hard stop. Nothing is averaged down, nothing is doubled up.</p>
-        <table class="specs">
-          <tr><th scope="row">Market</th><td>XAUUSD</td></tr>
-          <tr><th scope="row">Risk controls</th><td>Risk-based lot size, daily loss limit, position cap, spread filter</td></tr>
-          <tr><th scope="row">Licence</th><td>Signed against your account number</td></tr>
-          <tr><th scope="row">Try it</th><td>Free in demo and the Strategy Tester, no key needed</td></tr>
-        </table>
-        <p class="inarmada" id="inarmada-A" data-flag="A" data-url="https://jsgaston.github.io/candlegrid-web-en/#live" hidden></p>
-        <div class="buy">
-          <div class="price">€29<small>per month, or €149 lifetime</small></div>
-          <a class="btn ink" href="https://jsgaston.github.io/candlegrid-web-en/">View CandleGrid Pro</a>
+    <div class="feat-grid">
+      <figure class="art" id="art-candle"><figcaption>Seven timeframes read in parallel. Brass marks a detected pattern.</figcaption></figure>
+      <div class="feats">
+        <div>
+          <h3>The grid is timeframes, not orders</h3>
+          <p>No averaging down, no lot multiplication, no second position opened to rescue the first. When a trade goes wrong it loses what it was sized to lose and the robot moves on. If you are looking for a martingale that prints a perfect curve until it empties the account, this is not it.</p>
+        </div>
+        <div>
+          <h3>Risk decides the lot, not the other way round</h3>
+          <p>You set a percentage of equity; the EA derives the lot from the distance to the stop. If the symbol's minimum lot would force more risk than you authorised, it declines the trade instead of rounding up. Stop loss and take profit sit on the broker's server from the first tick, so a dead VPS does not leave a position unprotected.</p>
+        </div>
+        <div>
+          <h3>Explicit circuit breakers</h3>
+          <p>Automatic shutdown when the daily loss limit is reached, a cap on simultaneous positions across all seven timeframes, a spread filter that refuses to enter when your broker widens, and a forced Friday close at the hour you choose.</p>
+        </div>
+        <div>
+          <h3>Every filter can be switched off</h3>
+          <p>Trading hours and weekdays, an EMA trend filter (with, against, or off), plus optional ADX, CCI, stochastic and Bollinger filters. All independent. A filter you cannot disable is a filter you cannot evaluate.</p>
+        </div>
+        <div>
+          <h3>You can see what it is doing</h3>
+          <p>An on-chart panel shows the state of each timeframe, and a periodic journal report logs open positions, the day's result and the reason a signal was skipped. No black box that only ever says "waiting for signal".</p>
         </div>
       </div>
-    </article>
-
-    <article class="product">
-      <figure class="art" id="art-regime" style="margin:0"><figcaption>Hidden states behind the price</figcaption></figure>
-      <div class="body">
-        <p class="status">Available now</p>
-        <h3>RegimeSwitch Pro</h3>
-        <p class="desc">It fits a hidden Markov model to the history in your own terminal and reads the probability of the next state before sending an order. Every symbol and timeframe has to pass an out-of-sample edge test before it may place a single trade.</p>
-        <table class="specs">
-          <tr><th scope="row">Markets</th><td>Multi-symbol, multi-timeframe, up to 80 pairs from one chart</td></tr>
-          <tr><th scope="row">Validation</th><td>Contexts that fail the edge test stay switched off</td></tr>
-          <tr><th scope="row">Upkeep</th><td>Refits and revalidates itself every 250 bars</td></tr>
-          <tr><th scope="row">Licence</th><td>Signed against your account number</td></tr>
-        </table>
-        <p class="inarmada" id="inarmada-B" data-flag="B" data-url="https://jsgaston.github.io/regimeswitch-web-en/#live" hidden></p>
-        <div class="buy">
-          <div class="price">€39<small>per month, or €249 lifetime</small></div>
-          <a class="btn ink" href="https://jsgaston.github.io/regimeswitch-web-en/">View RegimeSwitch Pro</a>
-        </div>
-      </div>
-    </article>
+    </div>
   </div>
 </section>
 
-<section id="armada" class="armada dark">
+<section id="live" class="panel">
   <div class="wrap">
     <div class="head">
-      <div>
-        <h2>Armada</h2>
-        <div class="hoist" id="a-hoist"></div>
-        <p class="hoist-note" id="a-hoist-note">Each bot sails under its own flag.</p>
-      </div>
-      <p>One MetaTrader 5 account, ten algorithms, added one at a time as each passes validation. Flag A is CandleGrid Pro, flag B is RegimeSwitch Pro, flag C is Charlie. Your terminal mirrors every position it takes, scaled to your balance. Pick a bot below to see its own record.</p>
+      <h2>Trading live in Armada</h2>
+      <p>CandleGrid Pro runs in the Armada copy-trading account under signal flag A. This panel shows only its own trades, taken straight from that account and refreshed every 15 minutes. It fills in by itself; nothing here is typed by hand.</p>
     </div>
 
-    <div class="chips" id="a-chips" role="group" aria-label="Choose a bot"></div>
+    <div class="instrument live-card" id="lv-card" aria-live="polite">
+      <header>
+        <b><span class="lv-flag" id="lv-flag"></span>Armada, flag A<span class="badge" id="lv-badge" hidden>DEMO</span></b>
+        <span id="lv-updated">Loading the live record…</span>
+      </header>
+      <div class="lv-body" id="lv-body">
+        <div class="lv-empty"><b>Loading…</b></div>
+      </div>
+      <dl class="inst-grid" id="lv-grid">
+        <div><dt>Closed trades</dt><dd id="lv-trades">—</dd></div>
+        <div><dt>Hits</dt><dd id="lv-hits">—</dd></div>
+        <div><dt>Profit factor</dt><dd id="lv-pf">—</dd></div>
+        <div><dt>Max drawdown</dt><dd id="lv-dd">—</dd></div>
+      </dl>
+      <p class="inst-foot" id="lv-foot">Figures are measured against the whole Armada account and use the settings that account runs. Your own risk, broker and costs will give different results. Past performance does not indicate future results.</p>
+    </div>
+
+    <div class="actions" style="margin-top:28px">
+      <a class="btn ink" id="lv-link" href="https://jsgaston.github.io/armada/">See the full record in Armada</a>
+      <span class="aside" style="color:var(--muted)" id="lv-aside">Every statistic, month by month, with Monte Carlo.</span>
+    </div>
+  </div>
+</section>
+
+<section id="test" class="dark">
+  <div class="wrap">
+    <div class="head">
+      <h2>Test results, with their conditions and their limits</h2>
+      <p>Strategy Tester run on XAUUSD, 1 January 2025 to 2 August 2026, using 100% real tick data (192.5 million ticks) at 1% risk per trade with a maximum of three simultaneous positions.</p>
+    </div>
 
     <div class="board">
-      <div class="chart">
-        <div class="chart-top">
-          <span class="name" id="a-name">Whole account</span>
-          <span class="meta" id="a-meta"></span>
+      <div><b>392</b><span>Trades over 19 months</span></div>
+      <div><b>1.29</b><span>Profit factor</span></div>
+      <div><b>2.96</b><span>Recovery factor</span></div>
+      <div><b>14.07%</b><span>Maximum equity drawdown</span></div>
+    </div>
+
+    <div class="cols-2">
+      <table class="data">
+        <caption>Performance</caption>
+        <tbody>
+          <tr><td>Trades</td><td class="v">392</td></tr>
+          <tr><td>Winning trades</td><td class="v">48.21%</td></tr>
+          <tr><td>Average win / average loss</td><td class="v">1.38</td></tr>
+          <tr><td>Profit factor</td><td class="v">1.29</td></tr>
+          <tr><td>Recovery factor</td><td class="v">2.96</td></tr>
+        </tbody>
+      </table>
+      <table class="data">
+        <caption>Risk</caption>
+        <tbody>
+          <tr><td>Maximum balance drawdown</td><td class="v">13.05%</td></tr>
+          <tr><td>Maximum equity drawdown</td><td class="v">14.07%</td></tr>
+          <tr><td>Longest losing streak</td><td class="v">9 trades</td></tr>
+          <tr><td>Average time in position</td><td class="v">25 h</td></tr>
+          <tr><td>History quality</td><td class="v">100% real ticks</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="caveat">
+      <h3>What this test does not tell you</h3>
+      <p>It was run in the tester's pip-based calculation mode, which does not deduct commission or swap. With an average holding time of 25 hours on gold, overnight swap is not a rounding error, so the real-money result is lower than the curve suggests. The period tested is also a strong bull run in gold: nothing here proves the system survives eighteen months of range. And the time filters in this configuration came out of an optimiser, which always finds the hours that worked best in the past.</p>
+      <p>That is why you will not find a headline return figure anywhere on this page, and why the robot can be tested in full before you pay anything. An out-of-sample run on 2018–2024 with these parameters frozen is in progress and will be published either way.</p>
+    </div>
+
+    <div class="actions" style="margin-top:36px">
+      <a class="btn brass" href="ReportTester-27085970.html">Download the full Strategy Tester report</a>
+      <span class="aside">The original MetaTrader file, with every input and every trade, uncut.</span>
+    </div>
+  </div>
+</section>
+
+<section id="spec">
+  <div class="wrap">
+    <div class="head solo"><h2>Specification</h2></div>
+    <dl class="spec">
+      <div><dt>Platform</dt><dd>MetaTrader 5, build 4000 or later</dd></div>
+      <div><dt>Delivered as</dt><dd>Compiled .ex5 + .set presets</dd></div>
+      <div><dt>Timeframes traded</dt><dd>M30, H1, H2, H4, H8, H12, D1</dd></div>
+      <div><dt>Chart it attaches to</dt><dd>Any, it reads all seven internally</dd></div>
+      <div><dt>Tuned for</dt><dd>XAUUSD</dd></div>
+      <div><dt>Account types</dt><dd>Hedging and netting</dd></div>
+      <div><dt>Suggested minimum deposit</dt><dd>€1,000 standard / €100 cent</dd></div>
+      <div><dt>VPS</dt><dd>Recommended, not supplied</dd></div>
+      <div><dt>Licensing</dt><dd>Signed against your MT5 account number</dd></div>
+      <div><dt>Demo &amp; Strategy Tester</dt><dd>No licence key required</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section id="pricing" class="panel">
+  <div class="wrap">
+    <div class="head">
+      <h2>Pricing</h2>
+      <p>Launch pricing while the out-of-sample validation is still running. It rises as the track record grows, and early buyers keep what they paid.</p>
+    </div>
+
+    <div class="plans">
+      <div class="plan">
+        <h3>Monthly subscription</h3>
+        <p class="who">For taking it live without committing up front.</p>
+        <p class="price">€29 <em>/ month</em></p>
+        <p class="was">VAT included, cancel any time</p>
+        <ul>
+          <li>One live account, unlimited demo accounts</li>
+          <li>Updates and .set presets included</li>
+          <li>Email support</li>
+          <li>Cancels in one click, no questions</li>
+        </ul>
+        <div class="pay-slot">
+          <div id="paypal-button-container-P-9FX7453496128393BNKTDB7Q"></div>
         </div>
-        <div id="a-chart"><div class="empty"><b>The fleet hasn't sailed yet.</b><span>The record appears here the day the account closes its first trade.</span></div></div>
-        <div class="months" id="a-months" aria-label="Last 12 months"></div>
       </div>
-      <dl class="figs" id="a-figs"></dl>
+
+      <div class="plan pick">
+        <span class="tag">First 10 licences</span>
+        <h3>Lifetime licence</h3>
+        <p class="who">For traders who have tested it and want to keep it.</p>
+        <p class="price">€149</p>
+        <p class="was">VAT included, regular price €199</p>
+        <ul>
+          <li>Two live accounts, unlimited demo accounts</li>
+          <li>Lifetime updates</li>
+          <li>XAUUSD .set presets to start from</li>
+          <li>Free account-number changes, forever</li>
+          <li>Direct line to the developer</li>
+        </ul>
+        <div class="pay-slot">
+          <stripe-buy-button
+            buy-button-id="buy_btn_1UF6qY9abIQixlis7Q6zeIdb"
+            publishable-key="pk_live_51TZyif9abIQixliscbpfVG3y2wD28GUvAfE7BnvbENBMOyUQMqE4Dh954G2zII0HNpZ6dTZxUJg4kpncQrUL266Z00nJ9nMGOT">
+          </stripe-buy-button>
+        </div>
+      </div>
     </div>
 
-    <div class="a-cta">
-      <div class="actions">
-        <a class="btn brass" id="a-full" href="https://jsgaston.github.io/armada/">See the full record</a>
-        <a class="btn line" href="https://jsgaston.github.io/armada/setup.html">Setup guide</a>
-      </div>
-      <p class="a-price"><b>€59</b>per month for the first 100 accounts, cancel anytime</p>
-    </div>
-
-    <p class="disc" id="a-disc">Figures are published automatically from the trading account every 15 minutes and stay blank until the account produces them. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.</p>
+    <p class="hint">Paying with PayPal? Stop by <a href="activate.html">the activation page</a> afterwards to send me your MT5 account number. With Stripe it is collected during checkout.</p>
   </div>
 </section>
 
-<section id="tools" class="tools">
+<section id="licence">
   <div class="wrap">
-    <div class="head">
-      <h2>Tools</h2>
-      <p>Utilities I built to run my own accounts and now share. They don't trade on their own: they tell you what your account is doing and let you act on it from wherever you are.</p>
-    </div>
-    <div id="tools-list"></div>
-    <p class="more"><a href="https://jsgaston.github.io/tools/">All tools</a></p>
+    <div class="head solo"><h2>How the licence works</h2></div>
+    <ol class="steps">
+      <li><strong>Test it first, free, with nothing asked of you.</strong> In the Strategy Tester and on demo accounts the EA runs without a licence key: full functionality, no time limit, no crippled features. Run your own tests with your own broker's data and leave it on demo for a week. <a href="CandleGridPro.ex5">Download CandleGrid Pro</a>.</li>
+      <li><strong>Buy, and send me your account number.</strong> The key is cryptographically signed against the MT5 account you intend to trade. Stripe asks for it at checkout; with PayPal you send it from the activation page.</li>
+      <li><strong>You get the files and your key.</strong> One email with the <span class="mono">.ex5</span>, the <span class="mono">.set</span> presets and a key in the form <span class="mono">CGP1-XXXXXX-XXXXX-XXXXX</span>. Paste it into the "Licence key" input and you are trading. Usually same day.</li>
+      <li><strong>Changing accounts is free.</strong> New broker, new account, blown account, does not matter: write to <a href="mailto:licenses@wisfli.com">licenses@wisfli.com</a> and a new key comes back. That is part of the lifetime licence, not an upsell.</li>
+    </ol>
   </div>
 </section>
 
-<section id="writing">
+<section id="faq" class="panel">
   <div class="wrap">
-    <div class="head">
-      <h2>Writing</h2>
-      <p>Notes on building and breaking these systems, published on Medium. Mostly about the failures, since those are the part nobody else writes down.</p>
+    <div class="head solo"><h2>Questions</h2></div>
+    <div class="faq-list">
+      <details>
+        <summary>Do I need a licence key to backtest it?</summary>
+        <p>No. The Strategy Tester and demo accounts run without a key, with every feature enabled and no time limit. The key is only needed to trade a live account.</p>
+      </details>
+      <details>
+        <summary>Which symbols and brokers does it work with?</summary>
+        <p>The presets ship tuned for XAUUSD, which is where the testing work was done. Technically it will trade any MT5 symbol, but you would be tuning it yourself. Any MT5 broker works; on accounts with wide gold spreads the spread filter will simply stop entering, which is the intended behaviour.</p>
+      </details>
+      <details>
+        <summary>Is it prop-firm friendly?</summary>
+        <p>It has a configurable daily loss limit and a cap on simultaneous positions, and it does no arbitrage or latency trading, which is what most firms ban. That said, every firm writes its own rules. Read yours and set the limits below their thresholds before you switch it on.</p>
+      </details>
+      <details>
+        <summary>Do I need a VPS?</summary>
+        <p>Yes, unless you leave a machine running Monday to Friday. The EA only trades while MT5 is open and connected. A basic VPS near your broker's server costs €10–15 a month.</p>
+      </details>
+      <details>
+        <summary>How much capital do I need?</summary>
+        <p>€1,000 on a standard account lets it work at 0.5% risk per trade. Below that the minimum lot size distorts position sizing and a cent account is the better option. Bear in mind the longest losing streak in the backtest was nine trades in a row, so size for that, not for the good weeks.</p>
+      </details>
+      <details>
+        <summary>Is this a grid or a martingale?</summary>
+        <p>Neither. One position per signal, with a stop loss, and if it hits, the loss is taken. The name refers to the grid of timeframes and patterns, not a grid of orders.</p>
+      </details>
+      <details>
+        <summary>Can I get a refund?</summary>
+        <p>No, and that is precisely why you can test the whole thing before buying. As digital content delivered immediately, the right of withdrawal is waived on delivery of the key under Article 103(m) of the Spanish consumer protection act. If you would rather not commit, start with the monthly subscription.</p>
+      </details>
+      <details>
+        <summary>Can I share the file with a friend?</summary>
+        <p>It will not do them any good: the key is signed against your account number and validates nowhere else. Demo accounts need no key, so if you want to show someone, let them run it on demo.</p>
+      </details>
+      <details>
+        <summary>Do you guarantee profits?</summary>
+        <p>No, and be sceptical of anyone who does. This is a tool that executes a set of rules with discipline. The outcome depends on the market, your broker, your costs and the risk you configure. You can lose money with it.</p>
+      </details>
     </div>
-    <div class="posts" id="posts"></div>
-    <p class="more"><a href="https://medium.com/@jsgastoniriartecabrera">Read everything on Medium</a></p>
   </div>
 </section>
 
-<section id="about" class="about">
+<section id="contact" class="contact">
   <div class="wrap">
-    <div class="head"><h2>Who runs this</h2><span></span></div>
-    <div class="grid">
-      <div>
-        <p class="big">I'm Javier. Wisfli is one person in Alicante: no team, no fund, no office. I write the code, I run the accounts, and my own money goes into the same systems I sell.</p>
-        <p>That is why every product page here states what its testing does <em>not</em> prove, and why you will not find a headline return figure on any of them. A tool that only looks good when you leave things out is not a tool I want to sell twice.</p>
-        <p>Physics degree, then a master's, then a decade of teaching myself to build the things I wanted to exist. Most of what I've written has been discarded in testing. What survives ends up here.</p>
-        <p>If something on this site doesn't work, or a number doesn't add up, write to me directly. It's the same inbox either way.</p>
-      </div>
-      <div class="facts">
-        <div><span>Based in</span><span>Alicante, Spain</span></div>
-        <div><span>Platform</span><span>MetaTrader 5</span></div>
-        <div><span>Built with</span><span>MQL5, Python</span></div>
-        <div><span>Education</span><span>Physics degree, master's</span></div>
-        <div><span>Payments</span><span>Stripe, PayPal</span></div>
-        <div><span>Contact</span><span><a href="mailto:support@wisfli.com">support@wisfli.com</a></span></div>
-      </div>
+    <h2>Talk to me before you buy</h2>
+    <div>
+      <p>If you are unsure whether it fits your broker, your capital or the way you trade, email me and you will get an answer from the person who wrote the code, not a support queue.</p>
+      <p style="margin-top:14px"><a class="mail" href="mailto:support@wisfli.com">support@wisfli.com</a></p>
     </div>
   </div>
 </section>
@@ -512,478 +613,247 @@ footer .legal p{margin:0 0 8px;max-width:70em}
   <div class="wrap">
     <div class="cols">
       <div>
-        <a class="brand" href="/"><span id="brandflag2"></span>WISFLI</a>
-        <p style="margin:0;max-width:26em">Trading systems for MetaTrader 5, built and run by one person in Alicante.</p>
+        <a class="brand" href="https://wisfli.com/"><svg viewBox="0 0 60 40" aria-hidden="true"><path d="M0 0h60v40H0z" fill="#14528C"/><path d="M8 8h44v24H8z" fill="#fff"/><path d="M18 14h24v12H18z" fill="#C8322A"/></svg>WISFLI</a>
+        <p style="margin:0;max-width:26em">CandleGrid Pro is built and supported by one person in Alicante.</p>
       </div>
       <div>
-        <h4>Products</h4>
+        <h4>CandleGrid Pro</h4>
         <ul>
-          <li><a href="https://jsgaston.github.io/candlegrid-web-en/">CandleGrid Pro</a></li>
-          <li><a href="https://jsgaston.github.io/regimeswitch-web-en/">RegimeSwitch Pro</a></li>
-          <li><a href="https://jsgaston.github.io/armada/">Armada signal</a></li>
-          <li><a href="https://jsgaston.github.io/armada/setup.html">Armada setup guide</a></li>
-          <li><a href="https://jsgaston.github.io/tools/trading-command-center/">Trading Command Center</a></li>
-          <li><a href="https://jsgaston.github.io/tools/">Tools</a></li>
+          <li><a href="activate.html">Activate a licence</a></li>
+          <li><a href="terms.html">Licence terms</a></li>
+          <li><a href="terms.html#privacy">Privacy</a></li>
+          <li><a href="ReportTester-27085970.html">Strategy Tester report</a></li>
         </ul>
       </div>
       <div>
-        <h4>Company</h4>
+        <h4>Wisfli</h4>
         <ul>
-          <li><a href="/terms.html">Terms</a></li>
-          <li><a href="/privacy.html">Privacy</a></li>
-          <li><a href="https://medium.com/@jsgastoniriartecabrera">Medium</a></li>
-          <li><a href="mailto:support@wisfli.com">support@wisfli.com</a></li>
+          <li><a href="https://wisfli.com/">wisfli.com</a></li>
+          <li><a href="https://jsgaston.github.io/regimeswitch-web-en/">RegimeSwitch Pro</a></li>
+          <li><a href="https://jsgaston.github.io/armada/">Armada signal</a></li>
+          <li><a href="mailto:support@wisfli.com">Support</a></li>
+          <li><a href="mailto:licenses@wisfli.com">Licences</a></li>
         </ul>
       </div>
     </div>
     <div class="legal">
-      <p>Trading leveraged instruments carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing on this site is investment advice or a personal recommendation, and no return is promised or implied. Software is sold as licensed tools, not as a managed service.</p>
-      <p>© <span id="yr">2026</span> Wisfli. Trading as Javier Santiago Gastón de Iriarte Cabrera, Tax ID 47033535F, Alicante, Spain.</p>
+      <p><strong>Risk warning.</strong> Trading foreign exchange, metals and leveraged CFDs carries a high level of risk and is not suitable for every investor. Leverage magnifies losses as well as gains and you can lose the entire capital you commit. CandleGrid Pro is a software tool: it is not financial advice, an investment recommendation or a portfolio management service, and it guarantees no result. Historical simulation results do not predict future results, and a simulation does not necessarily reflect the commission, swap, slippage or liquidity of a live account.</p>
+      <p>© <span id="yr">2026</span> CandleGrid Pro. Trading as Javier Santiago Gastón de Iriarte Cabrera, Tax ID 47033535F, Alicante, Spain.</p>
     </div>
   </div>
 </footer>
 
 <script>
-/* =====================================================================
-   Edit here
-   ===================================================================== */
-var ARMADA_BASE = 'https://jsgaston.github.io/armada/';
+  document.getElementById('yr').textContent = new Date().getFullYear();
 
-/* Articles: the first one is shown large. Add or remove entries freely. */
+  // Backtest equity curve, normalised to a base of 100.
+  // Replace these values when you publish a new test.
+  const curve = [100,98.5,97.3,98.9,101.2,104.8,108.1,111.4,115.9,121.3,
+                 126.7,131.8,134.2,137.9,140.1,138.4,135.2,136.8,134.9,133.1,
+                 135.6,133.8,132.4,134.7,133.2,131.5,133.9,132.1,130.4,128.6,
+                 131.2,133.5,132.0,134.8,137.2,135.4,133.9,136.7,139.8,143.2,
+                 147.6,152.1,155.8,158.2];
 
-/* Tools. Each entry becomes a card in the Tools section.
-   price: text shown large ("Free", "€19", ...). Leave "" to hide it.
-   url:   where the button goes (a .ex5 in this repo, a product page, a payment link).
-   button: text on the button. */
-var TOOLS = [
-  { name: "Trading Command Center",
-    kind: "Expert Advisor for MetaTrader 5 · Telegram and Discord",
-    desc: "Your MT5 account in a chat. Every entry and exit arrives as it happens, with why it closed, the net result in your account currency and the magic number of the bot that took it. Ask for a report on any period or any bot, then move stops or close positions from the same chat, behind confirmations, a kill-switch and risk limits.",
-    feats: [
-      "Real-time entry and exit alerts, with chart screenshot",
-      "Close reason: stop, target, manual, EA, stop-out",
-      "Reports per period, per bot and a bot ranking",
-      "Profit factor, drawdown, expectancy, deposit-adjusted return",
-      "Close, modify and open positions, with confirmation",
-      "Seven languages, Telegram and Discord"
-    ],
-    setup: "Chat trading ships switched off. Needs MetaTrader 5 running on a PC or VPS, and a Telegram bot or a Discord webhook.",
-    price: "€19",
-    priceNote: "per month, or €99 lifetime",
-    url: "https://jsgaston.github.io/tools/trading-command-center/",
-    button: "View Trading Command Center" }
-];
+  (function(){
+    const W = 1000, H = 230, pad = 18;
+    const lo = Math.min(...curve), hi = Math.max(...curve);
+    const px = i => (i / (curve.length - 1)) * W;
+    const py = v => H - pad - ((v - lo) / (hi - lo)) * (H - pad * 2);
+    const d = "M" + curve.map((v, i) => `${px(i).toFixed(1)},${py(v).toFixed(1)}`).join(" L");
+    const line = document.getElementById("curveLine");
+    line.setAttribute("d", d);
+    document.getElementById("curveFill").setAttribute("d", `${d} L${W},${H} L0,${H} Z`);
+    let len = 0; for (let i = 1; i < curve.length; i++) len += Math.hypot(px(i) - px(i-1), py(curve[i]) - py(curve[i-1]));
+    line.style.setProperty("--len", Math.ceil(len) + 20);
+  })();
 
-function toolChart(){
-  var r=rng(31), n=26, W=300, H=96, p=50, g='';
-  for(var i=0;i<n;i++){
-    var o=p, c=Math.max(12,Math.min(84,o+(r()-.44)*16)); p=c;
-    var hi=Math.max(o,c)+r()*6, lo=Math.min(o,c)-r()*6, x=8+i*(W-16)/n, w=(W-16)/n*.6, col=c>=o?'#45C29A':'#E8715F';
-    g+='<line x1="'+(x+w/2).toFixed(1)+'" x2="'+(x+w/2).toFixed(1)+'" y1="'+(H-hi).toFixed(1)+'" y2="'+(H-lo).toFixed(1)+'" stroke="'+col+'"/>';
-    g+='<rect x="'+x.toFixed(1)+'" y="'+(H-Math.max(o,c)).toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+Math.max(1.5,Math.abs(o-c)).toFixed(1)+'" fill="'+col+'"/>';
-  }
-  var ey=H-p;
-  g+='<line x1="8" x2="'+(W-8)+'" y1="'+ey.toFixed(1)+'" y2="'+ey.toFixed(1)+'" stroke="#E0A92C" stroke-dasharray="3 3"/>';
-  return '<svg viewBox="0 0 '+W+' '+H+'" aria-hidden="true">'+g+'</svg>';
-}
-
-function drawTools(){
-  var tg='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M21.9 4.3 18.7 19.5c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.2-8.3c.4-.4-.1-.6-.6-.2L6.2 13.2l-4.9-1.5c-1.1-.3-1.1-1.1.2-1.6l19.1-7.4c.9-.3 1.7.2 1.3 1.6z"/></svg>';
-  var chat=
-    '<div class="chat" role="img" aria-label="Example Telegram messages sent by Trading Command Center">'+
-      '<div class="chat-head"><span class="av">'+tg+'</span><span><b>Command Center</b><small>bot · example messages</small></span></div>'+
-      '<div class="chat-body">'+
-        '<div class="msg" style="animation-delay:.2s"><b>🚀 ENTRY FILLED</b>\nXAUUSD  BUY · 0.10 lots at 2,318.40\n🤖 Magic 88881<span class="shot">'+toolChart()+'</span><time>09:14</time></div>'+
-        '<div class="msg" style="animation-delay:.5s"><b>🟢 EXIT FILLED</b>\n🎯 TAKE PROFIT · +84.2 pips\nNet <span class="up">+€84.20</span> · held 5h 12m<time>14:26</time></div>'+
-        '<div class="msg" style="animation-delay:.8s"><b>🤖 BOT COMPARISON</b>\n🟢 88881 · €212.50 · 41 trades · PF 1.38\n🔴 2001 · <span class="dn">−€36.40</span> · 7 trades · PF 0.81<time>18:00</time></div>'+
-      '</div>'+
-    '</div>';
-  $('tools-list').innerHTML=TOOLS.map(function(t,i){
-    return '<article class="tool">'+
-      '<div class="body">'+
-        '<p class="kind">'+esc(t.kind)+'</p>'+
-        '<h3>'+esc(t.name)+'</h3>'+
-        '<p class="desc">'+esc(t.desc)+'</p>'+
-        '<ul class="feats">'+t.feats.map(function(f){return '<li>'+esc(f)+'</li>';}).join('')+'</ul>'+
-        (t.setup?'<p class="setup">'+t.setup+'</p>':'')+
-        '<div class="buy">'+
-          (t.price?'<div class="price">'+esc(t.price)+(t.priceNote?'<small>'+esc(t.priceNote)+'</small>':'')+'</div>':'<span></span>')+
-          (t.url?'<a class="btn ink" href="'+esc(t.url)+'">'+esc(t.button||'Get '+t.name)+'</a>':'')+
-        '</div>'+
-      '</div>'+
-      '<div class="phone">'+(i===0?chat:'')+'</div>'+
-    '</article>';
-  }).join('');
-}
-
-var POSTS = [
-  { title: "I'm putting my first ten trading bots into one account, and publishing everything it does",
-    text: "How Armada is built, how the track record gets published without passing through my hands, and what I'm deliberately not promising.",
-    url: "https://medium.com/@jsgastoniriartecabrera", when: "Latest" }
-  /* , { title: "Second article", text: "One or two lines.", url: "https://medium.com/...", when: "Article" } */
-];
-
-/* =====================================================================
-   Flags (international code of signals)
-   ===================================================================== */
-var F={
-  A:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30L46 20l14 20H30z" fill="#14528C"/>',
-  B:'<path d="M0 0h60L46 20l14 20H0z" fill="#C8322A"/>',
-  C:'<path d="M0 0h60v8H0z" fill="#14528C"/><path d="M0 8h60v8H0z" fill="#fff"/><path d="M0 16h60v8H0z" fill="#C8322A"/><path d="M0 24h60v8H0z" fill="#fff"/><path d="M0 32h60v8H0z" fill="#14528C"/>',
-  D:'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M0 11h60v18H0z" fill="#14528C"/>',
-  E:'<path d="M0 0h60v20H0z" fill="#14528C"/><path d="M0 20h60v20H0z" fill="#C8322A"/>',
-  F:'<path d="M0 0h60v40H0z" fill="#fff"/><path d="M30 3 57 20 30 37 3 20z" fill="#C8322A"/>',
-  G:'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M10 0h10v40H10z" fill="#14528C"/><path d="M30 0h10v40H30z" fill="#14528C"/><path d="M50 0h10v40H50z" fill="#14528C"/>',
-  H:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30v40H30z" fill="#C8322A"/>',
-  I:'<path d="M0 0h60v40H0z" fill="#F2C230"/><circle cx="30" cy="20" r="11" fill="#101820"/>',
-  J:'<path d="M0 0h60v40H0z" fill="#14528C"/><path d="M0 13h60v14H0z" fill="#fff"/>'
-};
-var LETTERS='ABCDEFGHIJ'.split('');
-var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-function $(id){return document.getElementById(id);}
-function flag(l){return F[l]?'<svg viewBox="0 0 60 40" aria-hidden="true">'+F[l]+'</svg>':'';}
-function nil(v){return v===null||v===undefined||(typeof v==='number'&&isNaN(v));}
-function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-function pct(n,d){d=d==null?2:d;return nil(n)?'—':(n>0?'+':(n<0?'−':''))+Math.abs(n).toFixed(d)+'%';}
-function upct(n,d){d=d==null?1:d;return nil(n)?'—':Math.abs(n).toFixed(d)+'%';}
-function dd(n){return nil(n)?'—':(n>0?'−'+n.toFixed(2)+'%':'0.00%');}
-function num(n,d){d=d==null?2:d;return nil(n)?'—':(n<0?'−':'')+Math.abs(n).toFixed(d);}
-function sign(n){return nil(n)?'':(n>0?'pos':(n<0?'neg':''));}
-function fdate(iso){var d=new Date(iso+'T00:00:00Z');return d.getUTCDate()+' '+MONTHS[d.getUTCMonth()]+' '+d.getUTCFullYear();}
-var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-$('yr').textContent=new Date().getFullYear();
-$('brandflag').innerHTML=flag('W')||'<svg viewBox="0 0 60 40" aria-hidden="true"><path d="M0 0h60v40H0z" fill="#14528C"/><path d="M8 8h44v24H8z" fill="#fff"/><path d="M18 14h24v12H18z" fill="#C8322A"/></svg>';
-$('brandflag2').innerHTML=$('brandflag').innerHTML;
-
-/* =====================================================================
-   Illustrations (seeded, so they look the same on every visit)
-   ===================================================================== */
-function rng(seed){return function(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};}
-
-function artCandles(){
-  var el=$('art-candle'), W=600, H=420, r=rng(7), rows=7, labels=['M30','H1','H2','H4','H8','H12','D1'];
-  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
-  var top=34, rowH=(H-80)/rows;
-  for(var i=0;i<rows;i++){
-    var y0=top+i*rowH, n=30-i*2, cw=(W-110)/n, price=0.5, hit=Math.floor(n*(.35+r()*.5));
-    g+='<text x="24" y="'+(y0+rowH/2+4)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">'+labels[i]+'</text>';
-    g+='<line x1="70" x2="'+(W-24)+'" y1="'+(y0+rowH-4)+'" y2="'+(y0+rowH-4)+'" stroke="rgba(214,230,240,.08)"/>';
-    for(var k=0;k<n;k++){
-      var o=price, c=Math.min(.95,Math.max(.05,o+(r()-.5)*.35)), hi=Math.max(o,c)+r()*.12, lo=Math.min(o,c)-r()*.12;
-      price=c;
-      var x=78+k*cw, Y=function(v){return y0+4+(1-v)*(rowH-12);};
-      var isHit=k===hit, up=c>=o, col=isHit?'#E0A92C':(up?'#45C29A':'#E8715F');
-      g+='<line x1="'+(x+cw*.3).toFixed(1)+'" x2="'+(x+cw*.3).toFixed(1)+'" y1="'+Y(Math.min(1,hi)).toFixed(1)+'" y2="'+Y(Math.max(0,lo)).toFixed(1)+'" stroke="'+col+'" stroke-width="1" opacity="'+(isHit?1:.55)+'"/>';
-      g+='<rect x="'+x.toFixed(1)+'" y="'+Y(Math.max(o,c)).toFixed(1)+'" width="'+(cw*.6).toFixed(1)+'" height="'+Math.max(1.5,Math.abs(Y(o)-Y(c))).toFixed(1)+'" fill="'+col+'" opacity="'+(isHit?1:.6)+'"/>';
-      if(isHit) g+='<rect x="'+(x-4).toFixed(1)+'" y="'+(y0+1)+'" width="'+(cw*.6+8).toFixed(1)+'" height="'+(rowH-6).toFixed(1)+'" fill="none" stroke="#E0A92C" stroke-width="1" opacity=".7"/>';
+  // Illustration: the seven timeframes CandleGrid reads, with a detected pattern in brass
+  (function(){
+    let seed = 7; const r = () => (seed = (seed * 16807) % 2147483647, (seed - 1) / 2147483646);
+    const W = 600, H = 560, labels = ['M30','H1','H2','H4','H8','H12','D1'], rows = 7, top = 24, rowH = (H - 40) / rows;
+    let g = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Seven rows of candles, one per timeframe, each with one highlighted pattern">`;
+    for (let i = 0; i < rows; i++) {
+      const y0 = top + i * rowH, n = 30 - i * 2, cw = (W - 110) / n, hit = Math.floor(n * (.35 + r() * .5));
+      let price = .5;
+      g += `<text x="22" y="${(y0 + rowH/2 + 4).toFixed(1)}" font-family="Archivo" font-size="13" fill="#8DA4B4">${labels[i]}</text>`;
+      g += `<line x1="70" x2="${W-22}" y1="${(y0+rowH-4).toFixed(1)}" y2="${(y0+rowH-4).toFixed(1)}" stroke="rgba(214,230,240,.08)"/>`;
+      for (let k = 0; k < n; k++) {
+        const o = price, c = Math.min(.95, Math.max(.05, o + (r() - .5) * .35)), hi = Math.max(o, c) + r() * .12, lo = Math.min(o, c) - r() * .12;
+        price = c;
+        const x = 78 + k * cw, Y = v => y0 + 4 + (1 - v) * (rowH - 12), isHit = k === hit;
+        const col = isHit ? '#E0A92C' : (c >= o ? '#45C29A' : '#E8715F'), op = isHit ? 1 : .6;
+        g += `<line x1="${(x+cw*.3).toFixed(1)}" x2="${(x+cw*.3).toFixed(1)}" y1="${Y(Math.min(1,hi)).toFixed(1)}" y2="${Y(Math.max(0,lo)).toFixed(1)}" stroke="${col}" opacity="${op}"/>`;
+        g += `<rect x="${x.toFixed(1)}" y="${Y(Math.max(o,c)).toFixed(1)}" width="${(cw*.6).toFixed(1)}" height="${Math.max(1.5,Math.abs(Y(o)-Y(c))).toFixed(1)}" fill="${col}" opacity="${op}"/>`;
+        if (isHit) g += `<rect x="${(x-4).toFixed(1)}" y="${(y0+1).toFixed(1)}" width="${(cw*.6+8).toFixed(1)}" height="${(rowH-6).toFixed(1)}" fill="none" stroke="#E0A92C" opacity=".7"/>`;
+      }
     }
-  }
-  el.insertAdjacentHTML('afterbegin',g+'</svg>');
-}
-
-function artRegime(){
-  var el=$('art-regime'), W=600, H=420, r=rng(19), n=140;
-  var states=[], s=0, len=0;
-  for(var i=0;i<n;i++){ if(len<=0){ s=[0,1,2][Math.floor(r()*3)]; len=12+Math.floor(r()*26);} states.push(s); len--; }
-  var price=[], p=0;
-  for(var j=0;j<n;j++){ var drift=states[j]===0?.9:(states[j]===1?-.8:0); p+=drift+(r()-.5)*(states[j]===2?5:3); price.push(p); }
-  var lo=Math.min.apply(null,price), hi=Math.max.apply(null,price);
-  var PL=30, PR=30, PT=40, PB=110, X=function(i){return PL+i/(n-1)*(W-PL-PR);}, Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
-  var cols=['rgba(69,194,154,.16)','rgba(232,113,95,.16)','rgba(214,230,240,.07)'];
-  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
-  var start=0;
-  for(var k=1;k<=n;k++){ if(k===n||states[k]!==states[start]){ g+='<rect x="'+X(start).toFixed(1)+'" y="'+PT+'" width="'+(X(k-1)-X(start)+ (W-PL-PR)/(n-1)).toFixed(1)+'" height="'+(H-PT-PB)+'" fill="'+cols[states[start]]+'"/>'; start=k; } }
-  var d=price.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);}).join('');
-  g+='<path d="'+d+'" fill="none" stroke="#DCE6EC" stroke-width="1.6"/>';
-  // probability bars for the next state
-  var probs=[.62,.23,.15], names=['Trend up','Trend down','Range'], bc=['#45C29A','#E8715F','#8DA4B4'], by=H-86;
-  g+='<text x="'+PL+'" y="'+(by-12)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">Probability of the next state</text>';
-  for(var q=0;q<3;q++){
-    var bw=(W-PL-PR-140)*probs[q];
-    g+='<text x="'+PL+'" y="'+(by+q*22+12)+'" font-family="Archivo" font-size="12" fill="#DCE6EC">'+names[q]+'</text>';
-    g+='<rect x="'+(PL+96)+'" y="'+(by+q*22+2)+'" width="'+(W-PL-PR-140)+'" height="12" fill="rgba(214,230,240,.06)"/>';
-    g+='<rect x="'+(PL+96)+'" y="'+(by+q*22+2)+'" width="'+bw.toFixed(1)+'" height="12" fill="'+bc[q]+'"/>';
-    g+='<text x="'+(W-PR)+'" y="'+(by+q*22+12)+'" text-anchor="end" font-family="Archivo" font-size="12" font-weight="600" fill="#DCE6EC">'+Math.round(probs[q]*100)+'%</text>';
-  }
-  el.insertAdjacentHTML('afterbegin',g+'</svg>');
-}
-
-function cover(seed, big){
-  var r=rng(seed), W=big?700:400, H=big?360:150, n=big?60:36, p=H*.6, pts=[];
-  for(var i=0;i<n;i++){ p+=(r()-.47)*H*.09; p=Math.max(H*.15,Math.min(H*.85,p)); pts.push(p); }
-  var d=pts.map(function(v,i){return (i?'L':'M')+(i/(n-1)*W).toFixed(1)+' '+v.toFixed(1);}).join('');
-  var fl=LETTERS[seed%10];
-  return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+
-    '<path d="'+d+'L'+W+' '+H+'L0 '+H+'Z" fill="rgba(69,194,154,.1)"/><path d="'+d+'" fill="none" stroke="#45C29A" stroke-width="2"/>'+
-    '<g transform="translate('+(W-(big?110:74))+','+(big?30:18)+') scale('+(big?1.4:.9)+')">'+F[fl]+'</g></svg>';
-}
-
-function drawPosts(){
-  $('posts').innerHTML=POSTS.map(function(p,i){
-    var feature=i===0;
-    return '<a class="post'+(feature?' feature':'')+'" href="'+esc(p.url)+'">'+
-      '<div class="cover">'+cover(i*3+1,feature)+'</div>'+
-      '<div class="txt"><p class="when">'+esc(p.when||'Article')+'</p><h3>'+esc(p.title)+'</h3><p>'+esc(p.text)+'</p></div></a>';
-  }).join('');
-}
-
-/* =====================================================================
-   Armada data
-   ===================================================================== */
-var SCOPES=[], ACC={}, CUR='EUR', CUR_ID='all';
-/* bots that are also sold on their own, matched by signal flag */
-var PRODUCTS={A:{name:'CandleGrid Pro'},B:{name:'RegimeSwitch Pro'}};
-function labelFleet(s){
-  var strats=s.strategies||[], owner={}, byFlag={};
-  strats.forEach(function(st){ byFlag[st.flag]=st; (st.magics||[]).forEach(function(m){owner[m]=st;});
-    if(PRODUCTS[st.flag] && st.name!==PRODUCTS[st.flag].name){ st.callsign=st.name; st.name=PRODUCTS[st.flag].name; } });
-  SCOPES.forEach(function(sc){
-    if(sc.kind==='group' && sc.flag) (sc.magics||[]).forEach(function(m){ if(!owner[m]) owner[m]=byFlag[sc.flag]; });
-  });
-  SCOPES.forEach(function(sc){
-    if(sc.kind==='account') return;
-    if(sc.flag && PRODUCTS[sc.flag] && sc.name!==PRODUCTS[sc.flag].name){ sc.callsign=sc.name; sc.name=PRODUCTS[sc.flag].name; }
-    if(!sc.flag && sc.kind==='magic' && sc.magics && owner[sc.magics[0]]) sc.parent=owner[sc.magics[0]].name;
-  });
-}
-function scopeForFlag(s,fl){
-  var i, st=null;
-  for(i=0;i<SCOPES.length;i++) if(SCOPES[i].flag===fl && SCOPES[i].kind==='group') return SCOPES[i];
-  for(i=0;i<SCOPES.length;i++) if(SCOPES[i].flag===fl) return SCOPES[i];
-  (s.strategies||[]).forEach(function(x){ if(x.flag===fl) st=x; });
-  if(st && st.magics && st.magics.length===1) for(i=0;i<SCOPES.length;i++) if(SCOPES[i].kind==='magic'&&SCOPES[i].magics&&SCOPES[i].magics[0]===st.magics[0]) return SCOPES[i];
-  return null;
-}
-function drawInArmada(s){
-  Array.prototype.forEach.call(document.querySelectorAll('.inarmada'),function(el){
-    var fl=el.dataset.flag, sc=scopeForFlag(s,fl), T=sc?(sc.trades||{}):{}, st=null;
-    (s.strategies||[]).forEach(function(x){ if(x.flag===fl) st=x; });
-    if(!st && !sc) return;
-    var txt;
-    if(sc && !sc.empty && T.trades){
-      var net=ACC.publish_money&&!nil(sc.net)?money(sc.net,true):pct((sc.returns||{}).total_pct);
-      txt='Live in Armada under flag '+fl+(ACC.type==='demo'?' (demo account)':'')+': <b>'+T.trades+'</b> closed trade'+(T.trades===1?'':'s')+(T.first_trade?' since '+fdate(T.first_trade):'')+', net <b class="'+sign(sc.net!=null?sc.net:(sc.returns||{}).total_pct)+'">'+net+'</b>. <a href="'+esc(el.dataset.url)+'">See its record</a>';
-    } else {
-      txt='In Armada under flag '+fl+'. No closed trades there yet; its record starts with the first one.';
-    }
-    el.innerHTML=flag(fl)+'<span>'+txt+'</span>'; el.hidden=false;
-  });
-}
-
-function money(n,s){
-  if(nil(n)) return '—';
-  var v=new Intl.NumberFormat('en-IE',{style:'currency',currency:CUR,maximumFractionDigits:Math.abs(n)>=10000?0:2}).format(Math.abs(n));
-  return (n<0?'−':(s&&n>0?'+':''))+v;
-}
-
-function hoist(strats){
-  var html=strats.map(function(s){return '<span class="'+(s.status==='live'?'':'dim')+'" title="'+esc(s.name)+(s.status==='live'?' is trading':' is not trading yet')+'">'+flag(s.flag)+'</span>';}).join('');
-  $('a-hoist').innerHTML=html; $('h-flags').innerHTML=html;
-  var live=strats.filter(function(s){return s.status==='live';}).length;
-  $('a-hoist-note').textContent=live===0?'Ten flags, none flying yet.':live+' of 10 bots trading. Faded flags are still in the yard.';
-  $('h-fleet').textContent=live===0?'Ten bots, one account':live+' of 10 bots trading';
-}
-hoist(LETTERS.map(function(l,i){return {flag:l,name:'Bot '+(i+1),status:'yard'};}));
-
-/* monotone cubic curve: smooth, but never invents a peak the data doesn't have */
-function smoothPath(P){
-  var n=P.length; if(!n) return '';
-  if(n<3) return P.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1);}).join('');
-  var dx=[],dy=[],m=[],t=[],i;
-  for(i=0;i<n-1;i++){ dx[i]=(P[i+1][0]-P[i][0])||1e-6; dy[i]=P[i+1][1]-P[i][1]; m[i]=dy[i]/dx[i]; }
-  t[0]=m[0]; t[n-1]=m[n-2];
-  for(i=1;i<n-1;i++) t[i]= m[i-1]*m[i]<=0 ? 0 : 3*(dx[i-1]+dx[i])/((2*dx[i]+dx[i-1])/m[i-1]+(dx[i]+2*dx[i-1])/m[i]);
-  var d='M'+P[0][0].toFixed(1)+' '+P[0][1].toFixed(1);
-  for(i=0;i<n-1;i++){ var h=dx[i]/3;
-    d+='C'+(P[i][0]+h).toFixed(1)+' '+(P[i][1]+t[i]*h).toFixed(1)+' '+(P[i+1][0]-h).toFixed(1)+' '+(P[i+1][1]-t[i+1]*h).toFixed(1)+' '+P[i+1][0].toFixed(1)+' '+P[i+1][1].toFixed(1); }
-  return d;
-}
-/* trade-by-trade curve while the record is young, daily curve once it has history */
-function curveSeries(sc){
-  var eq=sc.equity||[], tl=sc.tl;
-  if(tl && tl.t && tl.t.length>=2 && eq.length<60){
-    var pts=[{d:eq.length?eq[0].d:new Date(tl.t[0]*1000).toISOString().slice(0,10),v:100,p:0,dd:0,t:null}], v=100, p=0, pk=100;
-    for(var i=0;i<tl.t.length;i++){ v*=1+tl.r[i]/100; if(tl.p) p+=tl.p[i]; pk=Math.max(pk,v);
-      pts.push({d:new Date(tl.t[i]*1000).toISOString().slice(0,10), t:tl.t[i]*1000, v:v, p:tl.p?p:null, dd:(v/pk-1)*100, r:tl.r[i], n:i+1}); }
-    pts.byTrade=true; return pts;
-  }
-  var out=eq.slice(); if(out.length===1) out=[{d:out[0].d,v:100,dd:0},out[0]]; return out;
-}
-
-function lineChart(eq, W, H, opts){
-  var PL=opts.pl||0, PR=opts.pr||0, PT=opts.pt||10, PB=opts.pb||10;
-  var vs=eq.map(function(p){return p.v;});
-  var lo=Math.min.apply(null,vs.concat([100])), hi=Math.max.apply(null,vs.concat([100]));
-  var pad=(hi-lo)*.12||1; lo-=pad; hi+=pad;
-  var n=eq.length-1||1;
-  var X=function(i){return PL+i/n*(W-PL-PR);}, Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
-  var d=smoothPath(eq.map(function(p,i){return [X(i),Y(p.v)];}));
-  var len=0; for(var i=1;i<eq.length;i++){ var dx=X(i)-X(i-1), dy=Y(eq[i].v)-Y(eq[i-1].v); len+=Math.sqrt(dx*dx+dy*dy); }
-  return {d:d, area:d+'L'+X(n).toFixed(1)+' '+(H-PB)+'L'+X(0).toFixed(1)+' '+(H-PB)+'Z', X:X, Y:Y, lo:lo, hi:hi, len:Math.ceil(len*1.15)+20, up:vs[vs.length-1]>=100};
-}
-
-function drawHero(sc, s){
-  var R=sc.returns||{}, K=sc.risk||{}, T=sc.trades||{};
-  $('h-ret').textContent=pct(R.total_pct);
-  $('h-ret').className='num';
-  $('h-ret-lab').textContent = T.first_trade ? 'return since '+fdate(T.first_trade) : 'return since the first trade';
-  $('h-pf').textContent=num(T.profit_factor);
-  $('h-hits').textContent=upct(T.win_rate_pct);
-  $('h-dd').textContent=dd(K.max_drawdown_pct);
-  $('h-trades').textContent=nil(T.trades)?'—':T.trades;
-  var eq=curveSeries(sc);
-  if(eq.length>=2){
-    var box=$('h-chart'), W=Math.max(300,box.clientWidth||520), H=170;
-    var c=lineChart(eq,W,H,{pt:14,pb:6});
-    var col=c.up?'#45C29A':'#E8715F';
-    box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" aria-hidden="true">'+
-      '<defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+col+'" stop-opacity=".28"/><stop offset="1" stop-color="'+col+'" stop-opacity="0"/></linearGradient></defs>'+
-      '<line x1="0" x2="'+W+'" y1="'+c.Y(100).toFixed(1)+'" y2="'+c.Y(100).toFixed(1)+'" stroke="rgba(214,230,240,.25)" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>'+
-      '<path class="fade" d="'+c.area+'" fill="url(#hg)"/>'+
-      '<path class="draw" style="--len:'+c.len+'" d="'+c.d+'" fill="none" stroke="'+col+'" stroke-width="2.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>';
-  }
-  if(s.updated_utc){
-    var m=Math.round((Date.now()-new Date(s.updated_utc))/60000);
-    var live=$('h-live'); live.classList.toggle('off',m>90);
-    live.textContent='Updated '+(m<2?'just now':m<60?m+' min ago':Math.round(m/60)+' h ago');
-  }
-  if(ACC.type==='demo') $('h-badge').hidden=false;
-}
-
-function chips(){
-  var list=SCOPES.filter(function(x){return !x.empty;});
-  $('a-chips').innerHTML=list.map(function(sc){
-    var sub=sc.kind==='account'?'all bots':(sc.kind==='group'?'group':(sc.magics?'#'+sc.magics[0]+(sc.parent?' · '+sc.parent:''):''));
-    return '<button type="button" class="chip" data-id="'+esc(sc.id)+'" aria-pressed="'+(sc.id===CUR_ID)+'">'+(sc.flag?flag(sc.flag):'')+esc(sc.kind==='account'?'Whole account':sc.name)+(sub&&sc.kind!=='account'?' <small>'+esc(sub)+'</small>':'')+'</button>';
-  }).join('');
-  if(list.length<2) $('a-chips').hidden=true;
-  Array.prototype.forEach.call($('a-chips').querySelectorAll('.chip'),function(b){
-    b.addEventListener('click',function(){ select(b.dataset.id); });
-  });
-}
-
-function select(id){
-  CUR_ID=id;
-  var sc=null; for(var i=0;i<SCOPES.length;i++) if(SCOPES[i].id===id) sc=SCOPES[i];
-  if(!sc) return;
-  Array.prototype.forEach.call($('a-chips').querySelectorAll('.chip'),function(b){ b.setAttribute('aria-pressed', b.dataset.id===id); });
-  var R=sc.returns||{}, K=sc.risk||{}, T=sc.trades||{};
-  $('a-name').textContent=sc.kind==='account'?'Whole account':sc.name;
-  var meta=[];
-  if(sc.callsign) meta.push('signal '+sc.callsign);
-  if(sc.parent) meta.push('part of '+sc.parent);
-  if(sc.magics && sc.kind!=='account') meta.push(sc.magics.length===1?'magic '+sc.magics[0]:'magics '+sc.magics.join(', '));
-  if(sc.symbols && sc.symbols.length) meta.push(sc.symbols.slice(0,4).map(function(x){return x.s;}).join(', '));
-  if(T.first_trade) meta.push('since '+fdate(T.first_trade));
-  $('a-meta').textContent=meta.join(', ');
-  $('a-full').href=ARMADA_BASE+(sc.id==='all'?'':'#bot='+sc.id);
-  $('a-full').textContent=sc.id==='all'?'See the full record':'Full record for '+sc.name;
-
-  var net = sc.kind==='account' ? ACC.net_profit : sc.net;
-  var cs=T.current_streak;
-  var items=[
-    ['Return', '<span class="'+sign(R.total_pct)+'">'+pct(R.total_pct)+'</span>', nil(R.cagr_pct)?'':'annualised '+pct(R.cagr_pct,1), 'Time-weighted growth. For a single bot, its contribution to the account.'],
-    ['Net profit', '<span class="'+sign(net)+'">'+(ACC.publish_money&&!nil(net)?money(net,true):pct(R.roi_pct))+'</span>', nil(R.share_of_profit_pct)||sc.kind==='account'?(nil(R.roi_pct)?'':'ROI '+pct(R.roi_pct)):R.share_of_profit_pct.toFixed(1)+'% of account profit'],
-    ['Profit factor', num(T.profit_factor), nil(T.payoff_ratio)?'':'payoff '+num(T.payoff_ratio), 'Gross profit divided by gross loss.'],
-    ['Hits', upct(T.win_rate_pct), nil(T.trades)?'':T.trades+' closed trades', 'Share of trades closed in profit, costs included.'],
-    ['Max drawdown', dd(K.max_drawdown_pct), nil(K.current_drawdown_pct)?'':(K.current_drawdown_pct>0?'now −'+K.current_drawdown_pct.toFixed(2)+'%':'at a new high'), 'Largest fall from a peak.'],
-    ['Recovery factor', num(K.recovery_factor), nil(K.longest_underwater_days)?'':'longest under water '+K.longest_underwater_days+' d', 'Net profit divided by the largest drawdown.'],
-    ['Sharpe', num(K.sharpe), nil(K.sortino)?'':'Sortino '+num(K.sortino), 'Return per unit of volatility, annualised.'],
-    ['Streaks', nil(T.max_consec_wins)?'—':T.max_consec_wins+' / '+T.max_consec_losses, nil(cs)?'':'most won / lost, now '+(cs>0?cs+' won':Math.abs(cs)+' lost')],
-    ['Expectancy', '<span class="'+sign(T.expectancy_pct)+'">'+pct(T.expectancy_pct,3)+'</span>', 'per trade, % of balance'],
-    ['This month', '<span class="'+sign(R.month_pct)+'">'+pct(R.month_pct)+'</span>', nil(R.best_month_pct)?'':'best '+pct(R.best_month_pct,1)+', worst '+pct(R.worst_month_pct,1)]
-  ];
-  $('a-figs').innerHTML=items.map(function(it){
-    return '<div><dt'+(it[3]?' title="'+esc(it[3])+'"':'')+'>'+it[0]+'</dt><dd>'+it[1]+(it[2]?'<small>'+esc(it[2])+'</small>':'')+'</dd></div>';
-  }).join('');
-
-  drawBoardChart(sc);
-  drawMonths(sc);
-}
-
-function drawBoardChart(sc){
-  var box=$('a-chart'), eq=curveSeries(sc);
-  if(!eq.length){ box.innerHTML='<div class="empty"><b>No closed trades yet.</b><span>This bot\'s record starts with its first closed trade.</span></div>'; return; }
-  var W=Math.max(300,box.clientWidth||700), H=W<560?250:320, PR=W<560?52:62, DDH=56;
-  var c=lineChart(eq,W,H-DDH,{pl:22,pr:PR,pt:22,pb:24});
-  var col=c.up?'#45C29A':'#E8715F';
-  var ticks='', steps=4;
-  for(var i=0;i<=steps;i++){
-    var v=c.lo+(c.hi-c.lo)*i/steps, y=c.Y(v);
-    ticks+='<line x1="22" x2="'+(W-PR)+'" y1="'+y.toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="rgba(214,230,240,.07)"/>'+
-      '<text x="'+(W-PR+8)+'" y="'+(y+4).toFixed(1)+'" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+pct(v-100,1)+'</text>';
-  }
-  var xl='', last='', lastX=-99;
-  if(eq.byTrade || eq.length<45){
-    var nl=W<560?3:5, seen={};
-    for(var k=0;k<=nl;k++){ var ii=Math.round(k/nl*(eq.length-1)), lab=fdate(eq[ii].d).replace(/ \d{4}$/,'');
-      if(eq.byTrade && ii>0) lab='#'+eq[ii].n+'  '+lab;
-      if(seen[lab]) continue; seen[lab]=1;
-      xl+='<text x="'+Math.min(Math.max(c.X(ii),40),W-PR-40).toFixed(1)+'" y="'+(H-DDH-6)+'" text-anchor="middle" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+lab+'</text>'; }
-  } else {
-    eq.forEach(function(p,i){ var m=p.d.slice(0,7); if(m!==last){ last=m; var x=c.X(i); if(x-lastX>50 && x<W-PR-16){ xl+='<text x="'+x.toFixed(1)+'" y="'+(H-DDH-6)+'" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+MONTHS[+m.slice(5)-1]+'</text>'; lastX=x; } } });
-  }
-  var dots='';
-  if(eq.byTrade && eq.length<=60) eq.forEach(function(p,i){ if(p.r==null) return; dots+='<circle cx="'+c.X(i).toFixed(1)+'" cy="'+c.Y(p.v).toFixed(1)+'" r="3.2" fill="'+(p.r>=0?'#45C29A':'#E8715F')+'" stroke="#06141F" stroke-width="1.5"/>'; });
-  var dmin=Math.min.apply(null,eq.map(function(p){return p.dd||0;}).concat([-0.5]))*1.1;
-  var DY=function(v){return H-DDH+6+(v/dmin)*(DDH-12);};
-  var dpath=smoothPath(eq.map(function(p,i){return [c.X(i),DY(p.dd||0)];}))+'L'+c.X(eq.length-1).toFixed(1)+' '+DY(0)+'L'+c.X(0).toFixed(1)+' '+DY(0)+'Z';
-  box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="Growth and drawdown curve">'+
-    '<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+col+'" stop-opacity=".25"/><stop offset="1" stop-color="'+col+'" stop-opacity="0"/></linearGradient></defs>'+
-    ticks+'<line x1="22" x2="'+(W-PR)+'" y1="'+c.Y(100).toFixed(1)+'" y2="'+c.Y(100).toFixed(1)+'" stroke="rgba(214,230,240,.3)" stroke-dasharray="3 4"/>'+
-    '<path d="'+c.area+'" fill="url(#bg)"/><path d="'+c.d+'" fill="none" stroke="'+col+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>'+dots+xl+
-    '<line x1="22" x2="'+(W-PR)+'" y1="'+DY(0)+'" y2="'+DY(0)+'" stroke="rgba(214,230,240,.15)"/>'+
-    '<path d="'+dpath+'" fill="rgba(232,113,95,.3)" stroke="#E8715F" stroke-width="1"/>'+
-    '<text x="'+(W-PR+8)+'" y="'+(DY(dmin/1.1)+4).toFixed(1)+'" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+pct(dmin/1.1,1)+'</text>'+
-    '<line id="bx" y1="12" y2="'+(H-6)+'" stroke="#fff" stroke-width="1" opacity="0"/><circle id="bdot" r="4.5" fill="'+col+'" stroke="#06141F" stroke-width="2" opacity="0"/></svg>'+
-    '<div class="readout" id="bro" hidden></div>';
-  var svg=box.querySelector('svg'), bx=$('bx'), dot=$('bdot'), ro=$('bro');
-  svg.addEventListener('pointermove',function(e){
-    var r=svg.getBoundingClientRect(), n=eq.length-1;
-    var i=Math.round(((e.clientX-r.left)/r.width*W-22)/(W-22-PR)*n); i=Math.max(0,Math.min(n,i));
-    var p=eq[i], x=c.X(i);
-    bx.setAttribute('x1',x); bx.setAttribute('x2',x); bx.setAttribute('opacity','.25');
-    dot.setAttribute('cx',x); dot.setAttribute('cy',c.Y(p.v)); dot.setAttribute('opacity','1');
-    ro.hidden=false; ro.innerHTML=(p.n?'Trade #'+p.n+' &nbsp;':'')+fdate(p.d)+(p.r!=null?' &nbsp;<b style="color:'+(p.r>=0?'#45C29A':'#E8715F')+'">'+pct(p.r,3)+'</b>':'')+' &nbsp;growth <b>'+pct(p.v-100)+'</b>'+(!nil(p.p)&&ACC.publish_money?' &nbsp;'+money(p.p,true):'')+(p.dd<0?' &nbsp;DD '+pct(p.dd):'');
-  });
-  svg.addEventListener('pointerleave',function(){ bx.setAttribute('opacity','0'); dot.setAttribute('opacity','0'); ro.hidden=true; });
-}
-
-function drawMonths(sc){
-  var mon=(sc.monthly||[]).slice(-12);
-  if(!mon.length){ $('a-months').innerHTML=''; return; }
-  var max=Math.max.apply(null,mon.map(function(m){return Math.abs(m.r||0);}).concat([.5]));
-  var cells=[];
-  for(var i=0;i<12-mon.length;i++) cells.push('<div aria-hidden="true" style="opacity:.35">·<small>&nbsp;</small></div>');
-  mon.forEach(function(m){
-    var a=Math.min(1,Math.abs(m.r)/max)*.7+.12;
-    var bg=m.r>=0?'rgba(69,194,154,'+a.toFixed(2)+')':'rgba(232,113,95,'+a.toFixed(2)+')';
-    cells.push('<div style="background:'+bg+';color:'+(a>.5?'#06141F':'#DCE6EC')+'" title="'+m.m+': '+pct(m.r)+'">'+pct(m.r,1)+'<small style="color:inherit;opacity:.75">'+MONTHS[+m.m.slice(5)-1]+'</small></div>');
-  });
-  $('a-months').innerHTML=cells.join('');
-}
-
-artCandles(); artRegime(); drawTools(); drawPosts();
-
-fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
-  .then(function(r){return r.ok?r.json():null;})
-  .then(function(s){
-    if(!s) return;
-    ACC=s.account||{}; if(ACC.currency) CUR=ACC.currency;
-    SCOPES=(s.scopes||[]);
-    labelFleet(s);
-    if(s.strategies&&s.strategies.length===10) hoist(s.strategies);
-    drawInArmada(s);
-    if(ACC.type==='demo') $('a-disc').textContent='Figures come from a demo account and are published automatically every 15 minutes. Demo fills are usually kinder than real-money execution. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.';
-    var main=null; for(var i=0;i<SCOPES.length;i++) if(SCOPES[i].id==='all') main=SCOPES[i];
-    if(!main || main.empty) return;
-    drawHero(main,s);
-    chips(); select('all');
-    var t; window.addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(function(){ select(CUR_ID); },150); });
-  })
-  .catch(function(){});
+    document.getElementById('art-candle').insertAdjacentHTML('afterbegin', g + '</svg>');
+  })();
 </script>
-<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "9883292d5ecd43ee8afb16ec3d174805"}'></script><!-- End Cloudflare Web Analytics -->
+
+<!-- Payment buttons.
+     disable-funding=card,credit stops PayPal injecting its floating menu
+     (position:fixed, maximum z-index) over the sticky header. -->
+<script src="https://js.stripe.com/v3/buy-button.js" async></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AWa_6Af93UGQdocFcdOmDgC6xGjFV4Kp-8yeFyZ6DhHqPDnHt6kK5xQdSenwitI1-a0kk4Sc4DeCYK9N&vault=true&intent=subscription&currency=EUR&disable-funding=card,credit" data-sdk-integration-source="button-factory"></script>
+<script>
+  if (window.paypal) {
+    paypal.Buttons({
+      fundingSource: paypal.FUNDING.PAYPAL,
+      style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'subscribe' },
+      createSubscription: function (data, actions) {
+        return actions.subscription.create({ plan_id: 'P-9FX7453496128393BNKTDB7Q' });
+      },
+      onApprove: function (data) {
+        window.location.href = 'activate.html?sub=' + encodeURIComponent(data.subscriptionID);
+      },
+      onError: function (err) {
+        console.error('PayPal:', err);
+      }
+    }).render('#paypal-button-container-P-9FX7453496128393BNKTDB7Q');
+  }
+</script>
+
+<script>
+/* Live record of this bot inside Armada. Reads the public stats.json that the
+   Armada publisher uploads every 15 minutes, finds the scope under this bot's
+   flag and draws it. Nothing is stored or typed by hand. */
+(function(){
+  var FLAG='A', NAME='CandleGrid Pro', BASE='https://jsgaston.github.io/armada/';
+  var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var FLAGS={A:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30L46 20l14 20H30z" fill="#14528C"/>',
+             B:'<path d="M0 0h60L46 20l14 20H0z" fill="#C8322A"/>',
+             C:'<path d="M0 0h60v8H0z" fill="#14528C"/><path d="M0 8h60v8H0z" fill="#fff"/><path d="M0 16h60v8H0z" fill="#C8322A"/><path d="M0 24h60v8H0z" fill="#fff"/><path d="M0 32h60v8H0z" fill="#14528C"/>'};
+  function $(id){return document.getElementById(id);}
+  function nil(v){return v===null||v===undefined||(typeof v==='number'&&isNaN(v));}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function pct(n,d){d=d==null?2:d;return nil(n)?'—':(n>0?'+':(n<0?'−':''))+Math.abs(n).toFixed(d)+'%';}
+  function upct(n,d){return nil(n)?'—':Math.abs(n).toFixed(d==null?1:d)+'%';}
+  function num(n){return nil(n)?'—':(n<0?'−':'')+Math.abs(n).toFixed(2);}
+  function ddp(n){return nil(n)?'—':(n>0?'−'+n.toFixed(2)+'%':'0.00%');}
+  function cls(n){return nil(n)?'':(n>0?'pos':(n<0?'neg':''));}
+  function fdate(iso){var d=new Date(iso+'T00:00:00Z');return d.getUTCDate()+' '+MONTHS[d.getUTCMonth()]+' '+d.getUTCFullYear();}
+  function ftime(ms){var d=new Date(ms);return d.getUTCDate()+' '+MONTHS[d.getUTCMonth()]+' '+String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0');}
+  var CUR='EUR';
+  function money(n,sign){ if(nil(n)) return '—';
+    var v=new Intl.NumberFormat('en-IE',{style:'currency',currency:CUR,maximumFractionDigits:2}).format(Math.abs(n));
+    return (n<0?'−':(sign&&n>0?'+':''))+v; }
+
+  /* monotone cubic: smooth, never overshoots. Two points get a soft S with flat ends. */
+  function smooth(P){
+    var n=P.length,i; if(!n) return '';
+    if(n===1) return 'M'+P[0][0].toFixed(1)+' '+P[0][1].toFixed(1);
+    if(n===2){ var h=(P[1][0]-P[0][0])/2; return 'M'+P[0][0].toFixed(1)+' '+P[0][1].toFixed(1)+'C'+(P[0][0]+h).toFixed(1)+' '+P[0][1].toFixed(1)+' '+(P[1][0]-h).toFixed(1)+' '+P[1][1].toFixed(1)+' '+P[1][0].toFixed(1)+' '+P[1][1].toFixed(1); }
+    var dx=[],m=[],t=[];
+    for(i=0;i<n-1;i++){ dx[i]=(P[i+1][0]-P[i][0])||1e-6; m[i]=(P[i+1][1]-P[i][1])/dx[i]; }
+    t[0]=m[0]; t[n-1]=m[n-2];
+    for(i=1;i<n-1;i++) t[i]= m[i-1]*m[i]<=0 ? 0 : 3*(dx[i-1]+dx[i])/((2*dx[i]+dx[i-1])/m[i-1]+(dx[i]+2*dx[i-1])/m[i]);
+    var d='M'+P[0][0].toFixed(1)+' '+P[0][1].toFixed(1);
+    for(i=0;i<n-1;i++){ var k=dx[i]/3;
+      d+='C'+(P[i][0]+k).toFixed(1)+' '+(P[i][1]+t[i]*k).toFixed(1)+' '+(P[i+1][0]-k).toFixed(1)+' '+(P[i+1][1]-t[i+1]*k).toFixed(1)+' '+P[i+1][0].toFixed(1)+' '+P[i+1][1].toFixed(1); }
+    return d;
+  }
+
+  function findScope(s){
+    var sc=s.scopes||[], i;
+    for(i=0;i<sc.length;i++) if(sc[i].flag===FLAG && sc[i].kind==='group') return sc[i];
+    for(i=0;i<sc.length;i++) if(sc[i].flag===FLAG) return sc[i];
+    var st=strategy(s), mg=(st&&st.magics)||[];
+    if(mg.length===1) for(i=0;i<sc.length;i++) if(sc[i].kind==='magic'&&sc[i].magics&&sc[i].magics[0]===mg[0]) return sc[i];
+    return null;
+  }
+  function strategy(s){ var l=s.strategies||[]; for(var i=0;i<l.length;i++) if(l[i].flag===FLAG) return l[i]; return null; }
+
+  /* closed trades once there are a few; hourly equity (open positions included) before that */
+  function series(sc){
+    var tl=sc.tl, n=(tl&&tl.t)?tl.t.length:0, live=sc.live||[];
+    if(n>=6 || (n>=1 && live.length<3)){
+      var pts=[{x:0,v:100}], v=100;
+      for(var i=0;i<n;i++){ v*=1+tl.r[i]/100; pts.push({x:i+1,v:v,r:tl.r[i],t:tl.t[i]*1000}); }
+      pts.kind='trade'; return pts;
+    }
+    if(live.length>=2){ var out=live.map(function(p){return {x:p[0]*1000,v:p[1],t:p[0]*1000};}); out.kind='live'; return out; }
+    var eq=(sc.equity||[]).filter(function(e){return e&&e.d&&!nil(e.v);});
+    if(eq.length>=2){ var ed=eq.map(function(e){var ms=Date.parse(e.d+'T00:00:00Z');return {x:ms,v:+e.v,t:ms};}); ed.kind='day'; return ed; }
+    return [];
+  }
+
+  function chart(sc){
+    var pts=series(sc); if(pts.length<2) return '';
+    var box=$('lv-chartbox'), W=Math.max(300,(box&&box.clientWidth)||560)-24, H=220, PL=6, PR=58, PT=16, PB=26;
+    var vs=pts.map(function(p){return p.v;});
+    var lo=Math.min.apply(null,vs.concat([100])), hi=Math.max.apply(null,vs.concat([100])), pad=(hi-lo)*.18||.2; lo-=pad; hi+=pad;
+    var x0=pts[0].x, x1=pts[pts.length-1].x;
+    var X=function(x){return PL+(x-x0)/((x1-x0)||1)*(W-PL-PR);}, Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
+    var P=pts.map(function(p){return [X(p.x),Y(p.v)];});
+    var line=smooth(P), area=line+'L'+P[P.length-1][0].toFixed(1)+' '+(H-PB)+'L'+P[0][0].toFixed(1)+' '+(H-PB)+'Z';
+    var up=vs[vs.length-1]>=100, col=up?'#45C29A':'#E8715F';
+    var g='', steps=3;
+    for(var k=0;k<=steps;k++){ var tv=lo+(hi-lo)*k/steps, ty=Y(tv);
+      g+='<line x1="'+PL+'" x2="'+(W-PR)+'" y1="'+ty.toFixed(1)+'" y2="'+ty.toFixed(1)+'" stroke="rgba(214,230,240,.07)"/>'+
+         '<text x="'+(W-PR+8)+'" y="'+(ty+4).toFixed(1)+'" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+pct(tv-100,2)+'</text>'; }
+    g+='<line x1="'+PL+'" x2="'+(W-PR)+'" y1="'+Y(100).toFixed(1)+'" y2="'+Y(100).toFixed(1)+'" stroke="rgba(214,230,240,.3)" stroke-dasharray="3 4"/>';
+    var dots='';
+    if(pts.kind==='trade' && pts.length<=60) pts.forEach(function(p,i){ if(p.r==null) return;
+      dots+='<circle cx="'+P[i][0].toFixed(1)+'" cy="'+P[i][1].toFixed(1)+'" r="3.2" fill="'+(p.r>=0?'#45C29A':'#E8715F')+'" stroke="#0A2130" stroke-width="1.5"><title>Trade #'+i+': '+pct(p.r,3)+'</title></circle>'; });
+    var fmtT=function(ms){ return pts.kind==='day'?fdate(new Date(ms).toISOString().slice(0,10)):ftime(ms)+' UTC'; };
+    var first=pts.kind==='trade'?'start':fmtT(pts[0].t), last=pts.kind==='trade'?'trade #'+(pts.length-1):fmtT(pts[pts.length-1].t);
+    g+='<text x="'+PL+'" y="'+(H-7)+'" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+first+'</text>'+
+       '<text x="'+(W-PR)+'" y="'+(H-7)+'" text-anchor="end" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+last+'</text>';
+    return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(NAME)+' growth curve inside Armada">'+
+      '<defs><linearGradient id="lvg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+col+'" stop-opacity=".26"/><stop offset="1" stop-color="'+col+'" stop-opacity="0"/></linearGradient></defs>'+
+      g+'<path d="'+area+'" fill="url(#lvg)"/><path d="'+line+'" fill="none" stroke="'+col+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>'+dots+'</svg>'+
+      '<p class="lv-cap">'+(pts.kind==='trade'?'Growth after each closed trade, % of the Armada account.':pts.kind==='day'?'Growth at each day\u2019s close, % of the Armada account.':'Hourly equity for this bot, open positions included, % of the Armada account.')+'</p>';
+  }
+
+  var STATE=null;
+  function render(){
+    var s=STATE, body=$('lv-body');
+    if(!s){ body.innerHTML='<div class="lv-empty"><b>The live record could not be loaded right now.</b>It is always available on the Armada page.</div>'; $('lv-updated').textContent='Unavailable'; return; }
+    var A=s.account||{}; if(A.currency) CUR=A.currency;
+    if(A.type==='demo'){ $('lv-badge').hidden=false;
+      $('lv-foot').textContent='The Armada account is currently a demo account, and demo fills are usually kinder than real-money execution. Figures are measured against the whole Armada account and use the settings that account runs; your own risk, broker and costs will give different results. Past performance does not indicate future results.'; }
+    if(s.updated_utc){ var mins=Math.round((Date.now()-new Date(s.updated_utc))/60000);
+      $('lv-updated').textContent='Updated '+(mins<2?'just now':mins<60?mins+' min ago':mins<2880?Math.round(mins/60)+' h ago':Math.round(mins/1440)+' days ago'); }
+    var st=strategy(s), sc=findScope(s);
+    if(!sc || sc.empty){
+      var why = st && st.status==='live' ? NAME+' is sailing in Armada but its figures are not published yet.' :
+        NAME+' has joined the Armada account and has not closed a trade there yet.';
+      body.innerHTML='<div class="lv-empty"><b>No closed trades yet.</b>'+esc(why)+' Its record appears here automatically after the first one.</div>';
+      return;
+    }
+    var R=sc.returns||{}, K=sc.risk||{}, T=sc.trades||{};
+    if(sc.tl&&sc.tl.p&&sc.tl.p.length){ sc.net=Math.round(sc.tl.p.reduce(function(a,b){return a+(+b||0);},0)*100)/100; }  /* net = its own closed trades */
+    var money_on=A.publish_money && !nil(sc.net);
+    var big = money_on ? money(sc.net,true) : pct(R.total_pct);
+    var since = T.first_trade ? fdate(T.first_trade) : (st&&st.since?fdate(st.since):'');
+    var side=[];
+    side.push(['Contribution to the account','<span class="'+cls(R.total_pct)+'">'+pct(R.total_pct)+'</span>']);
+    if(!nil(R.month_pct)) side.push(['This month','<span class="'+cls(R.month_pct)+'">'+pct(R.month_pct)+'</span>']);
+    if(!nil(T.expectancy_pct)) side.push(['Average trade','<span class="'+cls(T.expectancy_pct)+'">'+pct(T.expectancy_pct,3)+'</span>']);
+    if(sc.magics && sc.magics.length) side.push([sc.magics.length===1?'Magic number':'Magic numbers', esc(sc.magics.join(', '))]);
+    if(sc.symbols && sc.symbols.length) side.push(['Instruments traded', esc(sc.symbols.map(function(x){return x.s;}).join(', '))]);
+    if(T.last_trade) side.push(['Last closed trade', fdate(T.last_trade)]);
+    body.innerHTML='<div class="inst-big"><span class="num '+cls(money_on?sc.net:R.total_pct)+'">'+big+'</span>'+
+      '<span class="lab">'+(money_on?'net result':'return')+' of '+esc(NAME)+' inside Armada'+(since?', since '+since:'')+'</span>'+
+      '<ul class="lv-side">'+side.map(function(r){return '<li><span>'+r[0]+'</span><b>'+r[1]+'</b></li>';}).join('')+'</ul></div>'+
+      '<div class="lv-chart" id="lv-chartbox"></div>';
+    $('lv-chartbox').innerHTML=chart(sc)||'<div class="lv-empty">Not enough points to draw a curve yet.</div>';
+    $('lv-trades').textContent=nil(T.trades)?'—':T.trades;
+    $('lv-hits').textContent=upct(T.win_rate_pct,1);
+    $('lv-pf').textContent=num(T.profit_factor);
+    $('lv-dd').textContent=ddp(K.max_drawdown_pct);
+    $('lv-link').href=BASE+'#bot='+encodeURIComponent(sc.id);
+    $('lv-link').textContent='See '+NAME+'\u2019s full record in Armada';
+  }
+
+  $('lv-flag').innerHTML=FLAGS[FLAG]?'<svg viewBox="0 0 60 40" aria-hidden="true">'+FLAGS[FLAG]+'</svg>':'';
+  fetch(BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(s){ STATE=s; render(); })
+    .catch(function(){ STATE=null; render(); });
+  var tm; window.addEventListener('resize',function(){ clearTimeout(tm); tm=setTimeout(function(){ if(STATE){ var sc=findScope(STATE), b=$('lv-chartbox'); if(sc&&b) b.innerHTML=chart(sc); } },150); });
+})();
+</script>
 </body>
 </html>
