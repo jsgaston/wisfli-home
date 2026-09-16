@@ -297,6 +297,20 @@ footer .legal p{margin:0 0 8px;max-width:70em}
   *{animation:none!important;transition:none!important}
   .draw{stroke-dashoffset:0}.fade{opacity:1}
 }
+
+/* ================= Enhanced performance charts ================= */
+.performance-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;margin-top:28px}
+.perf-card{background:rgba(10,33,48,.55);border:1px solid var(--drule-2);padding:0;min-height:250px;position:relative}
+.perf-card.wide{grid-row:span 2}
+.perf-card h3{margin:0;padding:16px 18px 0;font:700 14px Archivo;color:#fff;letter-spacing:.01em}
+.perf-card .perf-sub{padding:3px 18px 0;font:500 11.5px Archivo;color:var(--dmuted)}
+.perf-chart{height:240px;padding:6px 10px 10px}
+.perf-card.wide .perf-chart{height:500px}
+.perf-chart svg{display:block;width:100%;height:100%}
+.perf-legend{display:flex;gap:14px;flex-wrap:wrap;padding:0 18px 14px;font:500 11.5px Archivo;color:var(--dmuted)}
+.perf-legend i{display:inline-block;width:18px;height:2px;vertical-align:middle;margin-right:5px;background:currentColor}
+@media(max-width:900px){.performance-grid{grid-template-columns:1fr}.perf-card.wide{grid-row:auto}.perf-card.wide .perf-chart{height:330px}}
+
 </style>
 </head>
 <body>
@@ -441,6 +455,11 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <div class="months" id="a-months" aria-label="Last 12 months"></div>
       </div>
       <dl class="figs" id="a-figs"></dl>
+    </div>
+    <div class="performance-grid" id="a-performance-grid" hidden>
+      <article class="perf-card wide"><h3>Growth curve</h3><div class="perf-sub">Published equity observations, rebased to 100 at the selected record start.</div><div class="perf-chart" id="a-perf-equity"></div></article>
+      <article class="perf-card"><h3>Drawdown</h3><div class="perf-sub">Distance from the running high.</div><div class="perf-chart" id="a-perf-dd"></div></article>
+      <article class="perf-card"><h3>Monthly return</h3><div class="perf-sub">Closed-trade result by month when available.</div><div class="perf-chart" id="a-perf-month"></div></article>
     </div>
 
     <div class="a-cta">
@@ -792,6 +811,26 @@ function chips(){
   });
 }
 
+
+function simpleSeriesSVG(vals,W,H,color,zero){
+  if(!vals.length) return '<div style="font:500 12px Archivo;color:#8DA4B4;padding:28px">No published observations yet.</div>';
+  var PL=12,PR=42,PT=14,PB=24,lo=Math.min.apply(null,vals.concat([zero])),hi=Math.max.apply(null,vals.concat([zero])),pad=(hi-lo)*.12||.5;lo-=pad;hi+=pad;
+  var n=vals.length-1||1,X=i=>PL+i/n*(W-PL-PR),Y=v=>PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);
+  var d=vals.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join('');
+  var z=Y(zero);
+  return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><line x1="'+PL+'" x2="'+(W-PR)+'" y1="'+z.toFixed(1)+'" y2="'+z.toFixed(1)+'" stroke="rgba(214,230,240,.18)" stroke-dasharray="3 4"/><path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><text x="'+(W-PR+5)+'" y="'+(Y(hi)+4)+'" font-family="Archivo" font-size="10" fill="#8DA4B4">'+pct(hi,1)+'</text><text x="'+(W-PR+5)+'" y="'+(Y(lo)+4)+'" font-family="Archivo" font-size="10" fill="#8DA4B4">'+pct(lo,1)+'</text></svg>';
+}
+function renderWisfliExtraCharts(sc){
+  var grid=$('a-performance-grid'); if(!grid) return;
+  var eq=normEquity(sc.equity||[],ACC.starting_balance);deriveDD(eq);
+  if(eq.length<1){grid.hidden=true;return;} grid.hidden=false;
+  var ebox=$('a-perf-equity'),W=Math.max(360,ebox.clientWidth||700),H=470;
+  ebox.innerHTML=perfChartSVG(eq,W,H,true);
+  var dd=(eq.map(p=>finiteNum(p.dd)?p.dd:0)); $('a-perf-dd').innerHTML=simpleSeriesSVG(dd,Math.max(260,$('a-perf-dd').clientWidth||340),220,'#E8715F',0);
+  var mon=(sc.monthly||[]).slice(); var mv=mon.map(x=>Number(x.r)).filter(Number.isFinite);
+  $('a-perf-month').innerHTML=simpleSeriesSVG(mv,Math.max(260,$('a-perf-month').clientWidth||340),220,'#45C29A',0);
+}
+
 function select(id){
   CUR_ID=id;
   var sc=null; for(var i=0;i<SCOPES.length;i++) if(SCOPES[i].id===id) sc=SCOPES[i];
@@ -827,6 +866,7 @@ function select(id){
 
   drawBoardChart(sc);
   drawMonths(sc);
+  renderWisfliExtraCharts(sc);
 }
 
 function drawBoardChart(sc){
@@ -882,7 +922,81 @@ function drawMonths(sc){
   $('a-months').innerHTML=cells.join('');
 }
 
+
+/* ---------- enhanced Armada data/chart adapter ---------- */
+function finiteNum(v){ return v!==null && v!==undefined && Number.isFinite(Number(v)); }
+function normEquity(raw, starting){
+  if(!Array.isArray(raw)) return [];
+  var sb=finiteNum(starting)?Number(starting):null;
+  var out=[];
+  raw.forEach(function(p){
+    if(!p) return;
+    var d=p.d||p.date||p.day||p.time;
+    if(!d) return;
+    var v=finiteNum(p.v)?Number(p.v):null;
+    var b=finiteNum(p.b)?Number(p.b):(finiteNum(p.balance)?Number(p.balance):(finiteNum(p.equity)?Number(p.equity):null));
+    var profit=finiteNum(p.p)?Number(p.p):(finiteNum(p.profit)?Number(p.profit):null);
+    if(v===null && b!==null && sb!==null && sb!==0) v=b/sb*100;
+    else if(v!==null && b===null && sb!==null && Math.abs(v)>1000) { b=v; v=v/sb*100; }
+    else if(v!==null && Math.abs(v)<=100 && (raw.length>1 || Math.abs(v)>1)) v=100+v;
+    if(v===null && profit!==null && sb!==null && sb!==0) v=100+profit/sb*100;
+    if(v===null || !Number.isFinite(v)) return;
+    out.push({d:String(d).slice(0,10),v:v,b:b,p:profit,dd:finiteNum(p.dd)?Number(p.dd):null});
+  });
+  out.sort(function(x,y){return x.d.localeCompare(y.d);});
+  return out;
+}
+function deriveDD(eq){
+  var peak=-Infinity;
+  eq.forEach(function(p){peak=Math.max(peak,p.v); if(!finiteNum(p.dd)) p.dd=(p.v/peak-1)*100;});
+}
+function pathSmooth(points,X,Y){
+  if(points.length<3) return points.map(function(p,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(p.v).toFixed(1);}).join('');
+  var d='M'+X(0).toFixed(1)+' '+Y(points[0].v).toFixed(1);
+  for(var i=1;i<points.length;i++){
+    var p0=points[i-1], p1=points[i];
+    var xm=(X(i-1)+X(i))/2;
+    d+=' C'+xm.toFixed(1)+' '+Y(p0.v).toFixed(1)+' '+xm.toFixed(1)+' '+Y(p1.v).toFixed(1)+' '+X(i).toFixed(1)+' '+Y(p1.v).toFixed(1);
+  }
+  return d;
+}
+function perfChartSVG(eq, W, H, dark){
+  if(!eq.length) return '';
+  var padL=dark?10:30,padR=dark?12:52,padT=16,padB=28;
+  var vals=eq.map(function(p){return p.v;}), lo=Math.min.apply(null,vals.concat([100])),hi=Math.max.apply(null,vals.concat([100]));
+  var span=hi-lo||1, pad=span*.10; lo-=pad;hi+=pad;
+  var n=eq.length-1||1, X=function(i){return padL+i/n*(W-padL-padR);},Y=function(v){return padT+(1-(v-lo)/(hi-lo))*(H-padT-padB);};
+  var col=vals[vals.length-1]>=100?(dark?'#45C29A':'#1E6B57'):(dark?'#E8715F':'#BE3A2B');
+  var line=pathSmooth(eq,X,Y), area=line+'L'+X(n).toFixed(1)+' '+(H-padB)+'L'+X(0).toFixed(1)+' '+(H-padB)+'Z';
+  var ticks='';
+  for(var i=0;i<5;i++){var v=lo+(hi-lo)*i/4; ticks+='<line x1="'+padL+'" x2="'+(W-padR)+'" y1="'+Y(v).toFixed(1)+'" y2="'+Y(v).toFixed(1)+'" stroke="'+(dark?'rgba(214,230,240,.08)':'rgba(15,44,66,.09)')+'"/><text x="'+(W-padR+6)+'" y="'+(Y(v)+4).toFixed(1)+'" font-family="Archivo" font-size="10.5" fill="'+(dark?'#8DA4B4':'#607487')+'">'+pct(v-100,1)+'</text>';}
+  return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="Equity curve">'+ticks+'<line x1="'+padL+'" x2="'+(W-padR)+'" y1="'+Y(100).toFixed(1)+'" y2="'+Y(100).toFixed(1)+'" stroke="'+(dark?'rgba(214,230,240,.25)':'rgba(15,44,66,.28)')+'" stroke-dasharray="4 4"/><path d="'+area+'" fill="'+col+'" opacity=".09"/><path class="eq-line" d="'+line+'" fill="none" stroke="'+col+'" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>';
+}
+function drawEnhancedWisfliArmada(sc){
+  var host=document.getElementById('a-chart'); if(!host) return;
+  var eq=normEquity(sc.equity||[], ACC.starting_balance); deriveDD(eq);
+  if(!eq.length){ return; }
+  var old=host.querySelector('.enhanced-note'); if(old) old.remove();
+  host.innerHTML=perfChartSVG(eq,Math.max(360,host.clientWidth||720),320,true)+'<div class="enhanced-note" style="font:500 11px Archivo;color:#8DA4B4;padding:0 18px 12px">Curve uses the published equity points; the line is visually interpolated between observations.</div>';
+}
+
 artCandles(); artRegime(); drawTools(); drawPosts();
+
+
+/* ---------- replace Armada mini-chart with higher-resolution curve ---------- */
+function drawBoardChart(sc){
+  var box=$('a-chart'), eq=normEquity(sc.equity||[], ACC.starting_balance);
+  deriveDD(eq);
+  if(!eq.length){ box.innerHTML='<div class="empty"><b>No closed trades yet.</b><span>This bot\'s record starts with its first closed trade.</span></div>'; return; }
+  var W=Math.max(320,box.clientWidth||720),H=W<560?270:360;
+  box.innerHTML=perfChartSVG(eq,W,H,true)+'<div class="readout" id="bro" hidden></div><div class="enhanced-note" style="font:500 11px Archivo;color:#8DA4B4;padding:0 22px 14px">Published observations: '+eq.length+' · visual interpolation only; no values are added to the record.</div>';
+  var svg=box.querySelector('svg'),ro=box.querySelector('#bro'),n=eq.length-1||1;
+  svg.addEventListener('pointermove',function(e){
+    var r=svg.getBoundingClientRect(),i=Math.round((e.clientX-r.left)/r.width*n);i=Math.max(0,Math.min(n,i));
+    var p=eq[i];ro.hidden=false;ro.innerHTML=fdate(p.d)+' &nbsp;<b>'+pct(p.v-100)+'</b>'+(finiteNum(p.p)&&ACC.publish_money?' &nbsp;'+money(p.p,true):'')+(p.dd<0?' &nbsp;DD '+pct(p.dd):'');
+  });
+  svg.addEventListener('pointerleave',function(){ro.hidden=true;});
+}
 
 fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
   .then(function(r){return r.ok?r.json():null;})
