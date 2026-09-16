@@ -927,23 +927,50 @@ function drawMonths(sc){
 function finiteNum(v){ return v!==null && v!==undefined && Number.isFinite(Number(v)); }
 function normEquity(raw, starting){
   if(!Array.isArray(raw)) return [];
-  var sb=finiteNum(starting)?Number(starting):null;
-  var out=[];
+  var sb=finiteNum(starting)?Number(starting):null, rows=[];
   raw.forEach(function(p){
     if(!p) return;
-    var d=p.d||p.date||p.day||p.time;
-    if(!d) return;
+    var d=p.d||p.date||p.day||p.time; if(!d) return;
     var v=finiteNum(p.v)?Number(p.v):null;
     var b=finiteNum(p.b)?Number(p.b):(finiteNum(p.balance)?Number(p.balance):(finiteNum(p.equity)?Number(p.equity):null));
     var profit=finiteNum(p.p)?Number(p.p):(finiteNum(p.profit)?Number(p.profit):null);
-    if(v===null && b!==null && sb!==null && sb!==0) v=b/sb*100;
-    else if(v!==null && b===null && sb!==null && Math.abs(v)>1000) { b=v; v=v/sb*100; }
-    else if(v!==null && Math.abs(v)<=100 && (raw.length>1 || Math.abs(v)>1)) v=100+v;
-    if(v===null && profit!==null && sb!==null && sb!==0) v=100+profit/sb*100;
-    if(v===null || !Number.isFinite(v)) return;
-    out.push({d:String(d).slice(0,10),v:v,b:b,p:profit,dd:finiteNum(p.dd)?Number(p.dd):null});
+    rows.push({d:String(d).slice(0,10),rawv:v,b:b,p:profit,dd:finiteNum(p.dd)?Number(p.dd):null});
   });
-  out.sort(function(x,y){return x.d.localeCompare(y.d);});
+  rows.sort(function(x,y){return x.d.localeCompare(y.d);});
+  if(!rows.length) return [];
+
+  /* v can be a daily signed return or an already normalised 100-based level. */
+  var vs=rows.map(function(r){return r.rawv;}).filter(function(x){return finiteNum(x);});
+  var hasNear100=vs.some(function(x){return x>=80 && x<=120;});
+  var looksDailyReturn=vs.length>0 && !hasNear100 && vs.every(function(x){return Math.abs(x)<=50;});
+  var out=[];
+
+  if(looksDailyReturn){
+    var idx=100;
+    rows.forEach(function(r){
+      var level=null;
+      if(finiteNum(r.b) && sb!==null && sb!==0) level=r.b/sb*100;
+      else if(finiteNum(r.rawv)){
+        /* -x% is represented as 100-x% on the first day, then compounded. */
+        idx*=1+r.rawv/100;
+        level=idx;
+      }else if(finiteNum(r.p) && sb!==null && sb!==0) level=100+r.p/sb*100;
+      if(finiteNum(level)) out.push({d:r.d,v:level,b:r.b,p:r.p,dd:r.dd});
+    });
+  }else{
+    rows.forEach(function(r){
+      var level=null;
+      if(finiteNum(r.b) && sb!==null && sb!==0) level=r.b/sb*100;
+      else if(finiteNum(r.rawv)){
+        var x=r.rawv;
+        if(x>=80 && x<=120) level=x;
+        else if(Math.abs(x)<=50) level=100+x;
+        else if(sb!==null && sb!==0) level=x/sb*100;
+      }
+      if(level===null && finiteNum(r.p) && sb!==null && sb!==0) level=100+r.p/sb*100;
+      if(finiteNum(level)) out.push({d:r.d,v:level,b:r.b,p:r.p,dd:r.dd});
+    });
+  }
   return out;
 }
 function deriveDD(eq){
