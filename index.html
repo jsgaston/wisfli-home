@@ -129,6 +129,11 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 .specs{width:100%;border-collapse:collapse;font-size:14.5px;margin:0 0 30px}
 .specs th{text-align:left;font-weight:500;color:var(--muted);padding:9px 16px 9px 0;border-top:1px solid var(--rule);width:36%;vertical-align:top}
 .specs td{padding:9px 0;border-top:1px solid var(--rule);font-weight:600}
+.inarmada{display:flex;align-items:center;gap:12px;font:500 14px/1.5 Archivo;color:var(--ink-2);background:var(--chart);border-left:3px solid var(--brass);padding:11px 14px;margin:-12px 0 28px}
+.inarmada svg{width:27px;height:18px;flex:none;display:block;box-shadow:0 1px 0 rgba(15,44,66,.25)}
+.inarmada b{color:var(--ink);font-weight:700}
+.inarmada a{color:var(--ink);font-weight:600}
+.inarmada .pos{color:var(--up)} .inarmada .neg{color:var(--down)}
 .buy{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--rule-2)}
 .price{font:800 44px/1 Archivo;font-stretch:106%;letter-spacing:-.02em}
 .price small{display:block;font:500 14px Archivo;color:var(--muted);margin-top:6px;letter-spacing:0}
@@ -390,6 +395,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
           <tr><th scope="row">Licence</th><td>Signed against your account number</td></tr>
           <tr><th scope="row">Try it</th><td>Free in demo and the Strategy Tester, no key needed</td></tr>
         </table>
+        <p class="inarmada" id="inarmada-A" data-flag="A" data-url="https://jsgaston.github.io/candlegrid-web-en/#live" hidden></p>
         <div class="buy">
           <div class="price">€29<small>per month, or €149 lifetime</small></div>
           <a class="btn ink" href="https://jsgaston.github.io/candlegrid-web-en/">View CandleGrid Pro</a>
@@ -409,6 +415,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
           <tr><th scope="row">Upkeep</th><td>Refits and revalidates itself every 250 bars</td></tr>
           <tr><th scope="row">Licence</th><td>Signed against your account number</td></tr>
         </table>
+        <p class="inarmada" id="inarmada-B" data-flag="B" data-url="https://jsgaston.github.io/regimeswitch-web-en/#live" hidden></p>
         <div class="buy">
           <div class="price">€39<small>per month, or €249 lifetime</small></div>
           <a class="btn ink" href="https://jsgaston.github.io/regimeswitch-web-en/">View RegimeSwitch Pro</a>
@@ -426,7 +433,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <div class="hoist" id="a-hoist"></div>
         <p class="hoist-note" id="a-hoist-note">Each bot sails under its own flag.</p>
       </div>
-      <p>One MetaTrader 5 account, ten algorithms, added one at a time as each passes validation. Your terminal mirrors every position it takes, scaled to your balance. Pick a bot below to see its own record.</p>
+      <p>One MetaTrader 5 account, ten algorithms, added one at a time as each passes validation. Flag A is CandleGrid Pro, flag B is RegimeSwitch Pro, flag C is Charlie. Your terminal mirrors every position it takes, scaled to your balance. Pick a bot below to see its own record.</p>
     </div>
 
     <div class="chips" id="a-chips" role="group" aria-label="Choose a bot"></div>
@@ -492,7 +499,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <div><span>Built with</span><span>MQL5, Python</span></div>
         <div><span>Education</span><span>Physics degree, master's</span></div>
         <div><span>Payments</span><span>Stripe, PayPal</span></div>
-        <div><span>Contact</span><span><a href="mailto:jsgastoniriartecabrera@gmail.com">jsgastoniriartecabrera@gmail.com</a></span></div>
+        <div><span>Contact</span><span><a href="mailto:support@wisfli.com">support@wisfli.com</a></span></div>
       </div>
     </div>
   </div>
@@ -523,7 +530,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
           <li><a href="/terms.html">Terms</a></li>
           <li><a href="/privacy.html">Privacy</a></li>
           <li><a href="https://medium.com/@jsgastoniriartecabrera">Medium</a></li>
-          <li><a href="mailto:jsgastoniriartecabrera@gmail.com">Email</a></li>
+          <li><a href="mailto:support@wisfli.com">support@wisfli.com</a></li>
         </ul>
       </div>
     </div>
@@ -723,6 +730,44 @@ function drawPosts(){
    Armada data
    ===================================================================== */
 var SCOPES=[], ACC={}, CUR='EUR', CUR_ID='all';
+/* bots that are also sold on their own, matched by signal flag */
+var PRODUCTS={A:{name:'CandleGrid Pro'},B:{name:'RegimeSwitch Pro'}};
+function labelFleet(s){
+  var strats=s.strategies||[], owner={}, byFlag={};
+  strats.forEach(function(st){ byFlag[st.flag]=st; (st.magics||[]).forEach(function(m){owner[m]=st;});
+    if(PRODUCTS[st.flag] && st.name!==PRODUCTS[st.flag].name){ st.callsign=st.name; st.name=PRODUCTS[st.flag].name; } });
+  SCOPES.forEach(function(sc){
+    if(sc.kind==='group' && sc.flag) (sc.magics||[]).forEach(function(m){ if(!owner[m]) owner[m]=byFlag[sc.flag]; });
+  });
+  SCOPES.forEach(function(sc){
+    if(sc.kind==='account') return;
+    if(sc.flag && PRODUCTS[sc.flag] && sc.name!==PRODUCTS[sc.flag].name){ sc.callsign=sc.name; sc.name=PRODUCTS[sc.flag].name; }
+    if(!sc.flag && sc.kind==='magic' && sc.magics && owner[sc.magics[0]]) sc.parent=owner[sc.magics[0]].name;
+  });
+}
+function scopeForFlag(s,fl){
+  var i, st=null;
+  for(i=0;i<SCOPES.length;i++) if(SCOPES[i].flag===fl && SCOPES[i].kind==='group') return SCOPES[i];
+  for(i=0;i<SCOPES.length;i++) if(SCOPES[i].flag===fl) return SCOPES[i];
+  (s.strategies||[]).forEach(function(x){ if(x.flag===fl) st=x; });
+  if(st && st.magics && st.magics.length===1) for(i=0;i<SCOPES.length;i++) if(SCOPES[i].kind==='magic'&&SCOPES[i].magics&&SCOPES[i].magics[0]===st.magics[0]) return SCOPES[i];
+  return null;
+}
+function drawInArmada(s){
+  Array.prototype.forEach.call(document.querySelectorAll('.inarmada'),function(el){
+    var fl=el.dataset.flag, sc=scopeForFlag(s,fl), T=sc?(sc.trades||{}):{}, st=null;
+    (s.strategies||[]).forEach(function(x){ if(x.flag===fl) st=x; });
+    if(!st && !sc) return;
+    var txt;
+    if(sc && !sc.empty && T.trades){
+      var net=ACC.publish_money&&!nil(sc.net)?money(sc.net,true):pct((sc.returns||{}).total_pct);
+      txt='Live in Armada under flag '+fl+(ACC.type==='demo'?' (demo account)':'')+': <b>'+T.trades+'</b> closed trade'+(T.trades===1?'':'s')+(T.first_trade?' since '+fdate(T.first_trade):'')+', net <b class="'+sign(sc.net!=null?sc.net:(sc.returns||{}).total_pct)+'">'+net+'</b>. <a href="'+esc(el.dataset.url)+'">See its record</a>';
+    } else {
+      txt='In Armada under flag '+fl+'. No closed trades there yet; its record starts with the first one.';
+    }
+    el.innerHTML=flag(fl)+'<span>'+txt+'</span>'; el.hidden=false;
+  });
+}
 
 function money(n,s){
   if(nil(n)) return '—';
@@ -807,7 +852,7 @@ function drawHero(sc, s){
 function chips(){
   var list=SCOPES.filter(function(x){return !x.empty;});
   $('a-chips').innerHTML=list.map(function(sc){
-    var sub=sc.kind==='account'?'all bots':(sc.kind==='group'?'group':(sc.magics?'#'+sc.magics[0]:''));
+    var sub=sc.kind==='account'?'all bots':(sc.kind==='group'?'group':(sc.magics?'#'+sc.magics[0]+(sc.parent?' · '+sc.parent:''):''));
     return '<button type="button" class="chip" data-id="'+esc(sc.id)+'" aria-pressed="'+(sc.id===CUR_ID)+'">'+(sc.flag?flag(sc.flag):'')+esc(sc.kind==='account'?'Whole account':sc.name)+(sub&&sc.kind!=='account'?' <small>'+esc(sub)+'</small>':'')+'</button>';
   }).join('');
   if(list.length<2) $('a-chips').hidden=true;
@@ -824,6 +869,8 @@ function select(id){
   var R=sc.returns||{}, K=sc.risk||{}, T=sc.trades||{};
   $('a-name').textContent=sc.kind==='account'?'Whole account':sc.name;
   var meta=[];
+  if(sc.callsign) meta.push('signal '+sc.callsign);
+  if(sc.parent) meta.push('part of '+sc.parent);
   if(sc.magics && sc.kind!=='account') meta.push(sc.magics.length===1?'magic '+sc.magics[0]:'magics '+sc.magics.join(', '));
   if(sc.symbols && sc.symbols.length) meta.push(sc.symbols.slice(0,4).map(function(x){return x.s;}).join(', '));
   if(T.first_trade) meta.push('since '+fdate(T.first_trade));
@@ -922,8 +969,10 @@ fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
   .then(function(s){
     if(!s) return;
     ACC=s.account||{}; if(ACC.currency) CUR=ACC.currency;
-    if(s.strategies&&s.strategies.length===10) hoist(s.strategies);
     SCOPES=(s.scopes||[]);
+    labelFleet(s);
+    if(s.strategies&&s.strategies.length===10) hoist(s.strategies);
+    drawInArmada(s);
     if(ACC.type==='demo') $('a-disc').textContent='Figures come from a demo account and are published automatically every 15 minutes. Demo fills are usually kinder than real-money execution. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.';
     var main=null; for(var i=0;i<SCOPES.length;i++) if(SCOPES[i].id==='all') main=SCOPES[i];
     if(!main || main.empty) return;
