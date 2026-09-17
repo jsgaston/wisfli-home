@@ -466,9 +466,10 @@ footer .legal p{margin:0 0 8px;max-width:70em}
   <div class="wrap">
     <div class="head">
       <h2>Tools</h2>
-      <p>Utilities I built to run my own accounts and now share. They don't place trades. They make it easier to keep an eye on the ones that do.</p>
+      <p>Utilities I built to run my own accounts and now share. They don't trade on their own: they tell you what your account is doing and let you act on it from wherever you are.</p>
     </div>
     <div id="tools-list"></div>
+    <p class="more"><a href="https://jsgaston.github.io/tools/">All tools</a></p>
   </div>
 </section>
 
@@ -521,7 +522,8 @@ footer .legal p{margin:0 0 8px;max-width:70em}
           <li><a href="https://jsgaston.github.io/regimeswitch-web-en/">RegimeSwitch Pro</a></li>
           <li><a href="https://jsgaston.github.io/armada/">Armada signal</a></li>
           <li><a href="https://jsgaston.github.io/armada/setup.html">Armada setup guide</a></li>
-          <li><a href="#tools">Tools</a></li>
+          <li><a href="https://jsgaston.github.io/tools/trading-command-center/">Trading Command Center</a></li>
+          <li><a href="https://jsgaston.github.io/tools/">Tools</a></li>
         </ul>
       </div>
       <div>
@@ -554,22 +556,22 @@ var ARMADA_BASE = 'https://jsgaston.github.io/armada/';
    url:   where the button goes (a .ex5 in this repo, a product page, a payment link).
    button: text on the button. */
 var TOOLS = [
-  { name: "TradingNotifier",
-    kind: "Expert Advisor for MetaTrader 5",
-    desc: "Sends every trade on your MetaTrader 5 account to Telegram as it happens, so you can follow a VPS from your phone without opening the terminal. It only reports; it never opens, modifies or closes a position.",
+  { name: "Trading Command Center",
+    kind: "Expert Advisor for MetaTrader 5 · Telegram and Discord",
+    desc: "Your MT5 account in a chat. Every entry and exit arrives as it happens, with why it closed, the net result in your account currency and the magic number of the bot that took it. Ask for a report on any period or any bot, then move stops or close positions from the same chat, behind confirmations, a kill-switch and risk limits.",
     feats: [
-      "Alerts when a position opens or closes",
-      "Symbol, direction, lots, price, stop and target",
-      "Magic number on every message, so you know which bot it was",
-      "Periodic summary of open positions",
-      "Chart screenshot attached to the alert",
-      "Discord as well as, or instead of, Telegram"
+      "Real-time entry and exit alerts, with chart screenshot",
+      "Close reason: stop, target, manual, EA, stop-out",
+      "Reports per period, per bot and a bot ranking",
+      "Profit factor, drawdown, expectancy, deposit-adjusted return",
+      "Close, modify and open positions, with confirmation",
+      "Seven languages, Telegram and Discord"
     ],
-    setup: "Needs a Telegram bot token and chat ID. In MT5, allow <code>https://api.telegram.org</code> under Tools, Options, Expert Advisors, WebRequest.",
-    price: "",
-    priceNote: "",
-    url: "TradingNotifier.ex5",
-    button: "Download TradingNotifier" }
+    setup: "Chat trading ships switched off. Needs MetaTrader 5 running on a PC or VPS, and a Telegram bot or a Discord webhook.",
+    price: "€19",
+    priceNote: "per month, or €99 lifetime",
+    url: "https://jsgaston.github.io/tools/trading-command-center/",
+    button: "View Trading Command Center" }
 ];
 
 function toolChart(){
@@ -588,12 +590,12 @@ function toolChart(){
 function drawTools(){
   var tg='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M21.9 4.3 18.7 19.5c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.2-8.3c.4-.4-.1-.6-.6-.2L6.2 13.2l-4.9-1.5c-1.1-.3-1.1-1.1.2-1.6l19.1-7.4c.9-.3 1.7.2 1.3 1.6z"/></svg>';
   var chat=
-    '<div class="chat" role="img" aria-label="Example Telegram notifications sent by the EA">'+
-      '<div class="chat-head"><span class="av">'+tg+'</span><span><b>My MT5 alerts</b><small>bot</small></span></div>'+
+    '<div class="chat" role="img" aria-label="Example Telegram messages sent by Trading Command Center">'+
+      '<div class="chat-head"><span class="av">'+tg+'</span><span><b>Command Center</b><small>bot · example messages</small></span></div>'+
       '<div class="chat-body">'+
-        '<div class="msg" style="animation-delay:.2s"><b>Position opened</b>\nBUY XAUUSD 0.10 lots at 2,318.40\nSL 2,309.90  TP 2,335.20\nMagic 34034034<span class="shot">'+toolChart()+'</span><time>09:14</time></div>'+
-        '<div class="msg" style="animation-delay:.5s"><b>Position closed</b>\nXAUUSD <span class="up">+€84.20</span>\nMagic 34034034, held 5 h 12 m<time>14:26</time></div>'+
-        '<div class="msg" style="animation-delay:.8s"><b>Summary</b>\n2 open positions\nEURUSD SELL 0.20, magic 2001\nGBPJPY BUY 0.05, magic 4001\nFloating <span class="dn">−€12.40</span><time>18:00</time></div>'+
+        '<div class="msg" style="animation-delay:.2s"><b>🚀 ENTRY FILLED</b>\nXAUUSD  BUY · 0.10 lots at 2,318.40\n🤖 Magic 88881<span class="shot">'+toolChart()+'</span><time>09:14</time></div>'+
+        '<div class="msg" style="animation-delay:.5s"><b>🟢 EXIT FILLED</b>\n🎯 TAKE PROFIT · +84.2 pips\nNet <span class="up">+€84.20</span> · held 5h 12m<time>14:26</time></div>'+
+        '<div class="msg" style="animation-delay:.8s"><b>🤖 BOT COMPARISON</b>\n🟢 88881 · €212.50 · 41 trades · PF 1.38\n🔴 2001 · <span class="dn">−€36.40</span> · 7 trades · PF 0.81<time>18:00</time></div>'+
       '</div>'+
     '</div>';
   $('tools-list').innerHTML=TOOLS.map(function(t,i){
@@ -971,11 +973,6 @@ fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
     ACC=s.account||{}; if(ACC.currency) CUR=ACC.currency;
     SCOPES=(s.scopes||[]);
     labelFleet(s);
-    if(ACC.publish_money) SCOPES.forEach(function(sc){   /* a bot's net = sum of its own closed trades */
-      if(sc.kind==='account'||!sc.tl||!sc.tl.p||!sc.tl.p.length) return;
-      var sum=Math.round(sc.tl.p.reduce(function(a,b){return a+(+b||0);},0)*100)/100;
-      if(nil(sc.net)||Math.abs(sum-sc.net)>=0.01){ sc.net=sum; if(sc.returns&&ACC.net_profit) sc.returns.share_of_profit_pct=Math.round(sum/ACC.net_profit*1000)/10; }
-    });
     if(s.strategies&&s.strategies.length===10) hoist(s.strategies);
     drawInArmada(s);
     if(ACC.type==='demo') $('a-disc').textContent='Figures come from a demo account and are published automatically every 15 minutes. Demo fills are usually kinder than real-money execution. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.';
