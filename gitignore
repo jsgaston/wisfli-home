@@ -1,0 +1,6 @@
+*.ex5
+*.set
+WisfliSecret.mqh
+*.mq5
+.DS_Store
+Thumbs.db
