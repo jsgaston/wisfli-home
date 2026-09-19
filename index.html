@@ -448,6 +448,25 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         </div>
       </div>
     </article>
+
+    <article class="product">
+      <figure class="art" id="art-wickflow" style="margin:0"><figcaption>It measures itself and switches sides off</figcaption></figure>
+      <div class="body">
+        <p class="status">Available now</p>
+        <h3>WickFlow Pro</h3>
+        <p class="desc">Several symbols and timeframes from a single chart, with five selectable engines: an indecision-candle reversal, a price-action engine, a range system, a self-fitting regime model, or the first two together. Every few bars it replays its own history, measures what its signals actually did, and switches off the sides and the regimes that have stopped paying. In Armada it sails under the Delta flag.</p>
+        <table class="specs">
+          <tr><th scope="row">Market</th><td>Your symbol list, closed bars, any timeframe</td></tr>
+          <tr><th scope="row">Self-audit</th><td>Walk-forward study with a held-back validation half and a bootstrap</td></tr>
+          <tr><th scope="row">Risk controls</th><td>Drawdown brake, losing-streak pause, spread filter, position caps</td></tr>
+          <tr><th scope="row">Licence</th><td>One key, valid on three MetaTrader accounts</td></tr>
+        </table>
+        <div class="buy">
+          <div class="price">&euro;39<small>per month, or &euro;349 once</small></div>
+          <a class="btn ink" href="https://jsgaston.github.io/Delta/">View WickFlow Pro</a>
+        </div>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -546,6 +565,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
           <li><a href="https://jsgaston.github.io/candlegrid-web-en/">CandleGrid Pro</a></li>
           <li><a href="https://jsgaston.github.io/regimeswitch-web-en/">RegimeSwitch Pro</a></li>
           <li><a href="https://jsgaston.github.io/Charlie/">BearStack Pro</a></li>
+          <li><a href="https://jsgaston.github.io/Delta/">WickFlow Pro</a></li>
           <li><a href="https://jsgaston.github.io/armada/">Armada signal</a></li>
           <li><a href="https://jsgaston.github.io/armada/setup.html">Armada setup guide</a></li>
           <li><a href="#tools">Tools</a></li>
@@ -988,7 +1008,49 @@ function drawMonths(sc){
   $('a-months').innerHTML=cells.join('');
 }
 
-artCandles(); artRegime(); artBearStack(); drawTools(); drawPosts();
+
+function artWickFlow(){
+  var el=$('art-wickflow'); if(!el) return;
+  var W=600, H=420, r=rng(41), n=72;
+  var price=[], p=0;
+  for(var i=0;i<n;i++){ p+=(r()-.48)*3.2+Math.sin(i/9)*1.1; price.push(p); }
+  var lo=Math.min.apply(null,price), hi=Math.max.apply(null,price);
+  var PL=28, PR=28, PT=26, PB=192;
+  var X=function(i){return PL+i/(n-1)*(W-PL-PR);};
+  var Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
+  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+  // mitad de validacion, sombreada: es la parte que no elige nada
+  var split=Math.floor(n*0.55);
+  g+='<rect x="'+X(split).toFixed(1)+'" y="'+PT+'" width="'+(X(n-1)-X(split)).toFixed(1)+'" height="'+(H-PT-PB)+'" fill="rgba(224,169,44,.10)"/>';
+  g+='<line x1="'+X(split).toFixed(1)+'" x2="'+X(split).toFixed(1)+'" y1="'+PT+'" y2="'+(H-PB)+'" stroke="#E0A92C" stroke-width="1" stroke-dasharray="4 4"/>';
+  g+='<text x="'+(X(split)+8).toFixed(1)+'" y="'+(PT+16)+'" font-family="Archivo" font-size="11" fill="#E0A92C">held back to validate</text>';
+  var d=price.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);}).join('');
+  g+='<path d="'+d+'" fill="none" stroke="#DCE6EC" stroke-width="1.5"/>';
+  // senales medidas
+  var marks=[6,14,23,31,38,47,54,62,68];
+  for(var m=0;m<marks.length;m++){
+    var k=marks[m], up=(k%2===0), c=up?'#45C29A':'#E8715F';
+    g+='<circle cx="'+X(k).toFixed(1)+'" cy="'+Y(price[k]).toFixed(1)+'" r="3.4" fill="'+c+'"/>';
+  }
+  // barras de expectativa por lado
+  var by=H-168;
+  g+='<text x="'+PL+'" y="'+(by-12)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">Out-of-sample expectancy, in R</text>';
+  var rows=[['LONG',0.62,true],['SHORT',-0.18,false]];
+  var zero=PL+188;
+  for(var q=0;q<rows.length;q++){
+    var lbl=rows[q][0], val=rows[q][1], on=rows[q][2];
+    var y=by+q*42;
+    g+='<text x="'+PL+'" y="'+(y+18)+'" font-family="Archivo" font-size="12" font-weight="700" fill="#DCE6EC">'+lbl+'</text>';
+    g+='<line x1="'+zero+'" x2="'+zero+'" y1="'+(y+2)+'" y2="'+(y+26)+'" stroke="rgba(214,230,240,.30)" stroke-width="1"/>';
+    var w=Math.abs(val)*190, x0=val>=0?zero:zero-w;
+    g+='<rect x="'+x0.toFixed(1)+'" y="'+(y+6)+'" width="'+w.toFixed(1)+'" height="14" fill="'+(val>=0?'#45C29A':'#E8715F')+'"/>';
+    g+='<text x="'+(W-PR)+'" y="'+(y+18)+'" text-anchor="end" font-family="Archivo" font-size="11" font-weight="700" fill="'+(on?'#45C29A':'#E8715F')+'">'+(on?'TRADING':'SWITCHED OFF')+'</text>';
+  }
+  g+='<text x="'+PL+'" y="'+(H-22)+'" font-family="Archivo" font-size="11" fill="#8DA4B4">Re-measured every few bars. A side that cannot clear the bar stops on its own.</text>';
+  el.insertAdjacentHTML('afterbegin',g+'</svg>');
+}
+
+artCandles(); artRegime(); artBearStack(); artWickFlow(); drawTools(); drawPosts();
 
 fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
   .then(function(r){return r.ok?r.json():null;})
