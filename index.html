@@ -123,6 +123,7 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 .product .art figcaption{position:absolute;left:20px;bottom:16px;font:500 12.5px Archivo;color:var(--dmuted)}
 .product .body{padding:44px 44px 40px;display:flex;flex-direction:column}
 .status{display:inline-flex;align-items:center;gap:8px;font:600 13px Archivo;color:var(--up);margin:0 0 14px}
+.status.soon{color:var(--brass)}
 .status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--up)}
 .product h3{margin:0 0 14px;font-size:38px;line-height:1;font-weight:800;font-stretch:108%;letter-spacing:-.015em}
 .product p.desc{margin:0 0 24px;color:var(--ink-2);font-size:17px}
@@ -467,6 +468,25 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         </div>
       </div>
     </article>
+
+    <article class="product">
+      <figure class="art" id="art-kalman" style="margin:0"><figcaption>The price, with the noise taken out</figcaption></figure>
+      <div class="body">
+        <p class="status soon">In testing</p>
+        <h3>KalmanFlow Pro</h3>
+        <p class="desc">A state-space filter separates where the price actually is from the noise around it, and re-estimates its own parameters from your chart data every day by maximum likelihood. A change point test notices within a few bars when that model has broken, and pauses. In Armada it sails under the Echo flag.</p>
+        <table class="specs">
+          <tr><th scope="row">Market</th><td>XAUUSD tested, crypto under evaluation</td></tr>
+          <tr><th scope="row">Learning</th><td>Refits daily, walk-forward by construction: it never sees the bar it trades</td></tr>
+          <tr><th scope="row">Risk controls</th><td>Change point veto, cost filter, regime sizing, daily loss stop</td></tr>
+          <tr><th scope="row">Record</th><td>Strategy Tester only so far. No live history yet</td></tr>
+        </table>
+        <div class="buy">
+          <div class="price">&euro;39<small>per month, or &euro;349 once</small></div>
+          <a class="btn ink" href="https://jsgaston.github.io/kalmanflow-web-en/">View KalmanFlow Pro</a>
+        </div>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -566,6 +586,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
           <li><a href="https://jsgaston.github.io/regimeswitch-web-en/">RegimeSwitch Pro</a></li>
           <li><a href="https://jsgaston.github.io/Charlie/">BearStack Pro</a></li>
           <li><a href="https://jsgaston.github.io/Delta/">WickFlow Pro</a></li>
+          <li><a href="https://jsgaston.github.io/kalmanflow-web-en/">KalmanFlow Pro</a></li>
           <li><a href="https://jsgaston.github.io/armada/">Armada signal</a></li>
           <li><a href="https://jsgaston.github.io/armada/setup.html">Armada setup guide</a></li>
           <li><a href="#tools">Tools</a></li>
@@ -725,6 +746,33 @@ function artCandles(){
       if(isHit) g+='<rect x="'+(x-4).toFixed(1)+'" y="'+(y0+1)+'" width="'+(cw*.6+8).toFixed(1)+'" height="'+(rowH-6).toFixed(1)+'" fill="none" stroke="#E0A92C" stroke-width="1" opacity=".7"/>';
     }
   }
+  el.insertAdjacentHTML('afterbegin',g+'</svg>');
+}
+
+function artKalman(){
+  var el=$('art-kalman'), W=600, H=420, r=rng(31), n=150;
+  var price=[], p=0, v=0, i;
+  for(i=0;i<n;i++){
+    if(i===96) p-=26;                       /* the break the detector catches */
+    v = i<70 ? 0.85 : (i<96 ? 0 : -0.7);
+    p += v + (r()-0.5)*7;
+    price.push(p);
+  }
+  var lvl=[], slope=0, mu=price[0], K0=0.28, K1=0.035;
+  for(i=0;i<n;i++){ var pred=mu+slope, e=price[i]-pred; mu=pred+K0*e; slope=slope+K1*e; lvl.push(mu); }
+  var all=price.concat(lvl), lo=Math.min.apply(null,all), hi=Math.max.apply(null,all);
+  var PL=30, PR=30, PT=42, PB=96;
+  var X=function(k){return PL+k/(n-1)*(W-PL-PR);}, Y=function(q){return PT+(1-(q-lo)/(hi-lo))*(H-PT-PB);};
+  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+  g+='<path d="'+price.map(function(q,k){return (k?'L':'M')+X(k).toFixed(1)+' '+Y(q).toFixed(1);}).join('')+'" fill="none" stroke="#8DA4B4" stroke-width="1.2" opacity=".55"/>';
+  g+='<path d="'+lvl.map(function(q,k){return (k?'L':'M')+X(k).toFixed(1)+' '+Y(q).toFixed(1);}).join('')+'" fill="none" stroke="#45C29A" stroke-width="2.6"/>';
+  g+='<line x1="'+X(96).toFixed(1)+'" y1="'+PT+'" x2="'+X(96).toFixed(1)+'" y2="'+(H-PB)+'" stroke="#E8715F" stroke-width="1.5" stroke-dasharray="5 5"/>';
+  g+='<text x="'+(X(96)+8).toFixed(1)+'" y="'+(PT+16)+'" font-family="Archivo" font-size="12" fill="#E8715F">break detected</text>';
+  var ly=H-64;
+  g+='<line x1="'+PL+'" x2="'+(PL+26)+'" y1="'+ly+'" y2="'+ly+'" stroke="#8DA4B4" stroke-width="1.2" opacity=".55"/>';
+  g+='<text x="'+(PL+34)+'" y="'+(ly+4)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">price</text>';
+  g+='<line x1="'+(PL+110)+'" x2="'+(PL+136)+'" y1="'+ly+'" y2="'+ly+'" stroke="#45C29A" stroke-width="2.6"/>';
+  g+='<text x="'+(PL+144)+'" y="'+(ly+4)+'" font-family="Archivo" font-size="12" fill="#DCE6EC">filtered level</text>';
   el.insertAdjacentHTML('afterbegin',g+'</svg>');
 }
 
@@ -1050,7 +1098,7 @@ function artWickFlow(){
   el.insertAdjacentHTML('afterbegin',g+'</svg>');
 }
 
-artCandles(); artRegime(); artBearStack(); artWickFlow(); drawTools(); drawPosts();
+artCandles(); artRegime(); artBearStack(); artWickFlow(); artKalman(); drawTools(); drawPosts();
 
 fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
   .then(function(r){return r.ok?r.json():null;})
