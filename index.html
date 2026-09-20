@@ -123,6 +123,7 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 .product .art figcaption{position:absolute;left:20px;bottom:16px;font:500 12.5px Archivo;color:var(--dmuted)}
 .product .body{padding:44px 44px 40px;display:flex;flex-direction:column}
 .status{display:inline-flex;align-items:center;gap:8px;font:600 13px Archivo;color:var(--up);margin:0 0 14px}
+.status.soon{color:var(--brass)}
 .status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--up)}
 .product h3{margin:0 0 14px;font-size:38px;line-height:1;font-weight:800;font-stretch:108%;letter-spacing:-.015em}
 .product p.desc{margin:0 0 24px;color:var(--ink-2);font-size:17px}
@@ -132,6 +133,28 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 .buy{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--rule-2)}
 .price{font:800 44px/1 Archivo;font-stretch:106%;letter-spacing:-.02em}
 .price small{display:block;font:500 14px Archivo;color:var(--muted);margin-top:6px;letter-spacing:0}
+
+/* ---------- fichas de bot (rejilla compacta, crece sola) ---------- */
+.bots{display:grid;grid-template-columns:repeat(auto-fill,minmax(296px,1fr));gap:22px}
+.bot{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--rule);transition:border-color .2s,transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s}
+.bot:hover{border-color:var(--ink);transform:translateY(-4px);box-shadow:0 26px 50px -34px rgba(6,20,31,.45)}
+.bot .art{position:relative;height:128px;margin:0;background:var(--sea);overflow:hidden;border-bottom:1px solid var(--rule)}
+.bot .art svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.bot .tag{position:absolute;left:11px;top:11px;z-index:2;font:700 10.5px Archivo;letter-spacing:.07em;text-transform:uppercase;color:#06141F;background:var(--sig);padding:3px 8px}
+.bot .tag.soon{background:var(--brass)}
+.bot .body{display:flex;flex-direction:column;flex:1;padding:19px 19px 17px}
+.bot h3{margin:0 0 4px;font-size:22px;line-height:1.05;font-weight:800;font-stretch:106%;letter-spacing:-.015em}
+.bot .tagline{margin:0 0 12px;font:500 12.5px Archivo;color:var(--muted)}
+.bot .desc{margin:0 0 15px;font-size:14.5px;line-height:1.5;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.bot .spec{margin:0 0 15px;font:12.5px/1.35 Archivo}
+.bot .spec div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-top:1px solid var(--rule)}
+.bot .spec dt{color:var(--muted);flex:none}
+.bot .spec dd{margin:0;font-weight:600;text-align:right}
+.bot .foot{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-top:13px;border-top:1px solid var(--rule-2)}
+.bot .price{font:800 26px/1 Archivo;font-stretch:104%;letter-spacing:-.02em}
+.bot .price small{display:block;font:500 11.5px Archivo;color:var(--muted);margin-top:5px;letter-spacing:0}
+.btn.sm{padding:10px 15px;font-size:13.5px}
+@media (max-width:760px){.bots{gap:18px}.bot .art{height:116px}}
 
 /* ---------- armada ---------- */
 .armada{background:var(--abyss);color:var(--dtext);position:relative;overflow:hidden}
@@ -333,7 +356,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
 @keyframes runx{to{transform:translateX(-100%)}}
 
 /* parallax suave de las ilustraciones */
-.product .art svg,.post .cover svg{top:-7%;height:114%;transform:translate3d(0,var(--pp,0px),0)}
+.bot .art svg,.post .cover svg{top:-7%;height:114%;transform:translate3d(0,var(--pp,0px),0)}
 .chat{transform:translate3d(0,var(--pp,0px),0)}
 .armada h2{transform:translate3d(var(--pp,0px),0,0)}
 .hero::before{background-position:-1px calc(-1px + var(--py,0px))}
@@ -342,13 +365,6 @@ footer .legal p{margin:0 0 8px;max-width:70em}
 .cue{position:absolute;left:28px;bottom:20px;display:flex;align-items:center;gap:12px;font:600 11.5px Archivo;letter-spacing:.16em;text-transform:uppercase;color:var(--dmuted)}
 .cue i{display:block;width:1px;height:38px;background:linear-gradient(180deg,var(--brass),rgba(224,169,44,0));animation:cue 2.4s cubic-bezier(.6,.05,.25,1) infinite}
 @keyframes cue{0%{transform:scaleY(.15);transform-origin:50% 0}49%{transform:scaleY(1);transform-origin:50% 0}50%{transform:scaleY(1);transform-origin:50% 100%}100%{transform:scaleY(.15);transform-origin:50% 100%}}
-
-/* las dos fichas de producto se apilan al pasar */
-.product{transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .55s}
-@media (min-width:1041px) and (min-height:800px){
-  .product{position:sticky;top:86px}
-  .product.stacked{transform:scale(.962);filter:brightness(.985)}
-}
 
 /* reacciones al puntero */
 .post{transition:border-color .2s,transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s}
@@ -394,6 +410,20 @@ footer .legal p{margin:0 0 8px;max-width:70em}
 </style>
 </head>
 <body>
+<!-- ============================================================
+     CAMBIOS DE ESTA VERSIÓN (revisar antes de dar por buena)
+       · Tarjeta nueva: BearStack Pro, 29 EUR/mes o 249 EUR pago unico.
+       · Precios de por vida actualizados: CandleGrid €249, RegimeSwitch €349.
+       · Fila "Licence" de los dos bots: ahora clave WSF- para tres cuentas,
+         ya no "signed against your account number".
+       · CandleGrid: quitada la fila "Try it: free in demo" (las demos ya
+         necesitan licencia); en su lugar, cómo se entrega el archivo.
+       · Tools: TradingNotifier -> Trading Command Center, €19/mes o €99,
+         y el botón lleva a la página del producto en vez de descargar el .ex5.
+         REVISAR la URL: https://jsgaston.github.io/tools/
+       · Correo de contacto: support@wisfli.com (antes el Gmail personal).
+       · Ficha "Payments": Stripe (PayPal retirado del catálogo).
+     ============================================================ -->
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="top">
@@ -481,43 +511,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
       <p>Each one is a compiled Expert Advisor, licensed to your account number, shipped with the settings I actually use rather than the ones that make a backtest look good. You get the .ex5, a configuration file and the reasoning behind it.</p>
     </div>
 
-    <article class="product">
-      <figure class="art" id="art-candle" style="margin:0"><figcaption>Seven timeframes read at once</figcaption></figure>
-      <div class="body">
-        <p class="status">Available now</p>
-        <h3>CandleGrid Pro</h3>
-        <p class="desc">Fourteen candlestick patterns read across seven timeframes at once, each timeframe an independent system with its own magic number. Every entry carries a hard stop. Nothing is averaged down, nothing is doubled up.</p>
-        <table class="specs">
-          <tr><th scope="row">Market</th><td>XAUUSD</td></tr>
-          <tr><th scope="row">Risk controls</th><td>Risk-based lot size, daily loss limit, position cap, spread filter</td></tr>
-          <tr><th scope="row">Licence</th><td>Signed against your account number</td></tr>
-          <tr><th scope="row">Try it</th><td>Free in demo and the Strategy Tester, no key needed</td></tr>
-        </table>
-        <div class="buy">
-          <div class="price">€29<small>per month, or €149 lifetime</small></div>
-          <a class="btn ink" href="https://jsgaston.github.io/candlegrid-web-en/">View CandleGrid Pro</a>
-        </div>
-      </div>
-    </article>
-
-    <article class="product">
-      <figure class="art" id="art-regime" style="margin:0"><figcaption>Hidden states behind the price</figcaption></figure>
-      <div class="body">
-        <p class="status">Available now</p>
-        <h3>RegimeSwitch Pro</h3>
-        <p class="desc">It fits a hidden Markov model to the history in your own terminal and reads the probability of the next state before sending an order. Every symbol and timeframe has to pass an out-of-sample edge test before it may place a single trade.</p>
-        <table class="specs">
-          <tr><th scope="row">Markets</th><td>Multi-symbol, multi-timeframe, up to 80 pairs from one chart</td></tr>
-          <tr><th scope="row">Validation</th><td>Contexts that fail the edge test stay switched off</td></tr>
-          <tr><th scope="row">Upkeep</th><td>Refits and revalidates itself every 250 bars</td></tr>
-          <tr><th scope="row">Licence</th><td>Signed against your account number</td></tr>
-        </table>
-        <div class="buy">
-          <div class="price">€39<small>per month, or €249 lifetime</small></div>
-          <a class="btn ink" href="https://jsgaston.github.io/regimeswitch-web-en/">View RegimeSwitch Pro</a>
-        </div>
-      </div>
-    </article>
+    <div class="bots" id="bots-list"></div>
   </div>
 </section>
 
@@ -601,8 +595,8 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <div><span>Platform</span><span>MetaTrader 5</span></div>
         <div><span>Built with</span><span>MQL5, Python</span></div>
         <div><span>Education</span><span>Physics degree, master's</span></div>
-        <div><span>Payments</span><span>Stripe, PayPal</span></div>
-        <div><span>Contact</span><span><a href="mailto:jsgastoniriartecabrera@gmail.com">jsgastoniriartecabrera@gmail.com</a></span></div>
+        <div><span>Payments</span><span>Stripe</span></div>
+        <div><span>Contact</span><span><a href="mailto:support@wisfli.com">support@wisfli.com</a></span></div>
       </div>
     </div>
   </div>
@@ -623,9 +617,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
       </div>
       <div>
         <h4>Products</h4>
-        <ul>
-          <li><a href="https://jsgaston.github.io/candlegrid-web-en/">CandleGrid Pro</a></li>
-          <li><a href="https://jsgaston.github.io/regimeswitch-web-en/">RegimeSwitch Pro</a></li>
+        <ul id="f-products">
           <li><a href="https://jsgaston.github.io/armada/">Armada signal</a></li>
           <li><a href="https://jsgaston.github.io/armada/setup.html">Armada setup guide</a></li>
           <li><a href="#tools">Tools</a></li>
@@ -637,7 +629,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
           <li><a href="/terms.html">Terms</a></li>
           <li><a href="/privacy.html">Privacy</a></li>
           <li><a href="https://medium.com/@jsgastoniriartecabrera">Medium</a></li>
-          <li><a href="mailto:jsgastoniriartecabrera@gmail.com">Email</a></li>
+          <li><a href="mailto:support@wisfli.com">Email</a></li>
         </ul>
       </div>
     </div>
@@ -656,12 +648,72 @@ var ARMADA_BASE = 'https://jsgaston.github.io/armada/';
 
 /* Articles: the first one is shown large. Add or remove entries freely. */
 
+/* ---------------------------------------------------------------------
+   LOS BOTS. Para anadir uno, copia un bloque y cambia los datos: la
+   ficha, la ilustracion y el enlace del pie salen de aqui. No hay que
+   tocar el HTML.
+     status  : "live" (etiqueta verde) o "soon" (etiqueta dorada)
+     art     : clave de ART (abajo), o "" para una ilustracion automatica
+     specs   : se muestran las SPEC_ROWS primeras filas en la ficha
+   --------------------------------------------------------------------- */
+var SPEC_ROWS = 2;
+
+var BOTS = [
+  { name:"CandleGrid Pro",
+    tagline:"Seven timeframes read at once",
+    status:"live", statusText:"Available now",
+    desc:"Fourteen candlestick patterns read across seven timeframes at once, each timeframe an independent system with its own magic number. Every entry carries a hard stop. Nothing is averaged down, nothing is doubled up.",
+    specs:[["Market","XAUUSD"], ["Risk controls","Risk-based lot size, daily loss limit, position cap, spread filter"], ["Licence","One key, valid on three MetaTrader accounts"], ["Delivery","Compiled .ex5 sent by email after payment"]],
+    price:"€29", priceNote:"per month, or €249 once",
+    url:"https://jsgaston.github.io/candlegrid-web-en/",
+    art:"candles" },
+
+  { name:"RegimeSwitch Pro",
+    tagline:"Hidden states behind the price",
+    status:"live", statusText:"Available now",
+    desc:"It fits a hidden Markov model to the history in your own terminal and reads the probability of the next state before sending an order. Every symbol and timeframe has to pass an out-of-sample edge test before it may place a single trade.",
+    specs:[["Markets","Multi-symbol, multi-timeframe, up to 80 pairs from one chart"], ["Validation","Contexts that fail the edge test stay switched off"], ["Upkeep","Refits and revalidates itself every 250 bars"], ["Licence","One key, valid on three MetaTrader accounts"]],
+    price:"€39", priceNote:"per month, or €349 once",
+    url:"https://jsgaston.github.io/regimeswitch-web-en/",
+    art:"regime" },
+
+  { name:"BearStack Pro",
+    tagline:"Four condition stacks, one trade",
+    status:"live", statusText:"Available now",
+    desc:"Gold, short side only. Four independent stacks — breakout, reversal, momentum and mean reversion — count their conditions on every closed M1 bar, and the first one to reach its threshold sells. One position at a time, no grid and no averaging. In Armada it sails under the Charlie flag.",
+    specs:[["Market","XAUUSD, M1 closed bars, sell side"], ["Risk controls","Daily loss stop, trades-per-day cap, spread filter, time exit, Friday cutoff"], ["Licence","One key, valid on three MetaTrader accounts"], ["Delivery","Compiled .ex5 sent by email after payment"]],
+    price:"€29", priceNote:"per month, or €249 once",
+    url:"https://jsgaston.github.io/Charlie/",
+    art:"bearstack" },
+
+  { name:"WickFlow Pro",
+    tagline:"It measures itself and switches sides off",
+    status:"live", statusText:"Available now",
+    desc:"Several symbols and timeframes from a single chart, with five selectable engines: an indecision-candle reversal, a price-action engine, a range system, a self-fitting regime model, or the first two together. Every few bars it replays its own history, measures what its signals actually did, and switches off the sides and the regimes that have stopped paying. In Armada it sails under the Delta flag.",
+    specs:[["Market","Your symbol list, closed bars, any timeframe"], ["Self-audit","Walk-forward study with a held-back validation half and a bootstrap"], ["Risk controls","Drawdown brake, losing-streak pause, spread filter, position caps"], ["Licence","One key, valid on three MetaTrader accounts"]],
+    price:"€39", priceNote:"per month, or €349 once",
+    url:"https://jsgaston.github.io/Delta/",
+    art:"wickflow" },
+
+  { name:"KalmanFlow Pro",
+    tagline:"The price, with the noise taken out",
+    status:"soon", statusText:"In testing",
+    desc:"A state-space filter separates where the price actually is from the noise around it, and re-estimates its own parameters from your chart data every day by maximum likelihood. A change point test notices within a few bars when that model has broken, and pauses. In Armada it sails under the Echo flag.",
+    specs:[["Market","XAUUSD tested, crypto under evaluation"], ["Learning","Refits daily, walk-forward by construction: it never sees the bar it trades"], ["Risk controls","Change point veto, cost filter, regime sizing, daily loss stop"], ["Record","Strategy Tester only so far. No live history yet"]],
+    price:"€39", priceNote:"per month, or €349 once",
+    url:"https://jsgaston.github.io/kalmanflow-web-en/",
+    art:"kalman" }
+];
+
+/* ilustraciones disponibles para el campo art */
+var ART = {};
+
 /* Tools. Each entry becomes a card in the Tools section.
    price: text shown large ("Free", "€19", ...). Leave "" to hide it.
    url:   where the button goes (a .ex5 in this repo, a product page, a payment link).
    button: text on the button. */
 var TOOLS = [
-  { name: "TradingNotifier",
+  { name: "Trading Command Center",
     kind: "Expert Advisor for MetaTrader 5",
     desc: "Sends every trade on your MetaTrader 5 account to Telegram as it happens, so you can follow a VPS from your phone without opening the terminal. It only reports; it never opens, modifies or closes a position.",
     feats: [
@@ -673,10 +725,11 @@ var TOOLS = [
       "Discord as well as, or instead of, Telegram"
     ],
     setup: "Needs a Telegram bot token and chat ID. In MT5, allow <code>https://api.telegram.org</code> under Tools, Options, Expert Advisors, WebRequest.",
-    price: "",
-    priceNote: "",
-    url: "TradingNotifier.ex5",
-    button: "Download TradingNotifier" }
+    price: "\u20AC19",
+    priceNote: "per month, or \u20AC99 once",
+    /* REVISAR: URL de la p\u00e1gina del producto en el repo tools */
+    url: "https://jsgaston.github.io/tools/",
+    button: "View Trading Command Center" }
 ];
 
 function toolChart(){
@@ -766,8 +819,8 @@ $('brandflag2').innerHTML=$('brandflag').innerHTML;
    ===================================================================== */
 function rng(seed){return function(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};}
 
-function artCandles(){
-  var el=$('art-candle'), W=600, H=420, r=rng(7), rows=7, labels=['M30','H1','H2','H4','H8','H12','D1'];
+function artCandles(el){
+  var W=600, H=420, r=rng(7), rows=7, labels=['M30','H1','H2','H4','H8','H12','D1'];
   var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
   var top=34, rowH=(H-80)/rows;
   for(var i=0;i<rows;i++){
@@ -787,8 +840,35 @@ function artCandles(){
   el.insertAdjacentHTML('afterbegin',g+'</svg>');
 }
 
-function artRegime(){
-  var el=$('art-regime'), W=600, H=420, r=rng(19), n=140;
+function artKalman(el){
+  var W=600, H=420, r=rng(31), n=150;
+  var price=[], p=0, v=0, i;
+  for(i=0;i<n;i++){
+    if(i===96) p-=26;                       /* the break the detector catches */
+    v = i<70 ? 0.85 : (i<96 ? 0 : -0.7);
+    p += v + (r()-0.5)*7;
+    price.push(p);
+  }
+  var lvl=[], slope=0, mu=price[0], K0=0.28, K1=0.035;
+  for(i=0;i<n;i++){ var pred=mu+slope, e=price[i]-pred; mu=pred+K0*e; slope=slope+K1*e; lvl.push(mu); }
+  var all=price.concat(lvl), lo=Math.min.apply(null,all), hi=Math.max.apply(null,all);
+  var PL=30, PR=30, PT=42, PB=96;
+  var X=function(k){return PL+k/(n-1)*(W-PL-PR);}, Y=function(q){return PT+(1-(q-lo)/(hi-lo))*(H-PT-PB);};
+  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+  g+='<path d="'+price.map(function(q,k){return (k?'L':'M')+X(k).toFixed(1)+' '+Y(q).toFixed(1);}).join('')+'" fill="none" stroke="#8DA4B4" stroke-width="1.2" opacity=".55"/>';
+  g+='<path d="'+lvl.map(function(q,k){return (k?'L':'M')+X(k).toFixed(1)+' '+Y(q).toFixed(1);}).join('')+'" fill="none" stroke="#45C29A" stroke-width="2.6"/>';
+  g+='<line x1="'+X(96).toFixed(1)+'" y1="'+PT+'" x2="'+X(96).toFixed(1)+'" y2="'+(H-PB)+'" stroke="#E8715F" stroke-width="1.5" stroke-dasharray="5 5"/>';
+  g+='<text x="'+(X(96)+8).toFixed(1)+'" y="'+(PT+16)+'" font-family="Archivo" font-size="12" fill="#E8715F">break detected</text>';
+  var ly=H-64;
+  g+='<line x1="'+PL+'" x2="'+(PL+26)+'" y1="'+ly+'" y2="'+ly+'" stroke="#8DA4B4" stroke-width="1.2" opacity=".55"/>';
+  g+='<text x="'+(PL+34)+'" y="'+(ly+4)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">price</text>';
+  g+='<line x1="'+(PL+110)+'" x2="'+(PL+136)+'" y1="'+ly+'" y2="'+ly+'" stroke="#45C29A" stroke-width="2.6"/>';
+  g+='<text x="'+(PL+144)+'" y="'+(ly+4)+'" font-family="Archivo" font-size="12" fill="#DCE6EC">filtered level</text>';
+  el.insertAdjacentHTML('afterbegin',g+'</svg>');
+}
+
+function artRegime(el){
+  var W=600, H=420, r=rng(19), n=140;
   var states=[], s=0, len=0;
   for(var i=0;i<n;i++){ if(len<=0){ s=[0,1,2][Math.floor(r()*3)]; len=12+Math.floor(r()*26);} states.push(s); len--; }
   var price=[], p=0;
@@ -810,6 +890,44 @@ function artRegime(){
     g+='<rect x="'+(PL+96)+'" y="'+(by+q*22+2)+'" width="'+(W-PL-PR-140)+'" height="12" fill="rgba(214,230,240,.06)"/>';
     g+='<rect x="'+(PL+96)+'" y="'+(by+q*22+2)+'" width="'+bw.toFixed(1)+'" height="12" fill="'+bc[q]+'"/>';
     g+='<text x="'+(W-PR)+'" y="'+(by+q*22+12)+'" text-anchor="end" font-family="Archivo" font-size="12" font-weight="600" fill="#DCE6EC">'+Math.round(probs[q]*100)+'%</text>';
+  }
+  el.insertAdjacentHTML('afterbegin',g+'</svg>');
+}
+
+function artBearStack(el){
+  if(!el) return;
+  var W=600, H=420, r=rng(23), n=64;
+  var price=[], p=0;
+  for(var i=0;i<n;i++){ var drift=i<18?0.9:(i<26?0.2:-1.5); p+=drift+(r()-.5)*3.4; price.push(p); }
+  var lo=Math.min.apply(null,price), hi=Math.max.apply(null,price);
+  var PL=28, PR=28, PT=30, PB=176;
+  var X=function(i){return PL+i/(n-1)*(W-PL-PR);};
+  var Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
+  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+  // zona bajista sombreada
+  g+='<rect x="'+X(26).toFixed(1)+'" y="'+PT+'" width="'+(X(n-1)-X(26)).toFixed(1)+'" height="'+(H-PT-PB)+'" fill="rgba(232,113,95,.12)"/>';
+  // resistencia
+  var top=Math.max.apply(null,price.slice(0,26));
+  g+='<line x1="'+PL+'" x2="'+(W-PR)+'" y1="'+Y(top).toFixed(1)+'" y2="'+Y(top).toFixed(1)+'" stroke="#E0A92C" stroke-width="1" stroke-dasharray="5 4"/>';
+  var d=price.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);}).join('');
+  g+='<path d="'+d+'" fill="none" stroke="#DCE6EC" stroke-width="1.6"/>';
+  // marca de la entrada
+  g+='<circle cx="'+X(26).toFixed(1)+'" cy="'+Y(price[26]).toFixed(1)+'" r="5" fill="none" stroke="#E8715F" stroke-width="1.6"/>';
+  g+='<text x="'+(X(26)+10).toFixed(1)+'" y="'+(Y(price[26])-8).toFixed(1)+'" font-family="Archivo" font-size="12" fill="#E8715F">Sell</text>';
+  // pilas de condiciones
+  var rows=[['S01','Breakout',5,2,2],['S02','Reversal',4,1,2],['S03','Momentum',5,3,2],['S04','Mean reversion',4,1,2]];
+  var by=H-152;
+  g+='<text x="'+PL+'" y="'+(by-10)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">Conditions true on the closed bar</text>';
+  for(var q=0;q<rows.length;q++){
+    var id=rows[q][0], fam=rows[q][1], total=rows[q][2], on=rows[q][3], min=rows[q][4];
+    var y=by+q*30, fires=on>=min;
+    g+='<text x="'+PL+'" y="'+(y+12)+'" font-family="Archivo" font-size="12" font-weight="700" fill="'+(fires?'#E0A92C':'#8DA4B4')+'">'+id+'</text>';
+    g+='<text x="'+(PL+34)+'" y="'+(y+12)+'" font-family="Archivo" font-size="12" fill="#DCE6EC">'+fam+'</text>';
+    for(var k=0;k<total;k++){
+      var cx=PL+200+k*30;
+      g+='<rect x="'+cx+'" y="'+(y+2)+'" width="24" height="11" fill="'+(k<on?(fires?'#E8715F':'rgba(232,113,95,.45)'):'rgba(214,230,240,.10)')+'"/>';
+    }
+    g+='<text x="'+(W-PR)+'" y="'+(y+12)+'" text-anchor="end" font-family="Archivo" font-size="11" fill="#8DA4B4">'+on+'/'+total+'</text>';
   }
   el.insertAdjacentHTML('afterbegin',g+'</svg>');
 }
@@ -1029,7 +1147,79 @@ function drawMonths(sc){
   $('a-months').innerHTML=cells.join('');
 }
 
-artCandles(); artRegime(); drawTools(); drawPosts();
+
+function artWickFlow(el){
+  if(!el) return;
+  var W=600, H=420, r=rng(41), n=72;
+  var price=[], p=0;
+  for(var i=0;i<n;i++){ p+=(r()-.48)*3.2+Math.sin(i/9)*1.1; price.push(p); }
+  var lo=Math.min.apply(null,price), hi=Math.max.apply(null,price);
+  var PL=28, PR=28, PT=26, PB=192;
+  var X=function(i){return PL+i/(n-1)*(W-PL-PR);};
+  var Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
+  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+  // mitad de validacion, sombreada: es la parte que no elige nada
+  var split=Math.floor(n*0.55);
+  g+='<rect x="'+X(split).toFixed(1)+'" y="'+PT+'" width="'+(X(n-1)-X(split)).toFixed(1)+'" height="'+(H-PT-PB)+'" fill="rgba(224,169,44,.10)"/>';
+  g+='<line x1="'+X(split).toFixed(1)+'" x2="'+X(split).toFixed(1)+'" y1="'+PT+'" y2="'+(H-PB)+'" stroke="#E0A92C" stroke-width="1" stroke-dasharray="4 4"/>';
+  g+='<text x="'+(X(split)+8).toFixed(1)+'" y="'+(PT+16)+'" font-family="Archivo" font-size="11" fill="#E0A92C">held back to validate</text>';
+  var d=price.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);}).join('');
+  g+='<path d="'+d+'" fill="none" stroke="#DCE6EC" stroke-width="1.5"/>';
+  // senales medidas
+  var marks=[6,14,23,31,38,47,54,62,68];
+  for(var m=0;m<marks.length;m++){
+    var k=marks[m], up=(k%2===0), c=up?'#45C29A':'#E8715F';
+    g+='<circle cx="'+X(k).toFixed(1)+'" cy="'+Y(price[k]).toFixed(1)+'" r="3.4" fill="'+c+'"/>';
+  }
+  // barras de expectativa por lado
+  var by=H-168;
+  g+='<text x="'+PL+'" y="'+(by-12)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">Out-of-sample expectancy, in R</text>';
+  var rows=[['LONG',0.62,true],['SHORT',-0.18,false]];
+  var zero=PL+188;
+  for(var q=0;q<rows.length;q++){
+    var lbl=rows[q][0], val=rows[q][1], on=rows[q][2];
+    var y=by+q*42;
+    g+='<text x="'+PL+'" y="'+(y+18)+'" font-family="Archivo" font-size="12" font-weight="700" fill="#DCE6EC">'+lbl+'</text>';
+    g+='<line x1="'+zero+'" x2="'+zero+'" y1="'+(y+2)+'" y2="'+(y+26)+'" stroke="rgba(214,230,240,.30)" stroke-width="1"/>';
+    var w=Math.abs(val)*190, x0=val>=0?zero:zero-w;
+    g+='<rect x="'+x0.toFixed(1)+'" y="'+(y+6)+'" width="'+w.toFixed(1)+'" height="14" fill="'+(val>=0?'#45C29A':'#E8715F')+'"/>';
+    g+='<text x="'+(W-PR)+'" y="'+(y+18)+'" text-anchor="end" font-family="Archivo" font-size="11" font-weight="700" fill="'+(on?'#45C29A':'#E8715F')+'">'+(on?'TRADING':'SWITCHED OFF')+'</text>';
+  }
+  g+='<text x="'+PL+'" y="'+(H-22)+'" font-family="Archivo" font-size="11" fill="#8DA4B4">Re-measured every few bars. A side that cannot clear the bar stops on its own.</text>';
+  el.insertAdjacentHTML('afterbegin',g+'</svg>');
+}
+
+ART.candles=artCandles; ART.regime=artRegime; ART.bearstack=artBearStack;
+ART.wickflow=artWickFlow; ART.kalman=artKalman;
+drawBots(); drawTools(); drawPosts();
+function drawBots(){
+  $('bots-list').innerHTML = BOTS.map(function(b,i){
+    return '<article class="bot">'+
+      '<figure class="art" id="bot-art-'+i+'">'+
+        '<span class="tag'+(b.status==='soon'?' soon':'')+'">'+esc(b.statusText||(b.status==='soon'?'In testing':'Available now'))+'</span>'+
+      '</figure>'+
+      '<div class="body">'+
+        '<h3>'+esc(b.name)+'</h3>'+
+        (b.tagline?'<p class="tagline">'+esc(b.tagline)+'</p>':'')+
+        '<p class="desc">'+esc(b.desc)+'</p>'+
+        '<dl class="spec">'+(b.specs||[]).slice(0,SPEC_ROWS).map(function(sp){
+          return '<div><dt>'+esc(sp[0])+'</dt><dd>'+esc(sp[1])+'</dd></div>'; }).join('')+'</dl>'+
+        '<div class="foot">'+
+          (b.price?'<div class="price">'+esc(b.price)+(b.priceNote?'<small>'+esc(b.priceNote)+'</small>':'')+'</div>':'<span></span>')+
+          (b.url?'<a class="btn ink sm" href="'+esc(b.url)+'" aria-label="View '+esc(b.name)+'">View</a>':'')+
+        '</div>'+
+      '</div>'+
+    '</article>';
+  }).join('');
+  BOTS.forEach(function(b,i){
+    var el=$('bot-art-'+i); if(!el) return;
+    if(ART[b.art]) ART[b.art](el); else el.insertAdjacentHTML('afterbegin', cover(i*7+3,false));
+  });
+  var ul=$('f-products');
+  if(ul) ul.insertAdjacentHTML('afterbegin', BOTS.map(function(b){
+    return b.url?'<li><a href="'+esc(b.url)+'">'+esc(b.name)+'</a></li>':''; }).join(''));
+}
+
 
 fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
   .then(function(r){return r.ok?r.json():null;})
@@ -1064,7 +1254,7 @@ fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
   /* ---------- aparicion al entrar en pantalla ---------- */
   var SEL=['.hero .where','.hero h1','.hero .lede','.hero .actions','.instrument',
            '.principles .wrap > div','.head h2','.head p','.hoist','.hoist-note',
-           '.product','.chips','.board','.a-cta','.disc','.tool','.post','.more',
+           '.bot','.chips','.board','.a-cta','.disc','.tool','.post','.more',
            '.about .grid > div','.facts div','footer .cols > div'];
 
   var io = IOsup ? new IntersectionObserver(function(es){
@@ -1109,7 +1299,7 @@ fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
   function buildPX(){
     if(RM){ PX=[]; return; }
     PX=[];
-    push('.product .art svg',26);
+    push('.bot .art svg',18);
     push('.post .cover svg',16);
     push('.chat',20);
     push('.armada h2',-44,true);
@@ -1117,7 +1307,6 @@ fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
 
   /* ---------- scroll ---------- */
   var bands=[].slice.call(d.querySelectorAll('.band'));
-  var prods=[].slice.call(d.querySelectorAll('#bots .product'));
   var y=0, ticking=false;
 
   function frame(){
@@ -1143,10 +1332,6 @@ fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
         if(!w) continue;
         bands[i].style.setProperty('--shift',(-((y*0.18)%w)).toFixed(1)+'px');
       }
-    }
-    for(i=0;i<prods.length-1;i++){
-      var nr=prods[i+1].getBoundingClientRect();
-      prods[i].classList[(nr.top<vh*0.74)?'add':'remove']('stacked');
     }
   }
   function onScroll(){
