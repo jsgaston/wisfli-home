@@ -156,6 +156,9 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 .btn.sm{padding:10px 15px;font-size:13.5px}
 @media (max-width:760px){.bots{gap:18px}.bot .art{height:116px}}
 
+.botnote{margin:26px 0 0;padding-top:20px;border-top:1px solid var(--rule);font-size:14.5px;line-height:1.6;color:var(--muted);max-width:62em}
+.botnote code{font:600 13.5px/1 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--sea);padding:2px 6px;color:var(--ink)}
+
 /* ---------- armada ---------- */
 .armada{background:var(--abyss);color:var(--dtext);position:relative;overflow:hidden}
 .armada h2{color:#fff;font-size:clamp(64px,10vw,150px);line-height:.82;font-stretch:125%}
@@ -512,6 +515,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
     </div>
 
     <div class="bots" id="bots-list"></div>
+    <p class="botnote">Every bot checks its licence against <code>https://api.wisfli.com</code> when it starts and every few hours after that. Allow that address in MetaTrader under Tools → Options → Expert Advisors → Allow WebRequest for listed URL before the first run: without it the terminal blocks the check and the robot will not trade. Each product page walks through it step by step.</p>
   </div>
 </section>
 
