@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wisfli — trading systems I build and run myself</title>
-<meta name="description" content="MetaTrader 5 Expert Advisors, a copy-trading signal with every statistic published, and notes on building them. Made in Alicante by one person who trades the same systems he sells.">
+<meta name="description" content="MetaTrader 5 Expert Advisors, two copy-trading signals with every statistic published, and notes on building them. Made in Alicante by one person who trades the same systems he sells.">
 <meta name="theme-color" content="#06141F">
 <meta property="og:title" content="Wisfli — trading tools that show their work">
-<meta property="og:description" content="MetaTrader 5 Expert Advisors and Armada, a copy-trading signal that publishes every number it produces.">
+<meta property="og:description" content="MetaTrader 5 Expert Advisors, and Armada and Helm, copy-trading signals that publish every number they produce.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://wisfli.com/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'%3E%3Cpath d='M0 0h30v40H0z' fill='%23fff'/%3E%3Cpath d='M30 0h30L46 20l14 20H30z' fill='%2314528C'/%3E%3C/svg%3E">
@@ -123,7 +123,6 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 .product .art figcaption{position:absolute;left:20px;bottom:16px;font:500 12.5px Archivo;color:var(--dmuted)}
 .product .body{padding:44px 44px 40px;display:flex;flex-direction:column}
 .status{display:inline-flex;align-items:center;gap:8px;font:600 13px Archivo;color:var(--up);margin:0 0 14px}
-.status.soon{color:var(--brass)}
 .status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--up)}
 .product h3{margin:0 0 14px;font-size:38px;line-height:1;font-weight:800;font-stretch:108%;letter-spacing:-.015em}
 .product p.desc{margin:0 0 24px;color:var(--ink-2);font-size:17px}
@@ -133,31 +132,6 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 .buy{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--rule-2)}
 .price{font:800 44px/1 Archivo;font-stretch:106%;letter-spacing:-.02em}
 .price small{display:block;font:500 14px Archivo;color:var(--muted);margin-top:6px;letter-spacing:0}
-
-/* ---------- fichas de bot (rejilla compacta, crece sola) ---------- */
-.bots{display:grid;grid-template-columns:repeat(auto-fill,minmax(296px,1fr));gap:22px}
-.bot{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--rule);transition:border-color .2s,transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s}
-.bot:hover{border-color:var(--ink);transform:translateY(-4px);box-shadow:0 26px 50px -34px rgba(6,20,31,.45)}
-.bot .art{position:relative;height:128px;margin:0;background:var(--sea);overflow:hidden;border-bottom:1px solid var(--rule)}
-.bot .art svg{position:absolute;inset:0;width:100%;height:100%;display:block}
-.bot .tag{position:absolute;left:11px;top:11px;z-index:2;font:700 10.5px Archivo;letter-spacing:.07em;text-transform:uppercase;color:#06141F;background:var(--sig);padding:3px 8px}
-.bot .tag.soon{background:var(--brass)}
-.bot .body{display:flex;flex-direction:column;flex:1;padding:19px 19px 17px}
-.bot h3{margin:0 0 4px;font-size:22px;line-height:1.05;font-weight:800;font-stretch:106%;letter-spacing:-.015em}
-.bot .tagline{margin:0 0 12px;font:500 12.5px Archivo;color:var(--muted)}
-.bot .desc{margin:0 0 15px;font-size:14.5px;line-height:1.5;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
-.bot .spec{margin:0 0 15px;font:12.5px/1.35 Archivo}
-.bot .spec div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-top:1px solid var(--rule)}
-.bot .spec dt{color:var(--muted);flex:none}
-.bot .spec dd{margin:0;font-weight:600;text-align:right}
-.bot .foot{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-top:13px;border-top:1px solid var(--rule-2)}
-.bot .price{font:800 26px/1 Archivo;font-stretch:104%;letter-spacing:-.02em}
-.bot .price small{display:block;font:500 11.5px Archivo;color:var(--muted);margin-top:5px;letter-spacing:0}
-.btn.sm{padding:10px 15px;font-size:13.5px}
-@media (max-width:760px){.bots{gap:18px}.bot .art{height:116px}}
-
-.botnote{margin:26px 0 0;padding-top:20px;border-top:1px solid var(--rule);font-size:14.5px;line-height:1.6;color:var(--muted);max-width:62em}
-.botnote code{font:600 13.5px/1 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--sea);padding:2px 6px;color:var(--ink)}
 
 /* ---------- armada ---------- */
 .armada{background:var(--abyss);color:var(--dtext);position:relative;overflow:hidden}
@@ -200,6 +174,37 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 .disc{font:400 13px/1.6 Archivo;color:#6F8797;max-width:62em;margin:28px 0 0}
 .empty{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;height:100%;min-height:280px;text-align:center;color:var(--dmuted);font-family:Archivo;padding:30px}
 .empty b{color:#fff;font-size:18px}
+
+/* ---------- bigger fleets ---------- */
+.armada .hoist.many{gap:5px}
+.armada .hoist.many svg{width:38px;height:25px}
+.armada .hoist.lots svg{width:30px;height:20px}
+.inst-foot .flags small{font:600 11.5px Archivo;color:var(--dmuted);align-self:center;margin-left:4px}
+
+/* ---------- helm ---------- */
+.helm{border-bottom:1px solid var(--rule)}
+.helm h2{font-size:clamp(56px,8vw,120px);line-height:.85;font-stretch:125%}
+.helm-kick{font:600 17px Archivo;color:var(--muted);margin:14px 0 0}
+.hboard{display:grid;grid-template-columns:1.55fr 1fr;border:1px solid var(--rule);background:var(--panel)}
+.hchart{border-right:1px solid var(--rule);position:relative;display:flex;flex-direction:column;min-height:360px}
+.hchart .chart-top .name{color:var(--ink)}
+.hchart .chart-top .meta{color:var(--muted)}
+#hl-chart{flex:1;min-height:250px;position:relative}
+#hl-chart svg{display:block;width:100%}
+.lempty{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;height:100%;min-height:250px;text-align:center;color:var(--muted);font-family:Archivo;padding:30px}
+.lempty b{color:var(--ink);font-size:18px}
+.hexits{display:flex;height:30px;margin:0 22px 22px;border:1px solid var(--rule);overflow:hidden}
+.hexits span{display:flex;align-items:center;justify-content:center;font:600 11.5px Archivo;white-space:nowrap;overflow:hidden}
+.hfigs{display:grid;grid-template-columns:1fr 1fr;align-content:start;margin:0}
+.hfigs div{padding:18px 22px;border-bottom:1px solid var(--rule);border-right:1px solid var(--rule)}
+.hfigs div:nth-child(2n){border-right:0}
+.hfigs dt{font:500 12.5px Archivo;color:var(--muted);margin:0 0 4px}
+.hfigs dd{margin:0;font:700 26px/1.1 Archivo;color:var(--ink);font-stretch:104%;white-space:nowrap}
+.hfigs dd small{display:block;font:500 12px Archivo;color:var(--muted);margin-top:4px;white-space:normal}
+.h-price{font:500 15px Archivo;color:var(--muted);margin:0}
+.helm .disc{color:var(--muted)}
+@media (max-width:1040px){ .hboard{grid-template-columns:1fr} .hchart{border-right:0;border-bottom:1px solid var(--rule)} }
+@media (max-width:760px){ .hfigs dd{font-size:22px} }
 
 /* ---------- tools ---------- */
 .tools{background:var(--panel);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
@@ -323,110 +328,9 @@ footer .legal p{margin:0 0 8px;max-width:70em}
   *{animation:none!important;transition:none!important}
   .draw{stroke-dashoffset:0}.fade{opacity:1}
 }
-
-/* =====================================================================
-   MOVIMIENTO (capa anadida). Todo lo de aqui abajo es decorativo:
-   si se borra este bloque y el bloque JS del final, la pagina sigue
-   funcionando exactamente igual.
-   ===================================================================== */
-
-/* barra de progreso del scroll, bajo el menu */
-.sprog{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,var(--brass),var(--brass-2));transform:scaleX(0);transform-origin:0 50%;will-change:transform}
-.top .wrap{transition:height .32s cubic-bezier(.2,.7,.2,1)}
-.top.small .wrap{height:52px}
-.top.small{box-shadow:0 14px 34px -22px #000}
-.top nav a{position:relative}
-.top nav a:not(.pill)::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:1px;background:var(--brass);transform:scaleX(0);transform-origin:0 50%;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
-.top nav a:not(.pill):hover::after,.top nav a.act::after{transform:scaleX(1)}
-.top nav a.act{color:#fff}
-
-/* aparicion al entrar en pantalla */
-[data-rv]{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.22,.75,.2,1) var(--d,0s),transform .9s cubic-bezier(.22,.75,.2,1) var(--d,0s)}
-[data-rv].rv-in{opacity:1;transform:none}
-[data-rvw]{opacity:1}
-.wsplit{display:inline-block;overflow:hidden;vertical-align:bottom;padding:.24em .03em .3em;margin:-.24em -.03em -.3em}
-.wsplit i{display:inline-block;font-style:inherit;transform:translateY(145%);transition:transform 1s cubic-bezier(.19,1,.22,1) var(--wd,0s)}
-[data-rvw].rv-in .wsplit i{transform:none}
-
-/* bandas de texto en marcha */
-.band{background:var(--abyss-2);border-top:1px solid var(--drule);border-bottom:1px solid var(--drule);overflow:hidden;padding:20px 0;--shift:0px}
-.band.light{background:var(--panel);border-color:var(--rule)}
-.band .run{display:flex;width:max-content;transform:translate3d(var(--shift),0,0)}
-.band .run span{display:flex;align-items:center;gap:24px;padding-right:24px;white-space:nowrap;color:#fff;font:800 clamp(19px,2.4vw,32px) Archivo;font-stretch:116%;letter-spacing:.005em;animation:runx 34s linear infinite;will-change:transform}
-.band.light .run span{color:var(--ink)}
-.band.rev .run span{animation-direction:reverse}
-.band .dia{display:block;width:9px;height:9px;flex:none;background:var(--brass);transform:rotate(45deg)}
-@keyframes runx{to{transform:translateX(-100%)}}
-
-/* parallax suave de las ilustraciones */
-.bot .art svg,.post .cover svg{top:-7%;height:114%;transform:translate3d(0,var(--pp,0px),0)}
-.chat{transform:translate3d(0,var(--pp,0px),0)}
-.armada h2{transform:translate3d(var(--pp,0px),0,0)}
-.hero::before{background-position:-1px calc(-1px + var(--py,0px))}
-
-/* indicador de scroll en la portada */
-.cue{position:absolute;left:28px;bottom:20px;display:flex;align-items:center;gap:12px;font:600 11.5px Archivo;letter-spacing:.16em;text-transform:uppercase;color:var(--dmuted)}
-.cue i{display:block;width:1px;height:38px;background:linear-gradient(180deg,var(--brass),rgba(224,169,44,0));animation:cue 2.4s cubic-bezier(.6,.05,.25,1) infinite}
-@keyframes cue{0%{transform:scaleY(.15);transform-origin:50% 0}49%{transform:scaleY(1);transform-origin:50% 0}50%{transform:scaleY(1);transform-origin:50% 100%}100%{transform:scaleY(.15);transform-origin:50% 100%}}
-
-/* reacciones al puntero */
-.post{transition:border-color .2s,transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s}
-.post:hover{transform:translateY(-5px);box-shadow:0 26px 50px -34px rgba(6,20,31,.5)}
-.btn{transition:background .15s,border-color .15s,color .15s,transform .25s cubic-bezier(.2,.7,.2,1)}
-.btn:hover{transform:translateY(-2px)}
-.chip{transition:border-color .15s,background .15s,color .15s,transform .25s}
-.chip:hover{transform:translateY(-2px)}
-
-/* celdas que entran escalonadas cada vez que se cambia de bot */
-.figs div,.months div,#a-chips .chip{animation:cellin .55s both cubic-bezier(.2,.7,.2,1)}
-.figs div:nth-child(1),.months div:nth-child(1),#a-chips .chip:nth-child(1){animation-delay:0.00s}
-.figs div:nth-child(2),.months div:nth-child(2),#a-chips .chip:nth-child(2){animation-delay:0.04s}
-.figs div:nth-child(3),.months div:nth-child(3),#a-chips .chip:nth-child(3){animation-delay:0.09s}
-.figs div:nth-child(4),.months div:nth-child(4),#a-chips .chip:nth-child(4){animation-delay:0.14s}
-.figs div:nth-child(5),.months div:nth-child(5),#a-chips .chip:nth-child(5){animation-delay:0.18s}
-.figs div:nth-child(6),.months div:nth-child(6),#a-chips .chip:nth-child(6){animation-delay:0.22s}
-.figs div:nth-child(7),.months div:nth-child(7),#a-chips .chip:nth-child(7){animation-delay:0.27s}
-.figs div:nth-child(8),.months div:nth-child(8),#a-chips .chip:nth-child(8){animation-delay:0.32s}
-.figs div:nth-child(9),.months div:nth-child(9),#a-chips .chip:nth-child(9){animation-delay:0.36s}
-.figs div:nth-child(10),.months div:nth-child(10),#a-chips .chip:nth-child(10){animation-delay:0.40s}
-.figs div:nth-child(11),.months div:nth-child(11),#a-chips .chip:nth-child(11){animation-delay:0.45s}
-.figs div:nth-child(12),.months div:nth-child(12),#a-chips .chip:nth-child(12){animation-delay:0.49s}
-@keyframes cellin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-
-/* volver arriba */
-.totop{position:fixed;right:20px;bottom:20px;z-index:60;width:46px;height:46px;display:flex;align-items:center;justify-content:center;padding:0;background:var(--brass);color:#1A1206;border:0;cursor:pointer;opacity:0;transform:translateY(14px);pointer-events:none;transition:opacity .3s,transform .3s,background .15s}
-.totop:hover{background:var(--brass-2)}
-.totop.on{opacity:1;transform:none;pointer-events:auto}
-.totop svg{width:18px;height:18px;display:block}
-
-@media (max-width:1040px){
-  .cue{display:none}
-  .band{padding:15px 0}
-}
-@media (prefers-reduced-motion:reduce){
-  [data-rv]{opacity:1!important;transform:none!important}
-  .wsplit i{transform:none!important}
-  .product{position:static!important;transform:none!important}
-  .band .run{transform:none!important}
-  .sprog{display:none}
-}
 </style>
 </head>
 <body>
-<!-- ============================================================
-     CAMBIOS DE ESTA VERSIÓN (revisar antes de dar por buena)
-       · Tarjeta nueva: BearStack Pro, 29 EUR/mes o 249 EUR pago unico.
-       · Precios de por vida actualizados: CandleGrid €249, RegimeSwitch €349.
-       · Fila "Licence" de los dos bots: ahora clave WSF- para tres cuentas,
-         ya no "signed against your account number".
-       · CandleGrid: quitada la fila "Try it: free in demo" (las demos ya
-         necesitan licencia); en su lugar, cómo se entrega el archivo.
-       · Tools: TradingNotifier -> Trading Command Center, €19/mes o €99,
-         y el botón lleva a la página del producto en vez de descargar el .ex5.
-         REVISAR la URL: https://jsgaston.github.io/tools/
-       · Correo de contacto: support@wisfli.com (antes el Gmail personal).
-       · Ficha "Payments": Stripe (PayPal retirado del catálogo).
-     ============================================================ -->
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="top">
@@ -435,13 +339,13 @@ footer .legal p{margin:0 0 8px;max-width:70em}
     <nav aria-label="Main">
       <a href="#bots">Bots</a>
       <a href="#armada">Armada</a>
+      <a href="#helm">Helm</a>
       <a href="#tools">Tools</a>
       <a href="#writing">Writing</a>
       <a href="#about">About</a>
       <a class="pill" href="#armada">Live signal</a>
     </nav>
   </div>
-  <span class="sprog" id="sprog" aria-hidden="true"></span>
 </header>
 
 <main id="main">
@@ -451,7 +355,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
     <div>
       <p class="where"><i></i>Alicante, Spain. MetaTrader 5.</p>
       <h1>Trading tools that show their work.</h1>
-      <p class="lede">Expert Advisors with their rules written down, their parameters explained and their limits stated plainly. A copy-trading signal that runs ten of them in one account and publishes every number it produces.</p>
+      <p class="lede">Expert Advisors with their rules written down, their parameters explained and their limits stated plainly. A copy-trading signal that runs every bot I build in one account, and publishes every number it produces.</p>
       <div class="actions">
         <a class="btn brass" href="#armada">See the live signal</a>
         <a class="btn line" href="#bots">Browse the bots</a>
@@ -476,11 +380,10 @@ footer .legal p{margin:0 0 8px;max-width:70em}
       </dl>
       <div class="inst-foot">
         <span class="flags" id="h-flags"></span>
-        <span id="h-fleet">Ten bots, one account</span>
+        <span id="h-fleet">Every bot, one account</span>
       </div>
     </aside>
   </div>
-  <span class="cue" aria-hidden="true">Scroll<i></i></span>
 </div>
 
 <div class="principles">
@@ -495,15 +398,8 @@ footer .legal p{margin:0 0 8px;max-width:70em}
     </div>
     <div>
       <h3>Results published unedited</h3>
-      <p>Armada's figures go from the trading account to this site automatically, every 15 minutes, without passing through my hands.</p>
+      <p>The signals' figures go from the trading accounts to this site automatically, every 15 minutes, without passing through my hands.</p>
     </div>
-  </div>
-</div>
-
-<div class="band" aria-hidden="true">
-  <div class="run">
-    <span>Trading systems for MetaTrader 5<i class="dia"></i>Built and run in Alicante<i class="dia"></i>Rules written down<i class="dia"></i>Every figure published automatically<i class="dia"></i></span>
-    <span>Trading systems for MetaTrader 5<i class="dia"></i>Built and run in Alicante<i class="dia"></i>Rules written down<i class="dia"></i>Every figure published automatically<i class="dia"></i></span>
   </div>
 </div>
 
@@ -514,8 +410,43 @@ footer .legal p{margin:0 0 8px;max-width:70em}
       <p>Each one is a compiled Expert Advisor, licensed to your account number, shipped with the settings I actually use rather than the ones that make a backtest look good. You get the .ex5, a configuration file and the reasoning behind it.</p>
     </div>
 
-    <div class="bots" id="bots-list"></div>
-    <p class="botnote">Every bot checks its licence against <code>https://api.wisfli.com</code> when it starts and every few hours after that. Allow that address in MetaTrader under Tools → Options → Expert Advisors → Allow WebRequest for listed URL before the first run: without it the terminal blocks the check and the robot will not trade. Each product page walks through it step by step.</p>
+    <article class="product">
+      <figure class="art" id="art-candle" style="margin:0"><figcaption>Seven timeframes read at once</figcaption></figure>
+      <div class="body">
+        <p class="status">Available now</p>
+        <h3>CandleGrid Pro</h3>
+        <p class="desc">Fourteen candlestick patterns read across seven timeframes at once, each timeframe an independent system with its own magic number. Every entry carries a hard stop. Nothing is averaged down, nothing is doubled up.</p>
+        <table class="specs">
+          <tr><th scope="row">Market</th><td>XAUUSD</td></tr>
+          <tr><th scope="row">Risk controls</th><td>Risk-based lot size, daily loss limit, position cap, spread filter</td></tr>
+          <tr><th scope="row">Licence</th><td>Signed against your account number</td></tr>
+          <tr><th scope="row">Try it</th><td>Free in demo and the Strategy Tester, no key needed</td></tr>
+        </table>
+        <div class="buy">
+          <div class="price">€29<small>per month, or €149 lifetime</small></div>
+          <a class="btn ink" href="https://jsgaston.github.io/candlegrid-web-en/">View CandleGrid Pro</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="product">
+      <figure class="art" id="art-regime" style="margin:0"><figcaption>Hidden states behind the price</figcaption></figure>
+      <div class="body">
+        <p class="status">Available now</p>
+        <h3>RegimeSwitch Pro</h3>
+        <p class="desc">It fits a hidden Markov model to the history in your own terminal and reads the probability of the next state before sending an order. Every symbol and timeframe has to pass an out-of-sample edge test before it may place a single trade.</p>
+        <table class="specs">
+          <tr><th scope="row">Markets</th><td>Multi-symbol, multi-timeframe, up to 80 pairs from one chart</td></tr>
+          <tr><th scope="row">Validation</th><td>Contexts that fail the edge test stay switched off</td></tr>
+          <tr><th scope="row">Upkeep</th><td>Refits and revalidates itself every 250 bars</td></tr>
+          <tr><th scope="row">Licence</th><td>Signed against your account number</td></tr>
+        </table>
+        <div class="buy">
+          <div class="price">€39<small>per month, or €249 lifetime</small></div>
+          <a class="btn ink" href="https://jsgaston.github.io/regimeswitch-web-en/">View RegimeSwitch Pro</a>
+        </div>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -527,7 +458,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <div class="hoist" id="a-hoist"></div>
         <p class="hoist-note" id="a-hoist-note">Each bot sails under its own flag.</p>
       </div>
-      <p>One MetaTrader 5 account, ten algorithms, added one at a time as each passes validation. Your terminal mirrors every position it takes, scaled to your balance. Pick a bot below to see its own record.</p>
+      <p>One MetaTrader 5 account and a growing fleet of algorithms, each added only after it passes validation. Your terminal mirrors every position it takes, scaled to your balance. Pick a bot below to see its own record.</p>
     </div>
 
     <div class="chips" id="a-chips" role="group" aria-label="Choose a bot"></div>
@@ -556,6 +487,43 @@ footer .legal p{margin:0 0 8px;max-width:70em}
   </div>
 </section>
 
+<section id="helm" class="helm">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <h2>Helm</h2>
+        <p class="helm-kick">The bots open the trades. I close them.</p>
+      </div>
+      <p>A second signal, run differently. Every entry comes from one of my bots with its stop in place; most exits are my own decisions, made by hand. Each close is published with who made it, so you can see whether my hand helps or not.</p>
+    </div>
+
+    <div class="hboard">
+      <div class="hchart">
+        <div class="chart-top">
+          <span class="name">Helm account<span class="badge" id="hl-badge" hidden>DEMO</span></span>
+          <span class="meta" id="hl-meta"></span>
+        </div>
+        <div id="hl-chart"><div class="lempty"><b>Not trading yet.</b><span>The record appears here the day the account closes its first trade.</span></div></div>
+        <div class="hexits" id="hl-exits" hidden></div>
+      </div>
+      <dl class="hfigs" id="hl-figs">
+        <div><dt>Return</dt><dd>—</dd></div><div><dt>Closed by hand</dt><dd>—</dd></div>
+        <div><dt>Profit factor</dt><dd>—</dd></div><div><dt>Hits</dt><dd>—</dd></div>
+        <div><dt>Max drawdown</dt><dd>—</dd></div><div><dt>Trades</dt><dd>—</dd></div>
+      </dl>
+    </div>
+
+    <div class="a-cta">
+      <div class="actions">
+        <a class="btn ink" href="https://jsgaston.github.io/helm/">See the Helm record</a>
+        <a class="btn ghost" href="mailto:jsgastoniriartecabrera@gmail.com?subject=Helm%20waiting%20list">Join the waiting list</a>
+      </div>
+      <p class="h-price">Not open to subscribers yet. Price announced at launch.</p>
+    </div>
+    <p class="disc" id="hl-disc">Figures are published automatically from the trading account every 15 minutes and stay blank until the account produces them. A manual strategy cannot be backtested, so this record is the only evidence. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.</p>
+  </div>
+</section>
+
 <section id="tools" class="tools">
   <div class="wrap">
     <div class="head">
@@ -577,13 +545,6 @@ footer .legal p{margin:0 0 8px;max-width:70em}
   </div>
 </section>
 
-<div class="band light rev" aria-hidden="true">
-  <div class="run">
-    <span>CandleGrid Pro<i class="dia"></i>RegimeSwitch Pro<i class="dia"></i>Armada<i class="dia"></i>TradingNotifier<i class="dia"></i></span>
-    <span>CandleGrid Pro<i class="dia"></i>RegimeSwitch Pro<i class="dia"></i>Armada<i class="dia"></i>TradingNotifier<i class="dia"></i></span>
-  </div>
-</div>
-
 <section id="about" class="about">
   <div class="wrap">
     <div class="head"><h2>Who runs this</h2><span></span></div>
@@ -599,18 +560,14 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <div><span>Platform</span><span>MetaTrader 5</span></div>
         <div><span>Built with</span><span>MQL5, Python</span></div>
         <div><span>Education</span><span>Physics degree, master's</span></div>
-        <div><span>Payments</span><span>Stripe</span></div>
-        <div><span>Contact</span><span><a href="mailto:support@wisfli.com">support@wisfli.com</a></span></div>
+        <div><span>Payments</span><span>Stripe, PayPal</span></div>
+        <div><span>Contact</span><span><a href="mailto:jsgastoniriartecabrera@gmail.com">jsgastoniriartecabrera@gmail.com</a></span></div>
       </div>
     </div>
   </div>
 </section>
 
 </main>
-
-<button class="totop" id="totop" type="button" aria-label="Back to top">
-  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg>
-</button>
 
 <footer>
   <div class="wrap">
@@ -621,9 +578,12 @@ footer .legal p{margin:0 0 8px;max-width:70em}
       </div>
       <div>
         <h4>Products</h4>
-        <ul id="f-products">
+        <ul>
+          <li><a href="https://jsgaston.github.io/candlegrid-web-en/">CandleGrid Pro</a></li>
+          <li><a href="https://jsgaston.github.io/regimeswitch-web-en/">RegimeSwitch Pro</a></li>
           <li><a href="https://jsgaston.github.io/armada/">Armada signal</a></li>
           <li><a href="https://jsgaston.github.io/armada/setup.html">Armada setup guide</a></li>
+          <li><a href="https://jsgaston.github.io/helm/">Helm signal</a></li>
           <li><a href="#tools">Tools</a></li>
         </ul>
       </div>
@@ -633,7 +593,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
           <li><a href="/terms.html">Terms</a></li>
           <li><a href="/privacy.html">Privacy</a></li>
           <li><a href="https://medium.com/@jsgastoniriartecabrera">Medium</a></li>
-          <li><a href="mailto:support@wisfli.com">Email</a></li>
+          <li><a href="mailto:jsgastoniriartecabrera@gmail.com">Email</a></li>
         </ul>
       </div>
     </div>
@@ -649,75 +609,16 @@ footer .legal p{margin:0 0 8px;max-width:70em}
    Edit here
    ===================================================================== */
 var ARMADA_BASE = 'https://jsgaston.github.io/armada/';
+var HELM_BASE = 'https://jsgaston.github.io/helm/';
 
 /* Articles: the first one is shown large. Add or remove entries freely. */
-
-/* ---------------------------------------------------------------------
-   LOS BOTS. Para anadir uno, copia un bloque y cambia los datos: la
-   ficha, la ilustracion y el enlace del pie salen de aqui. No hay que
-   tocar el HTML.
-     status  : "live" (etiqueta verde) o "soon" (etiqueta dorada)
-     art     : clave de ART (abajo), o "" para una ilustracion automatica
-     specs   : se muestran las SPEC_ROWS primeras filas en la ficha
-   --------------------------------------------------------------------- */
-var SPEC_ROWS = 2;
-
-var BOTS = [
-  { name:"CandleGrid Pro",
-    tagline:"Seven timeframes read at once",
-    status:"live", statusText:"Available now",
-    desc:"Fourteen candlestick patterns read across seven timeframes at once, each timeframe an independent system with its own magic number. Every entry carries a hard stop. Nothing is averaged down, nothing is doubled up.",
-    specs:[["Market","XAUUSD"], ["Risk controls","Risk-based lot size, daily loss limit, position cap, spread filter"], ["Licence","One key, valid on three MetaTrader accounts"], ["Delivery","Compiled .ex5 sent by email after payment"]],
-    price:"€29", priceNote:"per month, or €249 once",
-    url:"https://jsgaston.github.io/candlegrid-web-en/",
-    art:"candles" },
-
-  { name:"RegimeSwitch Pro",
-    tagline:"Hidden states behind the price",
-    status:"live", statusText:"Available now",
-    desc:"It fits a hidden Markov model to the history in your own terminal and reads the probability of the next state before sending an order. Every symbol and timeframe has to pass an out-of-sample edge test before it may place a single trade.",
-    specs:[["Markets","Multi-symbol, multi-timeframe, up to 80 pairs from one chart"], ["Validation","Contexts that fail the edge test stay switched off"], ["Upkeep","Refits and revalidates itself every 250 bars"], ["Licence","One key, valid on three MetaTrader accounts"]],
-    price:"€39", priceNote:"per month, or €349 once",
-    url:"https://jsgaston.github.io/regimeswitch-web-en/",
-    art:"regime" },
-
-  { name:"BearStack Pro",
-    tagline:"Four condition stacks, one trade",
-    status:"live", statusText:"Available now",
-    desc:"Gold, short side only. Four independent stacks — breakout, reversal, momentum and mean reversion — count their conditions on every closed M1 bar, and the first one to reach its threshold sells. One position at a time, no grid and no averaging. In Armada it sails under the Charlie flag.",
-    specs:[["Market","XAUUSD, M1 closed bars, sell side"], ["Risk controls","Daily loss stop, trades-per-day cap, spread filter, time exit, Friday cutoff"], ["Licence","One key, valid on three MetaTrader accounts"], ["Delivery","Compiled .ex5 sent by email after payment"]],
-    price:"€29", priceNote:"per month, or €249 once",
-    url:"https://jsgaston.github.io/Charlie/",
-    art:"bearstack" },
-
-  { name:"WickFlow Pro",
-    tagline:"It measures itself and switches sides off",
-    status:"live", statusText:"Available now",
-    desc:"Several symbols and timeframes from a single chart, with five selectable engines: an indecision-candle reversal, a price-action engine, a range system, a self-fitting regime model, or the first two together. Every few bars it replays its own history, measures what its signals actually did, and switches off the sides and the regimes that have stopped paying. In Armada it sails under the Delta flag.",
-    specs:[["Market","Your symbol list, closed bars, any timeframe"], ["Self-audit","Walk-forward study with a held-back validation half and a bootstrap"], ["Risk controls","Drawdown brake, losing-streak pause, spread filter, position caps"], ["Licence","One key, valid on three MetaTrader accounts"]],
-    price:"€39", priceNote:"per month, or €349 once",
-    url:"https://jsgaston.github.io/Delta/",
-    art:"wickflow" },
-
-  { name:"KalmanFlow Pro",
-    tagline:"The price, with the noise taken out",
-    status:"soon", statusText:"In testing",
-    desc:"A state-space filter separates where the price actually is from the noise around it, and re-estimates its own parameters from your chart data every day by maximum likelihood. A change point test notices within a few bars when that model has broken, and pauses. In Armada it sails under the Echo flag.",
-    specs:[["Market","XAUUSD tested, crypto under evaluation"], ["Learning","Refits daily, walk-forward by construction: it never sees the bar it trades"], ["Risk controls","Change point veto, cost filter, regime sizing, daily loss stop"], ["Record","Strategy Tester only so far. No live history yet"]],
-    price:"€39", priceNote:"per month, or €349 once",
-    url:"https://jsgaston.github.io/kalmanflow-web-en/",
-    art:"kalman" }
-];
-
-/* ilustraciones disponibles para el campo art */
-var ART = {};
 
 /* Tools. Each entry becomes a card in the Tools section.
    price: text shown large ("Free", "€19", ...). Leave "" to hide it.
    url:   where the button goes (a .ex5 in this repo, a product page, a payment link).
    button: text on the button. */
 var TOOLS = [
-  { name: "Trading Command Center",
+  { name: "TradingNotifier",
     kind: "Expert Advisor for MetaTrader 5",
     desc: "Sends every trade on your MetaTrader 5 account to Telegram as it happens, so you can follow a VPS from your phone without opening the terminal. It only reports; it never opens, modifies or closes a position.",
     feats: [
@@ -729,11 +630,10 @@ var TOOLS = [
       "Discord as well as, or instead of, Telegram"
     ],
     setup: "Needs a Telegram bot token and chat ID. In MT5, allow <code>https://api.telegram.org</code> under Tools, Options, Expert Advisors, WebRequest.",
-    price: "\u20AC19",
-    priceNote: "per month, or \u20AC99 once",
-    /* REVISAR: URL de la p\u00e1gina del producto en el repo tools */
-    url: "https://jsgaston.github.io/tools/",
-    button: "View Trading Command Center" }
+    price: "",
+    priceNote: "",
+    url: "TradingNotifier.ex5",
+    button: "Download TradingNotifier" }
 ];
 
 function toolChart(){
@@ -788,22 +688,60 @@ var POSTS = [
 /* =====================================================================
    Flags (international code of signals)
    ===================================================================== */
+/* ---------- international code of signals: A–Z, then numeral pennants 1–0 ---------- */
+var FLAG_ORDER='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'.split('');
+var OL='<path d="M0 0h60v40H0z" fill="none" stroke="rgba(15,44,66,.25)"/>';
 var F={
-  A:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30L46 20l14 20H30z" fill="#14528C"/>',
+  A:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30L46 20l14 20H30z" fill="#14528C"/><path d="M0 0h30v40H0z" fill="none" stroke="rgba(15,44,66,.25)"/>',
   B:'<path d="M0 0h60L46 20l14 20H0z" fill="#C8322A"/>',
   C:'<path d="M0 0h60v8H0z" fill="#14528C"/><path d="M0 8h60v8H0z" fill="#fff"/><path d="M0 16h60v8H0z" fill="#C8322A"/><path d="M0 24h60v8H0z" fill="#fff"/><path d="M0 32h60v8H0z" fill="#14528C"/>',
   D:'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M0 11h60v18H0z" fill="#14528C"/>',
   E:'<path d="M0 0h60v20H0z" fill="#14528C"/><path d="M0 20h60v20H0z" fill="#C8322A"/>',
-  F:'<path d="M0 0h60v40H0z" fill="#fff"/><path d="M30 3 57 20 30 37 3 20z" fill="#C8322A"/>',
+  F:'<path d="M0 0h60v40H0z" fill="#fff"/><path d="M30 3 57 20 30 37 3 20z" fill="#C8322A"/>'+OL,
   G:'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M10 0h10v40H10z" fill="#14528C"/><path d="M30 0h10v40H30z" fill="#14528C"/><path d="M50 0h10v40H50z" fill="#14528C"/>',
-  H:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30v40H30z" fill="#C8322A"/>',
+  H:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30v40H30z" fill="#C8322A"/>'+OL,
   I:'<path d="M0 0h60v40H0z" fill="#F2C230"/><circle cx="30" cy="20" r="11" fill="#101820"/>',
-  J:'<path d="M0 0h60v40H0z" fill="#14528C"/><path d="M0 13h60v14H0z" fill="#fff"/>'
+  J:'<path d="M0 0h60v40H0z" fill="#14528C"/><path d="M0 13h60v14H0z" fill="#fff"/>',
+  K:'<path d="M0 0h30v40H0z" fill="#F2C230"/><path d="M30 0h30v40H30z" fill="#14528C"/>',
+  L:'<path d="M0 0h60v40H0z" fill="#101820"/><path d="M0 0h30v20H0zM30 20h30v20H30z" fill="#F2C230"/>',
+  M:'<path d="M0 0h60v40H0z" fill="#14528C"/><path d="M0 0 60 40M60 0 0 40" stroke="#fff" stroke-width="8"/>',
+  N:'<path d="M0 0h60v40H0z" fill="#fff"/><path d="M0 0h15v10H0zM30 0h15v10H30zM15 10h15v10H15zM45 10h15v10H45zM0 20h15v10H0zM30 20h15v10H30zM15 30h15v10H15zM45 30h15v10H45z" fill="#14528C"/>'+OL,
+  O:'<path d="M0 0h60v40z" fill="#C8322A"/><path d="M0 0v40h60z" fill="#F2C230"/>',
+  P:'<path d="M0 0h60v40H0z" fill="#14528C"/><path d="M18 12h24v16H18z" fill="#fff"/>',
+  Q:'<path d="M0 0h60v40H0z" fill="#F2C230"/>',
+  R:'<path d="M0 0h60v40H0z" fill="#C8322A"/><path d="M25 0h10v40H25zM0 15h60v10H0z" fill="#F2C230"/>',
+  S:'<path d="M0 0h60v40H0z" fill="#fff"/><path d="M18 12h24v16H18z" fill="#14528C"/>'+OL,
+  T:'<path d="M0 0h20v40H0z" fill="#C8322A"/><path d="M20 0h20v40H20z" fill="#fff"/><path d="M40 0h20v40H40z" fill="#14528C"/>',
+  U:'<path d="M0 0h60v40H0z" fill="#fff"/><path d="M0 0h30v20H0zM30 20h30v20H30z" fill="#C8322A"/>'+OL,
+  V:'<path d="M0 0h60v40H0z" fill="#fff"/><path d="M0 0 60 40M60 0 0 40" stroke="#C8322A" stroke-width="8"/>'+OL,
+  W:'<path d="M0 0h60v40H0z" fill="#14528C"/><path d="M8 8h44v24H8z" fill="#fff"/><path d="M18 14h24v12H18z" fill="#C8322A"/>',
+  X:'<path d="M0 0h60v40H0z" fill="#fff"/><path d="M25 0h10v40H25zM0 15h60v10H0z" fill="#14528C"/>'+OL,
+  Y:'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M-40 40 0 0M-26 40 14 0M-12 40 28 0M2 40 42 0M16 40 56 0M30 40 70 0M44 40 84 0" stroke="#C8322A" stroke-width="7"/>',
+  Z:'<path d="M0 0h60L30 20z" fill="#F2C230"/><path d="M60 0v40L30 20z" fill="#14528C"/><path d="M0 40h60L30 20z" fill="#C8322A"/><path d="M0 0v40l30-20z" fill="#101820"/>',
+  '1':'<path d="M0 0h60v40H0z" fill="#fff"/><circle cx="17" cy="20" r="8" fill="#C8322A"/>',
+  '2':'<path d="M0 0h60v40H0z" fill="#14528C"/><circle cx="17" cy="20" r="8" fill="#fff"/>',
+  '3':'<path d="M0 0h20v40H0z" fill="#C8322A"/><path d="M20 0h20v40H20z" fill="#fff"/><path d="M40 0h20v40H40z" fill="#14528C"/>',
+  '4':'<path d="M0 0h60v40H0z" fill="#C8322A"/><path d="M13 0h8v40h-8zM0 16h60v8H0z" fill="#fff"/>',
+  '5':'<path d="M0 0h24v40H0z" fill="#F2C230"/><path d="M24 0h36v40H24z" fill="#14528C"/>',
+  '6':'<path d="M0 0h60v20H0z" fill="#101820"/><path d="M0 20h60v20H0z" fill="#fff"/>',
+  '7':'<path d="M0 0h60v20H0z" fill="#F2C230"/><path d="M0 20h60v20H0z" fill="#C8322A"/>',
+  '8':'<path d="M0 0h60v40H0z" fill="#fff"/><path d="M13 0h8v40h-8zM0 16h60v8H0z" fill="#C8322A"/>',
+  '9':'<path d="M0 0h20v20H0z" fill="#fff"/><path d="M20 0h40v20H20z" fill="#101820"/><path d="M0 20h20v20H0z" fill="#C8322A"/><path d="M20 20h40v20H20z" fill="#F2C230"/>',
+  '0':'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M16 0h12v40H16z" fill="#C8322A"/>'
 };
-var LETTERS='ABCDEFGHIJ'.split('');
+var flagSeq=0;
+/* inner SVG for one flag; numeral pennants are clipped to their tapered shape */
+function flagInner(l){
+  l=String(l==null?'':l).toUpperCase();
+  if(!F[l]) return '';
+  if(!/^[0-9]$/.test(l)) return F[l];
+  var id='pn'+(++flagSeq), P='M0 0 60 15v10L0 40z';
+  return '<defs><clipPath id="'+id+'"><path d="'+P+'"/></clipPath></defs><g clip-path="url(#'+id+')">'+F[l]+'</g><path d="'+P+'" fill="none" stroke="rgba(15,44,66,.25)"/>';
+}
+var LETTERS=FLAG_ORDER.slice(0,10);
 var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function $(id){return document.getElementById(id);}
-function flag(l){return F[l]?'<svg viewBox="0 0 60 40" aria-hidden="true">'+F[l]+'</svg>':'';}
+function flag(l){var i=flagInner(l);return i?'<svg viewBox="0 0 60 40" aria-hidden="true">'+i+'</svg>':'';}
 function nil(v){return v===null||v===undefined||(typeof v==='number'&&isNaN(v));}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function pct(n,d){d=d==null?2:d;return nil(n)?'—':(n>0?'+':(n<0?'−':''))+Math.abs(n).toFixed(d)+'%';}
@@ -823,8 +761,8 @@ $('brandflag2').innerHTML=$('brandflag').innerHTML;
    ===================================================================== */
 function rng(seed){return function(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};}
 
-function artCandles(el){
-  var W=600, H=420, r=rng(7), rows=7, labels=['M30','H1','H2','H4','H8','H12','D1'];
+function artCandles(){
+  var el=$('art-candle'), W=600, H=420, r=rng(7), rows=7, labels=['M30','H1','H2','H4','H8','H12','D1'];
   var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
   var top=34, rowH=(H-80)/rows;
   for(var i=0;i<rows;i++){
@@ -844,35 +782,8 @@ function artCandles(el){
   el.insertAdjacentHTML('afterbegin',g+'</svg>');
 }
 
-function artKalman(el){
-  var W=600, H=420, r=rng(31), n=150;
-  var price=[], p=0, v=0, i;
-  for(i=0;i<n;i++){
-    if(i===96) p-=26;                       /* the break the detector catches */
-    v = i<70 ? 0.85 : (i<96 ? 0 : -0.7);
-    p += v + (r()-0.5)*7;
-    price.push(p);
-  }
-  var lvl=[], slope=0, mu=price[0], K0=0.28, K1=0.035;
-  for(i=0;i<n;i++){ var pred=mu+slope, e=price[i]-pred; mu=pred+K0*e; slope=slope+K1*e; lvl.push(mu); }
-  var all=price.concat(lvl), lo=Math.min.apply(null,all), hi=Math.max.apply(null,all);
-  var PL=30, PR=30, PT=42, PB=96;
-  var X=function(k){return PL+k/(n-1)*(W-PL-PR);}, Y=function(q){return PT+(1-(q-lo)/(hi-lo))*(H-PT-PB);};
-  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
-  g+='<path d="'+price.map(function(q,k){return (k?'L':'M')+X(k).toFixed(1)+' '+Y(q).toFixed(1);}).join('')+'" fill="none" stroke="#8DA4B4" stroke-width="1.2" opacity=".55"/>';
-  g+='<path d="'+lvl.map(function(q,k){return (k?'L':'M')+X(k).toFixed(1)+' '+Y(q).toFixed(1);}).join('')+'" fill="none" stroke="#45C29A" stroke-width="2.6"/>';
-  g+='<line x1="'+X(96).toFixed(1)+'" y1="'+PT+'" x2="'+X(96).toFixed(1)+'" y2="'+(H-PB)+'" stroke="#E8715F" stroke-width="1.5" stroke-dasharray="5 5"/>';
-  g+='<text x="'+(X(96)+8).toFixed(1)+'" y="'+(PT+16)+'" font-family="Archivo" font-size="12" fill="#E8715F">break detected</text>';
-  var ly=H-64;
-  g+='<line x1="'+PL+'" x2="'+(PL+26)+'" y1="'+ly+'" y2="'+ly+'" stroke="#8DA4B4" stroke-width="1.2" opacity=".55"/>';
-  g+='<text x="'+(PL+34)+'" y="'+(ly+4)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">price</text>';
-  g+='<line x1="'+(PL+110)+'" x2="'+(PL+136)+'" y1="'+ly+'" y2="'+ly+'" stroke="#45C29A" stroke-width="2.6"/>';
-  g+='<text x="'+(PL+144)+'" y="'+(ly+4)+'" font-family="Archivo" font-size="12" fill="#DCE6EC">filtered level</text>';
-  el.insertAdjacentHTML('afterbegin',g+'</svg>');
-}
-
-function artRegime(el){
-  var W=600, H=420, r=rng(19), n=140;
+function artRegime(){
+  var el=$('art-regime'), W=600, H=420, r=rng(19), n=140;
   var states=[], s=0, len=0;
   for(var i=0;i<n;i++){ if(len<=0){ s=[0,1,2][Math.floor(r()*3)]; len=12+Math.floor(r()*26);} states.push(s); len--; }
   var price=[], p=0;
@@ -894,44 +805,6 @@ function artRegime(el){
     g+='<rect x="'+(PL+96)+'" y="'+(by+q*22+2)+'" width="'+(W-PL-PR-140)+'" height="12" fill="rgba(214,230,240,.06)"/>';
     g+='<rect x="'+(PL+96)+'" y="'+(by+q*22+2)+'" width="'+bw.toFixed(1)+'" height="12" fill="'+bc[q]+'"/>';
     g+='<text x="'+(W-PR)+'" y="'+(by+q*22+12)+'" text-anchor="end" font-family="Archivo" font-size="12" font-weight="600" fill="#DCE6EC">'+Math.round(probs[q]*100)+'%</text>';
-  }
-  el.insertAdjacentHTML('afterbegin',g+'</svg>');
-}
-
-function artBearStack(el){
-  if(!el) return;
-  var W=600, H=420, r=rng(23), n=64;
-  var price=[], p=0;
-  for(var i=0;i<n;i++){ var drift=i<18?0.9:(i<26?0.2:-1.5); p+=drift+(r()-.5)*3.4; price.push(p); }
-  var lo=Math.min.apply(null,price), hi=Math.max.apply(null,price);
-  var PL=28, PR=28, PT=30, PB=176;
-  var X=function(i){return PL+i/(n-1)*(W-PL-PR);};
-  var Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
-  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
-  // zona bajista sombreada
-  g+='<rect x="'+X(26).toFixed(1)+'" y="'+PT+'" width="'+(X(n-1)-X(26)).toFixed(1)+'" height="'+(H-PT-PB)+'" fill="rgba(232,113,95,.12)"/>';
-  // resistencia
-  var top=Math.max.apply(null,price.slice(0,26));
-  g+='<line x1="'+PL+'" x2="'+(W-PR)+'" y1="'+Y(top).toFixed(1)+'" y2="'+Y(top).toFixed(1)+'" stroke="#E0A92C" stroke-width="1" stroke-dasharray="5 4"/>';
-  var d=price.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);}).join('');
-  g+='<path d="'+d+'" fill="none" stroke="#DCE6EC" stroke-width="1.6"/>';
-  // marca de la entrada
-  g+='<circle cx="'+X(26).toFixed(1)+'" cy="'+Y(price[26]).toFixed(1)+'" r="5" fill="none" stroke="#E8715F" stroke-width="1.6"/>';
-  g+='<text x="'+(X(26)+10).toFixed(1)+'" y="'+(Y(price[26])-8).toFixed(1)+'" font-family="Archivo" font-size="12" fill="#E8715F">Sell</text>';
-  // pilas de condiciones
-  var rows=[['S01','Breakout',5,2,2],['S02','Reversal',4,1,2],['S03','Momentum',5,3,2],['S04','Mean reversion',4,1,2]];
-  var by=H-152;
-  g+='<text x="'+PL+'" y="'+(by-10)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">Conditions true on the closed bar</text>';
-  for(var q=0;q<rows.length;q++){
-    var id=rows[q][0], fam=rows[q][1], total=rows[q][2], on=rows[q][3], min=rows[q][4];
-    var y=by+q*30, fires=on>=min;
-    g+='<text x="'+PL+'" y="'+(y+12)+'" font-family="Archivo" font-size="12" font-weight="700" fill="'+(fires?'#E0A92C':'#8DA4B4')+'">'+id+'</text>';
-    g+='<text x="'+(PL+34)+'" y="'+(y+12)+'" font-family="Archivo" font-size="12" fill="#DCE6EC">'+fam+'</text>';
-    for(var k=0;k<total;k++){
-      var cx=PL+200+k*30;
-      g+='<rect x="'+cx+'" y="'+(y+2)+'" width="24" height="11" fill="'+(k<on?(fires?'#E8715F':'rgba(232,113,95,.45)'):'rgba(214,230,240,.10)')+'"/>';
-    }
-    g+='<text x="'+(W-PR)+'" y="'+(y+12)+'" text-anchor="end" font-family="Archivo" font-size="11" fill="#8DA4B4">'+on+'/'+total+'</text>';
   }
   el.insertAdjacentHTML('afterbegin',g+'</svg>');
 }
@@ -967,11 +840,18 @@ function money(n,s){
 }
 
 function hoist(strats){
-  var html=strats.map(function(s){return '<span class="'+(s.status==='live'?'':'dim')+'" title="'+esc(s.name)+(s.status==='live'?' is trading':' is not trading yet')+'">'+flag(s.flag)+'</span>';}).join('');
-  $('a-hoist').innerHTML=html; $('h-flags').innerHTML=html;
-  var live=strats.filter(function(s){return s.status==='live';}).length;
-  $('a-hoist-note').textContent=live===0?'Ten flags, none flying yet.':live+' of 10 bots trading. Faded flags are still in the yard.';
-  $('h-fleet').textContent=live===0?'Ten bots, one account':live+' of 10 bots trading';
+  var shown=strats.filter(function(s){return s.flag && s.status!=='retired';});
+  var one=function(s){return '<span class="'+(s.status==='live'?'':'dim')+'" title="'+esc(s.name)+(s.status==='live'?' is trading':' is not trading yet')+'">'+flag(s.flag)+'</span>';};
+  $('a-hoist').innerHTML=shown.map(one).join('');
+  $('a-hoist').classList.toggle('many',shown.length>12);
+  $('a-hoist').classList.toggle('lots',shown.length>24);
+  var live=shown.filter(function(s){return s.status==='live';});
+  /* the instrument footer only has room for a dozen flags: live ones first */
+  var foot=live.length?live:shown, extra=foot.length-12;
+  $('h-flags').innerHTML=foot.slice(0,12).map(one).join('')+(extra>0?'<small>+'+extra+'</small>':'');
+  var n=live.length, total=shown.length;
+  $('a-hoist-note').textContent=n===0?'No flags flying yet.':(n>=total?'All '+total+' bots trading.':n+' of '+total+' bots trading. Faded flags are still in the yard.');
+  $('h-fleet').textContent=n===0?'Every bot, one account':(n===1?'1 bot trading':n+' bots trading');
 }
 hoist(LETTERS.map(function(l,i){return {flag:l,name:'Bot '+(i+1),status:'yard'};}));
 
@@ -1151,86 +1031,64 @@ function drawMonths(sc){
   $('a-months').innerHTML=cells.join('');
 }
 
-
-function artWickFlow(el){
-  if(!el) return;
-  var W=600, H=420, r=rng(41), n=72;
-  var price=[], p=0;
-  for(var i=0;i<n;i++){ p+=(r()-.48)*3.2+Math.sin(i/9)*1.1; price.push(p); }
-  var lo=Math.min.apply(null,price), hi=Math.max.apply(null,price);
-  var PL=28, PR=28, PT=26, PB=192;
-  var X=function(i){return PL+i/(n-1)*(W-PL-PR);};
-  var Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
-  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
-  // mitad de validacion, sombreada: es la parte que no elige nada
-  var split=Math.floor(n*0.55);
-  g+='<rect x="'+X(split).toFixed(1)+'" y="'+PT+'" width="'+(X(n-1)-X(split)).toFixed(1)+'" height="'+(H-PT-PB)+'" fill="rgba(224,169,44,.10)"/>';
-  g+='<line x1="'+X(split).toFixed(1)+'" x2="'+X(split).toFixed(1)+'" y1="'+PT+'" y2="'+(H-PB)+'" stroke="#E0A92C" stroke-width="1" stroke-dasharray="4 4"/>';
-  g+='<text x="'+(X(split)+8).toFixed(1)+'" y="'+(PT+16)+'" font-family="Archivo" font-size="11" fill="#E0A92C">held back to validate</text>';
-  var d=price.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);}).join('');
-  g+='<path d="'+d+'" fill="none" stroke="#DCE6EC" stroke-width="1.5"/>';
-  // senales medidas
-  var marks=[6,14,23,31,38,47,54,62,68];
-  for(var m=0;m<marks.length;m++){
-    var k=marks[m], up=(k%2===0), c=up?'#45C29A':'#E8715F';
-    g+='<circle cx="'+X(k).toFixed(1)+'" cy="'+Y(price[k]).toFixed(1)+'" r="3.4" fill="'+c+'"/>';
+/* =====================================================================
+   Helm data (second signal: bots open, I close)
+   ===================================================================== */
+var EXITS={hand:['By hand','#E0A92C','#1A1206'],tp:['Take-profit','#1E6B57','#fff'],sl:['Stop-loss','#BE3A2B','#fff'],bot:['By the bot','#0F2C42','#fff'],so:['Stop-out','#7A1E14','#fff'],other:['Other','#8DA4B4','#0F2C42']};
+var HELM=null;
+function drawHelm(){
+  var s=HELM; if(!s) return;
+  var A=s.account||{}, main=null;
+  (s.scopes||[]).forEach(function(x){ if(x.id==='all') main=x; });
+  if(A.type==='demo'){ $('hl-badge').hidden=false;
+    $('hl-disc').textContent='Figures come from a demo account and are published automatically every 15 minutes. Demo fills are usually kinder than real-money execution. A manual strategy cannot be backtested, so this record is the only evidence. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.'; }
+  if(!main || main.empty) return;
+  var R=main.returns||{}, K=main.risk||{}, T=main.trades||{}, ex=main.exits||[], hand=null;
+  ex.forEach(function(e){ if(e.k==='hand') hand=e; });
+  var meta=[]; if(T.first_trade) meta.push('since '+fdate(T.first_trade));
+  if(s.updated_utc){ var m=Math.round((Date.now()-new Date(s.updated_utc))/60000); meta.push('updated '+(m<2?'just now':m<60?m+' min ago':Math.round(m/60)+' h ago')); }
+  $('hl-meta').textContent=meta.join(', ');
+  var items=[
+    ['Return','<span class="'+sign(R.total_pct)+'">'+pct(R.total_pct)+'</span>', nil(R.month_pct)?'':'this month '+pct(R.month_pct)],
+    ['Closed by hand', hand?upct(hand.share_pct,0):(ex.length?'0%':'—'), hand?hand.trades+' of '+T.trades+' trades':''],
+    ['Profit factor', num(T.profit_factor), hand&&!nil(hand.profit_factor)?'hand exits '+num(hand.profit_factor):''],
+    ['Hits', upct(T.win_rate_pct), ''],
+    ['Max drawdown', dd(K.max_drawdown_pct), nil(K.current_drawdown_pct)?'':(K.current_drawdown_pct>0?'now −'+K.current_drawdown_pct.toFixed(2)+'%':'at a new high')],
+    ['Trades', nil(T.trades)?'—':T.trades, nil(T.trades_per_week)?'':T.trades_per_week+' a week']
+  ];
+  $('hl-figs').innerHTML=items.map(function(it){ return '<div><dt>'+it[0]+'</dt><dd>'+it[1]+(it[2]?'<small>'+esc(it[2])+'</small>':'')+'</dd></div>'; }).join('');
+  if(ex.length){
+    $('hl-exits').innerHTML=ex.map(function(e){ var m=EXITS[e.k]||EXITS.other;
+      return '<span style="width:'+e.share_pct+'%;background:'+m[1]+';color:'+m[2]+'" title="'+m[0]+': '+e.trades+' trades">'+(e.share_pct>=16?m[0]+' '+Math.round(e.share_pct)+'%':'')+'</span>'; }).join('');
+    $('hl-exits').hidden=false;
   }
-  // barras de expectativa por lado
-  var by=H-168;
-  g+='<text x="'+PL+'" y="'+(by-12)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">Out-of-sample expectancy, in R</text>';
-  var rows=[['LONG',0.62,true],['SHORT',-0.18,false]];
-  var zero=PL+188;
-  for(var q=0;q<rows.length;q++){
-    var lbl=rows[q][0], val=rows[q][1], on=rows[q][2];
-    var y=by+q*42;
-    g+='<text x="'+PL+'" y="'+(y+18)+'" font-family="Archivo" font-size="12" font-weight="700" fill="#DCE6EC">'+lbl+'</text>';
-    g+='<line x1="'+zero+'" x2="'+zero+'" y1="'+(y+2)+'" y2="'+(y+26)+'" stroke="rgba(214,230,240,.30)" stroke-width="1"/>';
-    var w=Math.abs(val)*190, x0=val>=0?zero:zero-w;
-    g+='<rect x="'+x0.toFixed(1)+'" y="'+(y+6)+'" width="'+w.toFixed(1)+'" height="14" fill="'+(val>=0?'#45C29A':'#E8715F')+'"/>';
-    g+='<text x="'+(W-PR)+'" y="'+(y+18)+'" text-anchor="end" font-family="Archivo" font-size="11" font-weight="700" fill="'+(on?'#45C29A':'#E8715F')+'">'+(on?'TRADING':'SWITCHED OFF')+'</text>';
-  }
-  g+='<text x="'+PL+'" y="'+(H-22)+'" font-family="Archivo" font-size="11" fill="#8DA4B4">Re-measured every few bars. A side that cannot clear the bar stops on its own.</text>';
-  el.insertAdjacentHTML('afterbegin',g+'</svg>');
+  var eq=curveSeries(main), box=$('hl-chart');
+  if(eq.length<2) return;
+  var W=Math.max(300,box.clientWidth||700), H=W<560?220:260;
+  var c=lineChart(eq,W,H,{pl:22,pr:W<560?52:62,pt:22,pb:14});
+  var col=c.up?'#1E6B57':'#BE3A2B', ticks='';
+  for(var i=0;i<=4;i++){ var v=c.lo+(c.hi-c.lo)*i/4, y=c.Y(v);
+    ticks+='<line x1="22" x2="'+(W-(W<560?52:62))+'" y1="'+y.toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="rgba(15,44,66,.07)"/><text x="'+(W-(W<560?52:62)+8)+'" y="'+(y+4).toFixed(1)+'" font-family="Archivo" font-size="11.5" fill="#607487">'+pct(v-100,1)+'</text>'; }
+  box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="Helm growth curve">'+
+    '<defs><linearGradient id="hlg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+col+'" stop-opacity=".2"/><stop offset="1" stop-color="'+col+'" stop-opacity="0"/></linearGradient></defs>'+ticks+
+    '<line x1="22" x2="'+(W-(W<560?52:62))+'" y1="'+c.Y(100).toFixed(1)+'" y2="'+c.Y(100).toFixed(1)+'" stroke="rgba(15,44,66,.35)" stroke-dasharray="3 4"/>'+
+    '<path d="'+c.area+'" fill="url(#hlg)"/><path d="'+c.d+'" fill="none" stroke="'+col+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/></svg>';
 }
 
-ART.candles=artCandles; ART.regime=artRegime; ART.bearstack=artBearStack;
-ART.wickflow=artWickFlow; ART.kalman=artKalman;
-drawBots(); drawTools(); drawPosts();
-function drawBots(){
-  $('bots-list').innerHTML = BOTS.map(function(b,i){
-    return '<article class="bot">'+
-      '<figure class="art" id="bot-art-'+i+'">'+
-        '<span class="tag'+(b.status==='soon'?' soon':'')+'">'+esc(b.statusText||(b.status==='soon'?'In testing':'Available now'))+'</span>'+
-      '</figure>'+
-      '<div class="body">'+
-        '<h3>'+esc(b.name)+'</h3>'+
-        (b.tagline?'<p class="tagline">'+esc(b.tagline)+'</p>':'')+
-        '<p class="desc">'+esc(b.desc)+'</p>'+
-        '<dl class="spec">'+(b.specs||[]).slice(0,SPEC_ROWS).map(function(sp){
-          return '<div><dt>'+esc(sp[0])+'</dt><dd>'+esc(sp[1])+'</dd></div>'; }).join('')+'</dl>'+
-        '<div class="foot">'+
-          (b.price?'<div class="price">'+esc(b.price)+(b.priceNote?'<small>'+esc(b.priceNote)+'</small>':'')+'</div>':'<span></span>')+
-          (b.url?'<a class="btn ink sm" href="'+esc(b.url)+'" aria-label="View '+esc(b.name)+'">View</a>':'')+
-        '</div>'+
-      '</div>'+
-    '</article>';
-  }).join('');
-  BOTS.forEach(function(b,i){
-    var el=$('bot-art-'+i); if(!el) return;
-    if(ART[b.art]) ART[b.art](el); else el.insertAdjacentHTML('afterbegin', cover(i*7+3,false));
-  });
-  var ul=$('f-products');
-  if(ul) ul.insertAdjacentHTML('afterbegin', BOTS.map(function(b){
-    return b.url?'<li><a href="'+esc(b.url)+'">'+esc(b.name)+'</a></li>':''; }).join(''));
-}
+artCandles(); artRegime(); drawTools(); drawPosts();
 
+fetch(HELM_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
+  .then(function(r){return r.ok?r.json():null;})
+  .then(function(s){ if(!s) return; HELM=s; drawHelm();
+    var t; window.addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(drawHelm,150); }); })
+  .catch(function(){});
 
 fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
   .then(function(r){return r.ok?r.json():null;})
   .then(function(s){
     if(!s) return;
     ACC=s.account||{}; if(ACC.currency) CUR=ACC.currency;
-    if(s.strategies&&s.strategies.length===10) hoist(s.strategies);
+    if(s.strategies&&s.strategies.length) hoist(s.strategies);
     SCOPES=(s.scopes||[]);
     if(ACC.type==='demo') $('a-disc').textContent='Figures come from a demo account and are published automatically every 15 minutes. Demo fills are usually kinder than real-money execution. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.';
     var main=null; for(var i=0;i<SCOPES.length;i++) if(SCOPES[i].id==='all') main=SCOPES[i];
@@ -1240,184 +1098,6 @@ fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
     var t; window.addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(function(){ select(CUR_ID); },150); });
   })
   .catch(function(){});
-</script>
-<script>
-/* =====================================================================
-   MOVIMIENTO (capa anadida)
-   Solo toca estilos: aparicion al entrar en pantalla, parallax, bandas,
-   barra de progreso, menu activo y cifras que suben. No cambia ningun
-   dato, precio, enlace ni texto legal. Si se borra, todo sigue igual.
-   ===================================================================== */
-(function(){
-  var d=document, root=d.documentElement, win=window;
-  var RM = win.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var IOsup = 'IntersectionObserver' in win;
-  var raf = win.requestAnimationFrame ? win.requestAnimationFrame.bind(win) : function(f){ return setTimeout(f,16); };
-  var bar=d.querySelector('.top'), prog=d.getElementById('sprog'), totop=d.getElementById('totop'), hero=d.querySelector('.hero');
-
-  /* ---------- aparicion al entrar en pantalla ---------- */
-  var SEL=['.hero .where','.hero h1','.hero .lede','.hero .actions','.instrument',
-           '.principles .wrap > div','.head h2','.head p','.hoist','.hoist-note',
-           '.bot','.chips','.board','.a-cta','.disc','.tool','.post','.more',
-           '.about .grid > div','.facts div','footer .cols > div'];
-
-  var io = IOsup ? new IntersectionObserver(function(es){
-    for(var i=0;i<es.length;i++) if(es[i].isIntersecting){ es[i].target.classList.add('rv-in'); io.unobserve(es[i].target); }
-  },{rootMargin:'0px 0px -9% 0px',threshold:.08}) : null;
-
-  function esc2(s){ return String(s).replace(/[&<>]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
-
-  function splitWords(el){
-    var w=el.textContent.replace(/\s+/g,' ').trim().split(' '), h='';
-    for(var i=0;i<w.length;i++)
-      h+='<span class="wsplit"><i style="--wd:'+(i*0.055).toFixed(3)+'s">'+esc2(w[i])+'</i></span>'+(i<w.length-1?' ':'');
-    el.innerHTML=h;
-  }
-
-  function mark(){
-    for(var s=0;s<SEL.length;s++){
-      var els=d.querySelectorAll(SEL[s]);
-      for(var i=0;i<els.length;i++){
-        var el=els[i];
-        if(el.hasAttribute('data-rv')||el.hasAttribute('data-rvw')) continue;
-        var n=0,p=el.previousElementSibling;
-        while(p&&n<6){ n++; p=p.previousElementSibling; }
-        el.style.setProperty('--d',(Math.min(n,4)*0.07).toFixed(2)+'s');
-        if(!RM && (el.tagName==='H1'||el.tagName==='H2') && !el.children.length && el.textContent.replace(/\s/g,'')){
-          splitWords(el); el.setAttribute('data-rvw','');
-        } else {
-          el.setAttribute('data-rv','');
-        }
-        if(io) io.observe(el); else el.classList.add('rv-in');
-      }
-    }
-    buildPX();
-  }
-
-  /* ---------- parallax ---------- */
-  var PX=[];
-  function push(sel,k,axisX){
-    var e=d.querySelectorAll(sel);
-    for(var i=0;i<e.length;i++) PX.push({el:e[i],k:k,x:!!axisX});
-  }
-  function buildPX(){
-    if(RM){ PX=[]; return; }
-    PX=[];
-    push('.bot .art svg',18);
-    push('.post .cover svg',16);
-    push('.chat',20);
-    push('.armada h2',-44,true);
-  }
-
-  /* ---------- scroll ---------- */
-  var bands=[].slice.call(d.querySelectorAll('.band'));
-  var y=0, ticking=false;
-
-  function frame(){
-    ticking=false;
-    var vh=win.innerHeight||root.clientHeight||800;
-    var h=(root.scrollHeight||0)-vh, i;
-    if(prog) prog.style.transform='scaleX('+(h>0?Math.min(1,Math.max(0,y/h)):0).toFixed(4)+')';
-    if(bar) bar.classList[y>80?'add':'remove']('small');
-    if(totop) totop.classList[y>900?'add':'remove']('on');
-
-    if(!RM){
-      if(hero) hero.style.setProperty('--py',(y*0.16).toFixed(1)+'px');
-      for(i=0;i<PX.length;i++){
-        var o=PX[i], r=o.el.getBoundingClientRect();
-        if(r.bottom<-260||r.top>vh+260) continue;
-        var c=(r.top+r.height/2-vh/2)/vh;
-        o.el.style.setProperty('--pp',(c*o.k).toFixed(1)+'px');
-      }
-      for(i=0;i<bands.length;i++){
-        var run=bands[i].firstElementChild;
-        if(!run||!run.firstElementChild) continue;
-        var w=run.firstElementChild.offsetWidth;
-        if(!w) continue;
-        bands[i].style.setProperty('--shift',(-((y*0.18)%w)).toFixed(1)+'px');
-      }
-    }
-  }
-  function onScroll(){
-    y=win.pageYOffset||root.scrollTop||0;
-    if(!ticking){ ticking=true; raf(frame); }
-  }
-  win.addEventListener('scroll',onScroll,{passive:true});
-  win.addEventListener('resize',onScroll);
-
-  if(totop) totop.addEventListener('click',function(){
-    try{ win.scrollTo({top:0,behavior:RM?'auto':'smooth'}); }catch(e){ win.scrollTo(0,0); }
-  });
-
-  /* ---------- apartado activo en el menu ---------- */
-  if(IOsup){
-    var links={}, ls=d.querySelectorAll('.top nav a[href^="#"]:not(.pill)');
-    for(var i=0;i<ls.length;i++){
-      var id=ls[i].getAttribute('href').slice(1);
-      (links[id]=links[id]||[]).push(ls[i]);
-    }
-    var so=new IntersectionObserver(function(es){
-      for(var k=0;k<es.length;k++){
-        var l=links[es[k].target.id]||[];
-        for(var j=0;j<l.length;j++) l[j].classList[es[k].isIntersecting?'add':'remove']('act');
-      }
-    },{rootMargin:'-45% 0px -50% 0px'});
-    for(var key in links){ var sec=d.getElementById(key); if(sec) so.observe(sec); }
-  }
-
-  /* ---------- cifras que suben ---------- */
-  function roll(node){
-    if(RM||!node||node.__busy) return;
-    var fin=node.textContent, m=fin.match(/\d[\d.,]*/);
-    if(!m){ node.__last=fin; return; }
-    var rawn=m[0].replace(/,/g,''), target=parseFloat(rawn);
-    if(isNaN(target)){ node.__last=fin; return; }
-    var dp=(rawn.split('.')[1]||'').length, t0=0;
-    node.__busy=1;
-    function step(ts){
-      if(typeof ts!=='number') ts=+new Date();
-      if(!t0) t0=ts;
-      var p=Math.min(1,(ts-t0)/850), e=1-Math.pow(1-p,3);
-      node.textContent=fin.replace(m[0],(target*e).toFixed(dp));
-      if(p<1) raf(step); else { node.textContent=fin; node.__last=fin; node.__busy=0; }
-    }
-    raf(step);
-  }
-
-  if(!RM && win.MutationObserver){
-    var ids=['h-ret','h-pf','h-hits','h-dd','h-trades'];
-    for(var n=0;n<ids.length;n++)(function(el){
-      if(!el) return;
-      new MutationObserver(function(){
-        var t=el.textContent;
-        if(el.__busy||t===el.__last||t==='\u2014'||!/\d/.test(t)) return;
-        roll(el);
-      }).observe(el,{childList:true,characterData:true,subtree:true});
-    })(d.getElementById(ids[n]));
-  }
-
-  if(!RM && IOsup){
-    var no=new IntersectionObserver(function(es){
-      for(var i=0;i<es.length;i++) if(es[i].isIntersecting){
-        var t=es[i].target; no.unobserve(t);
-        roll(t.firstChild&&t.firstChild.nodeType===3?t.firstChild:t);
-      }
-    },{threshold:.45});
-    var pr=d.querySelectorAll('.price, .a-price b');
-    for(var q=0;q<pr.length;q++) no.observe(pr[q]);
-  }
-
-  /* ---------- contenido que se genera despues (tools, posts, chips) ---------- */
-  mark();
-  onScroll();
-  if(win.MutationObserver){
-    var t1;
-    new MutationObserver(function(){ clearTimeout(t1); t1=setTimeout(mark,140); })
-      .observe(d.body,{childList:true,subtree:true});
-  }
-  if(d.fonts && d.fonts.ready && d.fonts.ready.then) d.fonts.ready.then(onScroll);
-  win.addEventListener('load',onScroll);
-})();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "9883292d5ecd43ee8afb16ec3d174805"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
