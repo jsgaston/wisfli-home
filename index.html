@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wisfli — trading systems I build and run myself</title>
-<meta name="description" content="MetaTrader 5 Expert Advisors, two copy-trading signals with every statistic published, and notes on building them. Made in Alicante by one person who trades the same systems he sells.">
+<meta name="description" content="MetaTrader 5 Expert Advisors, a copy-trading signal with every statistic published, and notes on building them. Made in Alicante by one person who trades the same systems he sells.">
 <meta name="theme-color" content="#06141F">
 <meta property="og:title" content="Wisfli — trading tools that show their work">
-<meta property="og:description" content="MetaTrader 5 Expert Advisors, and Armada and Helm, copy-trading signals that publish every number they produce.">
+<meta property="og:description" content="MetaTrader 5 Expert Advisors, and Armada, a copy-trading signal that publishes every number it produces.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://wisfli.com/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'%3E%3Cpath d='M0 0h30v40H0z' fill='%23fff'/%3E%3Cpath d='M30 0h30L46 20l14 20H30z' fill='%2314528C'/%3E%3C/svg%3E">
@@ -181,31 +181,6 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 .armada .hoist.lots svg{width:30px;height:20px}
 .inst-foot .flags small{font:600 11.5px Archivo;color:var(--dmuted);align-self:center;margin-left:4px}
 
-/* ---------- helm ---------- */
-.helm{border-bottom:1px solid var(--rule)}
-.helm h2{font-size:clamp(56px,8vw,120px);line-height:.85;font-stretch:125%}
-.helm-kick{font:600 17px Archivo;color:var(--muted);margin:14px 0 0}
-.hboard{display:grid;grid-template-columns:1.55fr 1fr;border:1px solid var(--rule);background:var(--panel)}
-.hchart{border-right:1px solid var(--rule);position:relative;display:flex;flex-direction:column;min-height:360px}
-.hchart .chart-top .name{color:var(--ink)}
-.hchart .chart-top .meta{color:var(--muted)}
-#hl-chart{flex:1;min-height:250px;position:relative}
-#hl-chart svg{display:block;width:100%}
-.lempty{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;height:100%;min-height:250px;text-align:center;color:var(--muted);font-family:Archivo;padding:30px}
-.lempty b{color:var(--ink);font-size:18px}
-.hexits{display:flex;height:30px;margin:0 22px 22px;border:1px solid var(--rule);overflow:hidden}
-.hexits span{display:flex;align-items:center;justify-content:center;font:600 11.5px Archivo;white-space:nowrap;overflow:hidden}
-.hfigs{display:grid;grid-template-columns:1fr 1fr;align-content:start;margin:0}
-.hfigs div{padding:18px 22px;border-bottom:1px solid var(--rule);border-right:1px solid var(--rule)}
-.hfigs div:nth-child(2n){border-right:0}
-.hfigs dt{font:500 12.5px Archivo;color:var(--muted);margin:0 0 4px}
-.hfigs dd{margin:0;font:700 26px/1.1 Archivo;color:var(--ink);font-stretch:104%;white-space:nowrap}
-.hfigs dd small{display:block;font:500 12px Archivo;color:var(--muted);margin-top:4px;white-space:normal}
-.h-price{font:500 15px Archivo;color:var(--muted);margin:0}
-.helm .disc{color:var(--muted)}
-@media (max-width:1040px){ .hboard{grid-template-columns:1fr} .hchart{border-right:0;border-bottom:1px solid var(--rule)} }
-@media (max-width:760px){ .hfigs dd{font-size:22px} }
-
 /* ---------- tools ---------- */
 .tools{background:var(--panel);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
 .tool{display:grid;grid-template-columns:1.05fr .95fr;gap:0;border:1px solid var(--rule);background:#fff}
@@ -339,7 +314,6 @@ footer .legal p{margin:0 0 8px;max-width:70em}
     <nav aria-label="Main">
       <a href="#bots">Bots</a>
       <a href="#armada">Armada</a>
-      <a href="#helm">Helm</a>
       <a href="#tools">Tools</a>
       <a href="#writing">Writing</a>
       <a href="#about">About</a>
@@ -398,7 +372,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
     </div>
     <div>
       <h3>Results published unedited</h3>
-      <p>The signals' figures go from the trading accounts to this site automatically, every 15 minutes, without passing through my hands.</p>
+      <p>The signal's figures go from the trading account to this site automatically, every 15 minutes, without passing through my hands.</p>
     </div>
   </div>
 </div>
@@ -407,7 +381,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
   <div class="wrap">
     <div class="head">
       <h2>The bots</h2>
-      <p>Each one is a compiled Expert Advisor, licensed to your account number, shipped with the settings I actually use rather than the ones that make a backtest look good. You get the .ex5, a configuration file and the reasoning behind it.</p>
+      <p>Each one is a compiled Expert Advisor, licensed to your own trading accounts, shipped with the settings I actually use rather than the ones that make a backtest look good. You get the .ex5, a configuration file and the reasoning behind it.</p>
     </div>
 
     <article class="product">
@@ -444,6 +418,63 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <div class="buy">
           <div class="price">€39<small>per month, or €249 lifetime</small></div>
           <a class="btn ink" href="https://jsgaston.github.io/regimeswitch-web-en/">View RegimeSwitch Pro</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="product">
+      <figure class="art" id="art-bear" style="margin:0"><figcaption>Four conditions before a single short</figcaption></figure>
+      <div class="body">
+        <p class="status">Available now</p>
+        <h3>BearStack Pro</h3>
+        <p class="desc">A sell-only system for gold on M1. Four bearish condition stacks are checked on the closed bar, and it holds one position at a time. Stops, a take-profit and a break-even rule are set on every entry, with hard limits on the day.</p>
+        <table class="specs">
+          <tr><th scope="row">Market</th><td>XAUUSD, M1, sell only</td></tr>
+          <tr><th scope="row">Risk controls</th><td>ATR-based stop and target, 5 trades a day, 2% daily loss stop, Friday cutoff</td></tr>
+          <tr><th scope="row">Positions</th><td>One at a time</td></tr>
+          <tr><th scope="row">Licence</th><td>Key valid on three accounts</td></tr>
+        </table>
+        <div class="buy">
+          <div class="price">€29<small>per month, or €249 lifetime</small></div>
+          <a class="btn ink" href="https://jsgaston.github.io/Charlie/">View BearStack Pro</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="product">
+      <figure class="art" id="art-wick" style="margin:0"><figcaption>Every pair keeps auditing its own edge</figcaption></figure>
+      <div class="body">
+        <p class="status">Available now</p>
+        <h3>WickFlow Pro</h3>
+        <p class="desc">Five selectable strategies run across a list of symbols and timeframes from a single chart. Every few bars it re-measures its own edge on history and switches off the sides and regimes that have stopped paying.</p>
+        <table class="specs">
+          <tr><th scope="row">Markets</th><td>Multi-symbol, multi-timeframe, from one chart</td></tr>
+          <tr><th scope="row">Strategies</th><td>Wick reversal, price action, range, regime, or either</td></tr>
+          <tr><th scope="row">Risk controls</th><td>Stop beyond the wick or ATR, one position per symbol, three in total</td></tr>
+          <tr><th scope="row">Licence</th><td>Key valid on three accounts</td></tr>
+        </table>
+        <div class="buy">
+          <div class="price">€39<small>per month, or €349 lifetime</small></div>
+          <a class="btn ink" href="https://jsgaston.github.io/Delta/">View WickFlow Pro</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="product">
+      <figure class="art" id="art-kalman" style="margin:0"><figcaption>The level, filtered out of the noise</figcaption></figure>
+      <div class="body">
+        <p class="status">Available now</p>
+        <h3>KalmanFlow Pro</h3>
+        <p class="desc">A Kalman filter separates the price from the noise and re-estimates its own parameters from your chart data every day. A change point test notices within a few bars when the model has broken, and it reads the volatility regime before deciding whether to trade.</p>
+        <table class="specs">
+          <tr><th scope="row">Market</th><td>XAUUSD by default</td></tr>
+          <tr><th scope="row">Model</th><td>Local linear trend on log price, refitted daily by maximum likelihood</td></tr>
+          <tr><th scope="row">Brakes</th><td>Change point test and a regime filter keep it flat when the model stops fitting</td></tr>
+          <tr><th scope="row">Licence</th><td>Key valid on three accounts</td></tr>
+        </table>
+        <div class="buy">
+          <div class="price">€39<small>per month, or €349 lifetime</small></div>
+          <a class="btn ink" href="https://jsgaston.github.io/kalmanflow-web-en/">View KalmanFlow Pro</a>
         </div>
       </div>
     </article>
@@ -484,43 +515,6 @@ footer .legal p{margin:0 0 8px;max-width:70em}
     </div>
 
     <p class="disc" id="a-disc">Figures are published automatically from the trading account every 15 minutes and stay blank until the account produces them. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.</p>
-  </div>
-</section>
-
-<section id="helm" class="helm">
-  <div class="wrap">
-    <div class="head">
-      <div>
-        <h2>Helm</h2>
-        <p class="helm-kick">The bots open the trades. I close them.</p>
-      </div>
-      <p>A second signal, run differently. Every entry comes from one of my bots with its stop in place; most exits are my own decisions, made by hand. Each close is published with who made it, so you can see whether my hand helps or not.</p>
-    </div>
-
-    <div class="hboard">
-      <div class="hchart">
-        <div class="chart-top">
-          <span class="name">Helm account<span class="badge" id="hl-badge" hidden>DEMO</span></span>
-          <span class="meta" id="hl-meta"></span>
-        </div>
-        <div id="hl-chart"><div class="lempty"><b>Not trading yet.</b><span>The record appears here the day the account closes its first trade.</span></div></div>
-        <div class="hexits" id="hl-exits" hidden></div>
-      </div>
-      <dl class="hfigs" id="hl-figs">
-        <div><dt>Return</dt><dd>—</dd></div><div><dt>Closed by hand</dt><dd>—</dd></div>
-        <div><dt>Profit factor</dt><dd>—</dd></div><div><dt>Hits</dt><dd>—</dd></div>
-        <div><dt>Max drawdown</dt><dd>—</dd></div><div><dt>Trades</dt><dd>—</dd></div>
-      </dl>
-    </div>
-
-    <div class="a-cta">
-      <div class="actions">
-        <a class="btn ink" href="https://jsgaston.github.io/helm/">See the Helm record</a>
-        <a class="btn ghost" href="mailto:jsgastoniriartecabrera@gmail.com?subject=Helm%20waiting%20list">Join the waiting list</a>
-      </div>
-      <p class="h-price">Not open to subscribers yet. Price announced at launch.</p>
-    </div>
-    <p class="disc" id="hl-disc">Figures are published automatically from the trading account every 15 minutes and stay blank until the account produces them. A manual strategy cannot be backtested, so this record is the only evidence. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.</p>
   </div>
 </section>
 
@@ -581,9 +575,11 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <ul>
           <li><a href="https://jsgaston.github.io/candlegrid-web-en/">CandleGrid Pro</a></li>
           <li><a href="https://jsgaston.github.io/regimeswitch-web-en/">RegimeSwitch Pro</a></li>
+          <li><a href="https://jsgaston.github.io/Charlie/">BearStack Pro</a></li>
+          <li><a href="https://jsgaston.github.io/Delta/">WickFlow Pro</a></li>
+          <li><a href="https://jsgaston.github.io/kalmanflow-web-en/">KalmanFlow Pro</a></li>
           <li><a href="https://jsgaston.github.io/armada/">Armada signal</a></li>
           <li><a href="https://jsgaston.github.io/armada/setup.html">Armada setup guide</a></li>
-          <li><a href="https://jsgaston.github.io/helm/">Helm signal</a></li>
           <li><a href="#tools">Tools</a></li>
         </ul>
       </div>
@@ -609,7 +605,6 @@ footer .legal p{margin:0 0 8px;max-width:70em}
    Edit here
    ===================================================================== */
 var ARMADA_BASE = 'https://jsgaston.github.io/armada/';
-var HELM_BASE = 'https://jsgaston.github.io/helm/';
 
 /* Articles: the first one is shown large. Add or remove entries freely. */
 
@@ -806,6 +801,86 @@ function artRegime(){
     g+='<rect x="'+(PL+96)+'" y="'+(by+q*22+2)+'" width="'+bw.toFixed(1)+'" height="12" fill="'+bc[q]+'"/>';
     g+='<text x="'+(W-PR)+'" y="'+(by+q*22+12)+'" text-anchor="end" font-family="Archivo" font-size="12" font-weight="600" fill="#DCE6EC">'+Math.round(probs[q]*100)+'%</text>';
   }
+  el.insertAdjacentHTML('afterbegin',g+'</svg>');
+}
+
+/* the newer illustrations are drawn at the figure's real size, so no label is cropped at any width */
+function artW(el){ var s=el.querySelector('svg'); if(s) s.remove(); return Math.max(320,Math.round(el.clientWidth||600)); }
+function artH(el){ return Math.max(300,Math.round(el.clientHeight||420)); }
+
+function artBear(){
+  var el=$('art-bear'), W=artW(el), H=artH(el), r=rng(31), n=64, PL=30, PR=30, PT=40, PB=158;
+  var price=[], p=0;
+  for(var i=0;i<n;i++){ p+=(r()-.56)*3.2; price.push(p); }
+  var lo=Math.min.apply(null,price)-3, hi=Math.max.apply(null,price)+3, cw=(W-PL-PR)/n;
+  var Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
+  var g='<svg viewBox="0 0 '+W+' '+H+'" aria-hidden="true">';
+  var sells=[14,33,51];
+  for(var k=1;k<n;k++){
+    var o=price[k-1], c=price[k], x=PL+k*cw, up=c>=o, h1=Math.max(o,c)+r()*1.4, l1=Math.min(o,c)-r()*1.4, sig=sells.indexOf(k)>=0;
+    var col=sig?'#E0A92C':(up?'#45C29A':'#E8715F');
+    g+='<line x1="'+(x+cw*.3).toFixed(1)+'" x2="'+(x+cw*.3).toFixed(1)+'" y1="'+Y(h1).toFixed(1)+'" y2="'+Y(l1).toFixed(1)+'" stroke="'+col+'" opacity="'+(sig?1:.55)+'"/>';
+    g+='<rect x="'+x.toFixed(1)+'" y="'+Y(Math.max(o,c)).toFixed(1)+'" width="'+(cw*.6).toFixed(1)+'" height="'+Math.max(1.5,Math.abs(Y(o)-Y(c))).toFixed(1)+'" fill="'+col+'" opacity="'+(sig?1:.6)+'"/>';
+    if(sig) g+='<path d="M'+(x+cw*.3-6).toFixed(1)+' '+(Y(h1)-16).toFixed(1)+'h12l-6 9z" fill="#E0A92C"/>';
+  }
+  var names=['Trend','Momentum','Candle','Volatility'], by=H-132;
+  g+='<text x="'+PL+'" y="'+(by-12)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">Conditions on the closed bar</text>';
+  for(var q=0;q<4;q++){
+    var y=by+q*22, on=q<3||r()>.2;
+    g+='<text x="'+PL+'" y="'+(y+12)+'" font-family="Archivo" font-size="12" fill="#DCE6EC">'+names[q]+'</text>';
+    for(var s=0;s<12;s++) g+='<rect x="'+(PL+96+s*((W-PL-PR-140)/12)).toFixed(1)+'" y="'+(y+2)+'" width="'+((W-PL-PR-140)/12-3).toFixed(1)+'" height="12" fill="'+(s<9+q%2?'rgba(232,113,95,.75)':'rgba(214,230,240,.08)')+'"/>';
+    g+='<text x="'+(W-PR)+'" y="'+(y+12)+'" text-anchor="end" font-family="Archivo" font-size="12" font-weight="600" fill="'+(on?'#E0A92C':'#8DA4B4')+'">'+(on?'met':'wait')+'</text>';
+  }
+  el.insertAdjacentHTML('afterbegin',g+'</svg>');
+}
+
+function artWick(){
+  var el=$('art-wick'), W=artW(el), H=artH(el), r=rng(43), n=34, PL=30, PR=30, PT=40, PB=176;
+  var price=[], p=0;
+  for(var i=0;i<n;i++){ p+=(r()-.5)*4; price.push(p); }
+  var lo=Math.min.apply(null,price)-6, hi=Math.max.apply(null,price)+6, cw=(W-PL-PR)/n;
+  var Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
+  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">', hits=[9,22];
+  for(var k=1;k<n;k++){
+    var o=price[k-1], c=price[k], x=PL+k*cw, up=c>=o, sig=hits.indexOf(k)>=0;
+    var h1=Math.max(o,c)+r()*1.6, l1=Math.min(o,c)-(sig?5.5:r()*1.6), col=sig?'#E0A92C':(up?'#45C29A':'#E8715F');
+    g+='<line x1="'+(x+cw*.35).toFixed(1)+'" x2="'+(x+cw*.35).toFixed(1)+'" y1="'+Y(h1).toFixed(1)+'" y2="'+Y(l1).toFixed(1)+'" stroke="'+col+'" stroke-width="'+(sig?2:1)+'" opacity="'+(sig?1:.55)+'"/>';
+    g+='<rect x="'+x.toFixed(1)+'" y="'+Y(Math.max(o,c)).toFixed(1)+'" width="'+(cw*.7).toFixed(1)+'" height="'+Math.max(1.5,Math.abs(Y(o)-Y(c))).toFixed(1)+'" fill="'+col+'" opacity="'+(sig?1:.6)+'"/>';
+    if(sig) g+='<rect x="'+(x-5).toFixed(1)+'" y="'+(Y(h1)-5).toFixed(1)+'" width="'+(cw*.7+10).toFixed(1)+'" height="'+(Y(l1)-Y(h1)+10).toFixed(1)+'" fill="none" stroke="#E0A92C" opacity=".7"/>';
+  }
+  var rows=[['XAUUSD H1',1],['XAUUSD H2',1],['USDJPY H2',0],['EURUSD H4',1]], by=H-148;
+  g+='<text x="'+PL+'" y="'+(by-12)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">Edge re-measured on history</text>';
+  for(var q=0;q<rows.length;q++){
+    var y=by+q*24, on=rows[q][1], w=(W-PL-PR-200)*(on?.45+r()*.4:.12);
+    g+='<text x="'+PL+'" y="'+(y+12)+'" font-family="Archivo" font-size="12" fill="#DCE6EC">'+rows[q][0]+'</text>';
+    g+='<rect x="'+(PL+110)+'" y="'+(y+2)+'" width="'+(W-PL-PR-200)+'" height="12" fill="rgba(214,230,240,.06)"/>';
+    g+='<rect x="'+(PL+110)+'" y="'+(y+2)+'" width="'+w.toFixed(1)+'" height="12" fill="'+(on?'#45C29A':'#8DA4B4')+'" opacity="'+(on?1:.5)+'"/>';
+    g+='<text x="'+(W-PR)+'" y="'+(y+12)+'" text-anchor="end" font-family="Archivo" font-size="12" font-weight="600" fill="'+(on?'#DCE6EC':'#8DA4B4')+'">'+(on?'on':'off')+'</text>';
+  }
+  el.insertAdjacentHTML('afterbegin',g+'</svg>');
+}
+
+function artKalman(){
+  var el=$('art-kalman'), W=artW(el), H=artH(el), r=rng(57), n=150, brk=96, PL=30, PR=30, PT=46, PB=90;
+  var lvl=[], obs=[], f=[], L=0, sl=.35, est=0, gain=.18;
+  for(var i=0;i<n;i++){
+    if(i===brk) sl=-.55;
+    L+=sl+(r()-.5)*.25; lvl.push(L); obs.push(L+(r()-.5)*7);
+    est=i?est+gain*(obs[i]-est):obs[0]; f.push(est);
+  }
+  var all=obs.concat(f), lo=Math.min.apply(null,all), hi=Math.max.apply(null,all);
+  var X=function(i){return PL+i/(n-1)*(W-PL-PR);}, Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
+  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+  g+='<path d="'+obs.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);}).join('')+'" fill="none" stroke="#8DA4B4" stroke-width="1" opacity=".55"/>';
+  g+='<path d="'+smoothPath(f.map(function(v,i){return [X(i),Y(v)];}))+'" fill="none" stroke="#45C29A" stroke-width="2.4"/>';
+  var cp=brk+5;
+  g+='<line x1="'+X(cp).toFixed(1)+'" x2="'+X(cp).toFixed(1)+'" y1="'+PT+'" y2="'+(H-PB)+'" stroke="#E0A92C" stroke-dasharray="4 5"/>';
+  g+='<text x="'+(X(cp)+8).toFixed(1)+'" y="'+(PT+12)+'" font-family="Archivo" font-size="12" fill="#E0A92C">change point</text>';
+  var ly=H-PB+34;
+  g+='<line x1="'+PL+'" x2="'+(PL+26)+'" y1="'+(ly-4)+'" y2="'+(ly-4)+'" stroke="#8DA4B4" opacity=".6"/>';
+  g+='<text x="'+(PL+34)+'" y="'+ly+'" font-family="Archivo" font-size="12" fill="#8DA4B4">price</text>';
+  g+='<line x1="'+(PL+84)+'" x2="'+(PL+110)+'" y1="'+(ly-4)+'" y2="'+(ly-4)+'" stroke="#45C29A" stroke-width="2.4"/>';
+  g+='<text x="'+(PL+118)+'" y="'+ly+'" font-family="Archivo" font-size="12" fill="#DCE6EC">filtered level</text>';
   el.insertAdjacentHTML('afterbegin',g+'</svg>');
 }
 
@@ -1031,57 +1106,8 @@ function drawMonths(sc){
   $('a-months').innerHTML=cells.join('');
 }
 
-/* =====================================================================
-   Helm data (second signal: bots open, I close)
-   ===================================================================== */
-var EXITS={hand:['By hand','#E0A92C','#1A1206'],tp:['Take-profit','#1E6B57','#fff'],sl:['Stop-loss','#BE3A2B','#fff'],bot:['By the bot','#0F2C42','#fff'],so:['Stop-out','#7A1E14','#fff'],other:['Other','#8DA4B4','#0F2C42']};
-var HELM=null;
-function drawHelm(){
-  var s=HELM; if(!s) return;
-  var A=s.account||{}, main=null;
-  (s.scopes||[]).forEach(function(x){ if(x.id==='all') main=x; });
-  if(A.type==='demo'){ $('hl-badge').hidden=false;
-    $('hl-disc').textContent='Figures come from a demo account and are published automatically every 15 minutes. Demo fills are usually kinder than real-money execution. A manual strategy cannot be backtested, so this record is the only evidence. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.'; }
-  if(!main || main.empty) return;
-  var R=main.returns||{}, K=main.risk||{}, T=main.trades||{}, ex=main.exits||[], hand=null;
-  ex.forEach(function(e){ if(e.k==='hand') hand=e; });
-  var meta=[]; if(T.first_trade) meta.push('since '+fdate(T.first_trade));
-  if(s.updated_utc){ var m=Math.round((Date.now()-new Date(s.updated_utc))/60000); meta.push('updated '+(m<2?'just now':m<60?m+' min ago':Math.round(m/60)+' h ago')); }
-  $('hl-meta').textContent=meta.join(', ');
-  var items=[
-    ['Return','<span class="'+sign(R.total_pct)+'">'+pct(R.total_pct)+'</span>', nil(R.month_pct)?'':'this month '+pct(R.month_pct)],
-    ['Closed by hand', hand?upct(hand.share_pct,0):(ex.length?'0%':'—'), hand?hand.trades+' of '+T.trades+' trades':''],
-    ['Profit factor', num(T.profit_factor), hand&&!nil(hand.profit_factor)?'hand exits '+num(hand.profit_factor):''],
-    ['Hits', upct(T.win_rate_pct), ''],
-    ['Max drawdown', dd(K.max_drawdown_pct), nil(K.current_drawdown_pct)?'':(K.current_drawdown_pct>0?'now −'+K.current_drawdown_pct.toFixed(2)+'%':'at a new high')],
-    ['Trades', nil(T.trades)?'—':T.trades, nil(T.trades_per_week)?'':T.trades_per_week+' a week']
-  ];
-  $('hl-figs').innerHTML=items.map(function(it){ return '<div><dt>'+it[0]+'</dt><dd>'+it[1]+(it[2]?'<small>'+esc(it[2])+'</small>':'')+'</dd></div>'; }).join('');
-  if(ex.length){
-    $('hl-exits').innerHTML=ex.map(function(e){ var m=EXITS[e.k]||EXITS.other;
-      return '<span style="width:'+e.share_pct+'%;background:'+m[1]+';color:'+m[2]+'" title="'+m[0]+': '+e.trades+' trades">'+(e.share_pct>=16?m[0]+' '+Math.round(e.share_pct)+'%':'')+'</span>'; }).join('');
-    $('hl-exits').hidden=false;
-  }
-  var eq=curveSeries(main), box=$('hl-chart');
-  if(eq.length<2) return;
-  var W=Math.max(300,box.clientWidth||700), H=W<560?220:260;
-  var c=lineChart(eq,W,H,{pl:22,pr:W<560?52:62,pt:22,pb:14});
-  var col=c.up?'#1E6B57':'#BE3A2B', ticks='';
-  for(var i=0;i<=4;i++){ var v=c.lo+(c.hi-c.lo)*i/4, y=c.Y(v);
-    ticks+='<line x1="22" x2="'+(W-(W<560?52:62))+'" y1="'+y.toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="rgba(15,44,66,.07)"/><text x="'+(W-(W<560?52:62)+8)+'" y="'+(y+4).toFixed(1)+'" font-family="Archivo" font-size="11.5" fill="#607487">'+pct(v-100,1)+'</text>'; }
-  box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="Helm growth curve">'+
-    '<defs><linearGradient id="hlg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+col+'" stop-opacity=".2"/><stop offset="1" stop-color="'+col+'" stop-opacity="0"/></linearGradient></defs>'+ticks+
-    '<line x1="22" x2="'+(W-(W<560?52:62))+'" y1="'+c.Y(100).toFixed(1)+'" y2="'+c.Y(100).toFixed(1)+'" stroke="rgba(15,44,66,.35)" stroke-dasharray="3 4"/>'+
-    '<path d="'+c.area+'" fill="url(#hlg)"/><path d="'+c.d+'" fill="none" stroke="'+col+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/></svg>';
-}
-
-artCandles(); artRegime(); drawTools(); drawPosts();
-
-fetch(HELM_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
-  .then(function(r){return r.ok?r.json():null;})
-  .then(function(s){ if(!s) return; HELM=s; drawHelm();
-    var t; window.addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(drawHelm,150); }); })
-  .catch(function(){});
+artCandles(); artRegime(); artBear(); artWick(); artKalman(); drawTools(); drawPosts();
+(function(){ var t, w=innerWidth; addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(function(){ if(innerWidth===w) return; w=innerWidth; artBear(); artWick(); artKalman(); },200); }); })();
 
 fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
   .then(function(r){return r.ok?r.json():null;})
