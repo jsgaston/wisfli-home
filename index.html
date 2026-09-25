@@ -375,7 +375,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
   <div class="wrap">
     <div class="head">
       <h2>The bots</h2>
-      <p>Each one is a compiled Expert Advisor, licensed to your account number, shipped with the settings I actually use rather than the ones that make a backtest look good. You get the .ex5, a configuration file and the reasoning behind it.</p>
+      <p>Each one is a compiled Expert Advisor, licensed to you, shipped with the settings I actually use rather than the ones that make a backtest look good. You get the .ex5, a configuration file and the reasoning behind it.</p>
     </div>
 
     <article class="product">
@@ -412,6 +412,63 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <div class="buy">
           <div class="price">€39<small>per month, or €249 lifetime</small></div>
           <a class="btn ink" href="https://jsgaston.github.io/regimeswitch-web-en/">View RegimeSwitch Pro</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="product">
+      <figure class="art" id="art-bear" style="margin:0"><figcaption>Four bearish stacks, sell side only</figcaption></figure>
+      <div class="body">
+        <p class="status">Available now</p>
+        <h3>BearStack Pro</h3>
+        <p class="desc">Four independent condition stacks read every closed one-minute bar on gold, and a short is only opened when one of them lines up. One position at a time: no grid, no averaging, no lot multiplier.</p>
+        <table class="specs">
+          <tr><th scope="row">Market</th><td>XAUUSD, M1 closed bars, sell only</td></tr>
+          <tr><th scope="row">Risk controls</th><td>Hard stop, daily trade cap, daily loss stop, spread ceiling, cooldown, time exit</td></tr>
+          <tr><th scope="row">Licence</th><td>Key valid on up to three accounts</td></tr>
+          <tr><th scope="row">Try it</th><td>Free backtest build for the Strategy Tester</td></tr>
+        </table>
+        <div class="buy">
+          <div class="price">€29<small>per month, or €249 once</small></div>
+          <a class="btn ink" href="https://jsgaston.github.io/Charlie/">View BearStack Pro</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="product">
+      <figure class="art" id="art-wick" style="margin:0"><figcaption>An edge study that switches sides off</figcaption></figure>
+      <div class="body">
+        <p class="status">Available now</p>
+        <h3>WickFlow Pro</h3>
+        <p class="desc">Five selectable strategies run across a list of symbols and timeframes from a single chart. Every few bars it re-measures its own edge on history and switches off the sides and regimes that have stopped paying.</p>
+        <table class="specs">
+          <tr><th scope="row">Markets</th><td>Multi-symbol, multi-timeframe, from one chart</td></tr>
+          <tr><th scope="row">Strategies</th><td>Indecision candle, price action, range, hidden-state regime</td></tr>
+          <tr><th scope="row">Self-audit</th><td>Out-of-sample expectancy per side and per regime</td></tr>
+          <tr><th scope="row">Licence</th><td>Key valid on up to three accounts</td></tr>
+        </table>
+        <div class="buy">
+          <div class="price">€39<small>per month, or €349 once</small></div>
+          <a class="btn ink" href="https://jsgaston.github.io/Delta/">View WickFlow Pro</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="product">
+      <figure class="art" id="art-kalman" style="margin:0"><figcaption>A filter that re-fits itself</figcaption></figure>
+      <div class="body">
+        <p class="status">Available now</p>
+        <h3>KalmanFlow Pro</h3>
+        <p class="desc">A state-space filter that estimates where price is once the noise is removed and how fast it is moving, re-fitted from your own chart data. A change-point test notices within a few bars when the model has broken, and a three-state regime model sets how much size the conditions deserve.</p>
+        <table class="specs">
+          <tr><th scope="row">Market</th><td>XAUUSD supported; crypto still in testing</td></tr>
+          <tr><th scope="row">Upkeep</th><td>Re-estimates its filter as new bars close</td></tr>
+          <tr><th scope="row">Licence</th><td>Key valid on up to three accounts</td></tr>
+          <tr><th scope="row">Try it</th><td>Free backtest build for the Strategy Tester</td></tr>
+        </table>
+        <div class="buy">
+          <div class="price">€39<small>per month, or €349 once</small></div>
+          <a class="btn ink" href="https://jsgaston.github.io/kalmanflow-web-en/">View KalmanFlow Pro</a>
         </div>
       </div>
     </article>
@@ -512,6 +569,9 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <ul>
           <li><a href="https://jsgaston.github.io/candlegrid-web-en/">CandleGrid Pro</a></li>
           <li><a href="https://jsgaston.github.io/regimeswitch-web-en/">RegimeSwitch Pro</a></li>
+          <li><a href="https://jsgaston.github.io/Charlie/">BearStack Pro</a></li>
+          <li><a href="https://jsgaston.github.io/Delta/">WickFlow Pro</a></li>
+          <li><a href="https://jsgaston.github.io/kalmanflow-web-en/">KalmanFlow Pro</a></li>
           <li><a href="https://jsgaston.github.io/armada/">Armada live results</a></li>
           <li><a href="#tools">Tools</a></li>
         </ul>
@@ -631,7 +691,11 @@ var F={
 var LETTERS='ABCDEFGHIJ'.split('');
 var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function $(id){return document.getElementById(id);}
-function flag(l){return F[l]?'<svg viewBox="0 0 60 40" aria-hidden="true">'+F[l]+'</svg>':'';}
+function flag(l){
+  if(F[l]) return '<svg viewBox="0 0 60 40" aria-hidden="true">'+F[l]+'</svg>';
+  if(!l) return '';
+  return '<svg viewBox="0 0 60 40" aria-hidden="true"><path d="M0 0h60v40H0z" fill="#0F2C42"/><path d="M0 0h60v40H0z" fill="none" stroke="#E0A92C" stroke-width="3"/><text x="30" y="28" text-anchor="middle" font-family="Archivo" font-weight="800" font-size="22" fill="#E0A92C">'+esc(String(l).slice(0,2))+'</text></svg>';
+}
 function nil(v){return v===null||v===undefined||(typeof v==='number'&&isNaN(v));}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function pct(n,d){d=d==null?2:d;return nil(n)?'—':(n>0?'+':(n<0?'−':''))+Math.abs(n).toFixed(d)+'%';}
@@ -696,6 +760,80 @@ function artRegime(){
     g+='<rect x="'+(PL+96)+'" y="'+(by+q*22+2)+'" width="'+bw.toFixed(1)+'" height="12" fill="'+bc[q]+'"/>';
     g+='<text x="'+(W-PR)+'" y="'+(by+q*22+12)+'" text-anchor="end" font-family="Archivo" font-size="12" font-weight="600" fill="#DCE6EC">'+Math.round(probs[q]*100)+'%</text>';
   }
+  el.insertAdjacentHTML('afterbegin',g+'</svg>');
+}
+
+function artBear(){
+  var el=$('art-bear'), W=600, H=420, r=rng(31), n=96, PL=30, PR=30, PT=36, PH=190;
+  var price=[], p=0;
+  for(var i=0;i<n;i++){ p+=(r()-.5)*3.2 - (i>30&&i<52||i>70&&i<86?.9:.05); price.push(p); }
+  var lo=Math.min.apply(null,price), hi=Math.max.apply(null,price);
+  var X=function(i){return PL+i/(n-1)*(W-PL-PR);}, Y=function(v){return PT+(1-(v-lo)/(hi-lo))*PH;};
+  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+  g+='<path d="'+price.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);}).join('')+'" fill="none" stroke="#DCE6EC" stroke-width="1.5" opacity=".85"/>';
+  var entries=[30,70], rows=4, top=PT+PH+46, rh=22, names=['Stack 1','Stack 2','Stack 3','Stack 4'];
+  entries.forEach(function(k){
+    var x=X(k), y=Y(price[k])-10;
+    g+='<line x1="'+x.toFixed(1)+'" x2="'+x.toFixed(1)+'" y1="'+PT+'" y2="'+(top+rows*rh-6)+'" stroke="#E0A92C" stroke-width="1" stroke-dasharray="3 4" opacity=".55"/>';
+    g+='<path d="M'+(x-7).toFixed(1)+' '+(y-8).toFixed(1)+'h14l-7 10z" fill="#E8715F"/>';
+  });
+  for(var q=0;q<rows;q++){
+    var y0=top+q*rh;
+    g+='<text x="'+PL+'" y="'+(y0+4)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">'+names[q]+'</text>';
+    for(var j=0;j<24;j++){
+      var cx=PL+86+j*((W-PL-PR-86)/23), sp=(W-PL-PR-86)/23;
+      var hot=entries.some(function(e){return Math.abs(X(e)-cx)<sp/2;}) && (q===1||q===3||r()<.5);
+      g+='<circle cx="'+cx.toFixed(1)+'" cy="'+y0+'" r="3.4" fill="'+(hot?'#E0A92C':'rgba(214,230,240,.16)')+'"/>';
+    }
+  }
+  el.insertAdjacentHTML('afterbegin',g+'</svg>');
+}
+
+function artWick(){
+  var el=$('art-wick'), W=600, H=420, r=rng(43), n=34, PL=30, PR=30, PT=34, PH=210;
+  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+  var cw=(W-PL-PR)/n, price=.5, C=[];
+  for(var k0=0;k0<n;k0++){
+    var o0=price, c0=Math.min(.85,Math.max(.15,o0+(r()-.5)*.14)), lw=k0%7===4;
+    C.push([o0,c0,Math.max(o0,c0)+(lw?.14+r()*.06:r()*.05),Math.min(o0,c0)-(lw?.14+r()*.06:r()*.05)]); price=c0;
+  }
+  var mx=Math.max.apply(null,C.map(function(c){return c[2];})), mn=Math.min.apply(null,C.map(function(c){return c[3];}));
+  var Y=function(v){return PT+(1-(v-mn)/(mx-mn))*PH;};
+  for(var k=0;k<n;k++){
+    var o=C[k][0], c=C[k][1], hi=C[k][2], lo=C[k][3], longWick=k%7===4;
+    var x=PL+k*cw+cw*.2, col=longWick?'#E0A92C':(c>=o?'#45C29A':'#E8715F');
+    g+='<line x1="'+(x+cw*.3).toFixed(1)+'" x2="'+(x+cw*.3).toFixed(1)+'" y1="'+Y(hi).toFixed(1)+'" y2="'+Y(lo).toFixed(1)+'" stroke="'+col+'" stroke-width="1.2" opacity="'+(longWick?1:.55)+'"/>';
+    g+='<rect x="'+x.toFixed(1)+'" y="'+Y(Math.max(o,c)).toFixed(1)+'" width="'+(cw*.6).toFixed(1)+'" height="'+Math.max(1.5,Math.abs(Y(o)-Y(c))).toFixed(1)+'" fill="'+col+'" opacity="'+(longWick?1:.6)+'"/>';
+  }
+  var top=PT+PH+44, labels=['Buy side','Sell side'], segs=[[1,1,1,0,0,1,1,1,1,1,0,1],[1,0,0,0,1,1,1,0,0,0,0,1]];
+  g+='<text x="'+PL+'" y="'+(top-16)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">Out-of-sample study, per side</text>';
+  for(var q=0;q<2;q++){
+    var y0=top+q*30, sw=(W-PL-PR-86)/12;
+    g+='<text x="'+PL+'" y="'+(y0+12)+'" font-family="Archivo" font-size="12" fill="#DCE6EC">'+labels[q]+'</text>';
+    for(var j=0;j<12;j++) g+='<rect x="'+(PL+86+j*sw+1).toFixed(1)+'" y="'+(y0+2)+'" width="'+(sw-3).toFixed(1)+'" height="12" fill="'+(segs[q][j]?'#45C29A':'rgba(214,230,240,.08)')+'" opacity="'+(segs[q][j]?.8:1)+'"/>';
+  }
+  el.insertAdjacentHTML('afterbegin',g+'</svg>');
+}
+
+function artKalman(){
+  var el=$('art-kalman'), W=600, H=420, r=rng(57), n=110, PL=30, PR=30, PT=40, PB=70, brk=72;
+  var lvl=[], obs=[], v=0, slope=.35;
+  for(var i=0;i<n;i++){ if(i===brk) slope=-.55; v+=slope+(r()-.5)*.25; lvl.push(v); obs.push(v+(r()-.5)*7); }
+  var est=[], e=obs[0], sl=0;
+  for(var j=0;j<n;j++){ var pred=e+sl, k=j>=brk&&j<brk+5?.6:.18; e=pred+k*(obs[j]-pred); sl=sl+.05*(obs[j]-pred); est.push(e); }
+  var all=obs.concat(est.map(function(v){return v+4;}),est.map(function(v){return v-4;})), lo=Math.min.apply(null,all), hi=Math.max.apply(null,all);
+  var X=function(i){return PL+i/(n-1)*(W-PL-PR);}, Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
+  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+  var up=est.map(function(v,i){return [X(i),Y(v+4)];}), dn=est.map(function(v,i){return [X(i),Y(v-4)];}).reverse();
+  g+='<path d="'+up.concat(dn).map(function(q,i){return (i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1);}).join('')+'Z" fill="rgba(224,169,44,.1)"/>';
+  obs.forEach(function(o,i){ g+='<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(o).toFixed(1)+'" r="1.8" fill="#DCE6EC" opacity=".45"/>'; });
+  g+='<path d="'+est.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);}).join('')+'" fill="none" stroke="#E0A92C" stroke-width="2.2"/>';
+  var bx=X(brk+2);
+  g+='<line x1="'+bx.toFixed(1)+'" x2="'+bx.toFixed(1)+'" y1="'+(PT-6)+'" y2="'+(H-PB+8)+'" stroke="#E8715F" stroke-width="1" stroke-dasharray="3 4"/>';
+  g+='<text x="'+(bx+8).toFixed(1)+'" y="'+(PT+6)+'" font-family="Archivo" font-size="12" fill="#E8715F">break detected</text>';
+  var st=['#45C29A','#8DA4B4','#E8715F'], by=H-PB+26;
+  g+='<text x="'+PL+'" y="'+(by-8)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">Regime</text>';
+  for(var s2=0;s2<n;s2++){ var c=s2<brk?0:(s2<brk+10?1:2); g+='<rect x="'+X(s2).toFixed(1)+'" y="'+by+'" width="'+((W-PL-PR)/(n-1)+.6).toFixed(1)+'" height="10" fill="'+st[c]+'" opacity=".55"/>'; }
   el.insertAdjacentHTML('afterbegin',g+'</svg>');
 }
 
@@ -914,14 +1052,14 @@ function drawMonths(sc){
   $('a-months').innerHTML=cells.join('');
 }
 
-artCandles(); artRegime(); drawTools(); drawPosts();
+artCandles(); artRegime(); artBear(); artWick(); artKalman(); drawTools(); drawPosts();
 
 fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
   .then(function(r){return r.ok?r.json():null;})
   .then(function(s){
     if(!s) return;
     ACC=s.account||{}; if(ACC.currency) CUR=ACC.currency;
-    if(s.strategies&&s.strategies.length===10) hoist(s.strategies);
+    if(s.strategies&&s.strategies.length) hoist(s.strategies);
     SCOPES=(s.scopes||[]);
     if(ACC.type==='demo') $('a-disc').textContent='Figures come from a demo account and are published automatically every 15 minutes. Demo fills are usually kinder than real-money execution. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.';
     var main=null; for(var i=0;i<SCOPES.length;i++) if(SCOPES[i].id==='all') main=SCOPES[i];
