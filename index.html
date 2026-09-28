@@ -126,7 +126,8 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 .figs dt[title]{cursor:help;text-decoration:underline dotted rgba(214,230,240,.35);text-underline-offset:4px}
 .figs dd{margin:0;font:700 26px/1.1 Archivo;color:#fff;font-stretch:104%;white-space:nowrap}
 .figs dd small{display:block;font:500 12px Archivo;color:var(--dmuted);margin-top:4px;white-space:normal}
-.stamp{font:500 13px Archivo;color:var(--dmuted);margin:16px 0 0}
+.a-cta{display:flex;align-items:center;gap:14px 24px;flex-wrap:wrap;margin-top:28px}
+.stamp{font:500 13px Archivo;color:var(--dmuted);margin:0}
 .disc{font:400 13px/1.6 Archivo;color:#6F8797;max-width:62em;margin:20px 0 0}
 .empty{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;height:100%;min-height:280px;text-align:center;color:var(--dmuted);font-family:Archivo;padding:30px}
 .empty b{color:#fff;font-size:18px}
@@ -199,6 +200,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
     <nav aria-label="Main">
       <a href="#armada">Armada</a>
       <a href="#plan">The plan</a>
+      <a href="https://jsgaston.github.io/armada/">Full record</a>
       <a class="pill" href="#armada">Live record</a>
     </nav>
   </div>
@@ -245,7 +247,10 @@ footer .legal p{margin:0 0 8px;max-width:70em}
       <dl class="figs" id="a-figs"></dl>
     </div>
 
-    <p class="stamp" id="a-updated">Waiting for the first publication.</p>
+    <div class="a-cta">
+      <a class="btn brass" id="a-full" href="https://jsgaston.github.io/armada/">See the full record</a>
+      <p class="stamp" id="a-updated">Waiting for the first publication.</p>
+    </div>
     <p class="disc" id="a-disc">Figures are published from the trading account each time I update the record, and stay blank until the account produces them. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.</p>
   </div>
 </section>
@@ -297,6 +302,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <h4>Wisfli</h4>
         <ul>
           <li><a href="#armada">Armada live record</a></li>
+          <li><a href="https://jsgaston.github.io/armada/">Armada full record</a></li>
           <li><a href="#plan">The plan</a></li>
           <li><a href="/terms.html">Terms</a></li>
           <li><a href="/privacy.html">Privacy</a></li>
@@ -312,7 +318,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
 </footer>
 
 <script>
-/* The record is read from the Armada data file. It is data only: the page links to no other site. */
+/* Armada page: the record is read from its data file, and it is the only other site this page links to. */
 var STATS_BASE = 'https://jsgaston.github.io/armada/';
 
 /* =====================================================================
@@ -491,6 +497,8 @@ function select(id){
   if(sc.symbols && sc.symbols.length) meta.push(sc.symbols.slice(0,4).map(function(x){return x.s;}).join(', '));
   if(T.first_trade) meta.push('since '+fdate(T.first_trade));
   $('a-meta').textContent=meta.join(', ');
+  $('a-full').href=STATS_BASE+(sc.id==='all'?'':'#bot='+encodeURIComponent(sc.id));
+  $('a-full').textContent=sc.id==='all'?'See the full record':'Full record for '+sc.name;
 
   var net = sc.kind==='account' ? ACC.net_profit : sc.net;
   var cs=T.current_streak;
