@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wisfli — trading systems I build and run myself</title>
-<meta name="description" content="MetaTrader 5 Expert Advisors, a live account where every one of them trades in public with every statistic published, and notes on building them. Made in Alicante by one person who trades the same systems he sells.">
+<meta name="description" content="MetaTrader 5 Expert Advisors, a copy-trading signal with every statistic published, and notes on building them. Made in Alicante by one person who trades the same systems he sells.">
 <meta name="theme-color" content="#06141F">
 <meta property="og:title" content="Wisfli — trading tools that show their work">
-<meta property="og:description" content="MetaTrader 5 Expert Advisors and Armada, a live account where they all trade and every number it produces is published.">
+<meta property="og:description" content="MetaTrader 5 Expert Advisors and Armada, a copy-trading signal that publishes every number it produces.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://wisfli.com/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'%3E%3Cpath d='M0 0h30v40H0z' fill='%23fff'/%3E%3Cpath d='M30 0h30L46 20l14 20H30z' fill='%2314528C'/%3E%3C/svg%3E">
@@ -93,9 +93,11 @@ a{color:inherit;text-underline-offset:3px;text-decoration-thickness:1px}
 .inst-grid dt{font:500 12px Archivo;color:var(--dmuted);margin:0 0 3px}
 .inst-grid dd{font:700 19px Archivo;color:#fff;margin:0;white-space:nowrap}
 .inst-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;border-top:1px solid var(--drule);font:500 12.5px Archivo;color:var(--dmuted)}
-.inst-foot .flags{display:flex;gap:4px}
+.inst-foot .flags{display:flex;gap:4px;align-items:center;flex-wrap:wrap;min-width:0}
 .inst-foot .flags svg{width:24px;height:16px;display:block}
 .inst-foot .flags .dim{opacity:.25}
+.inst-foot .flags .more{font:600 12px Archivo;color:var(--dmuted);margin-left:4px;white-space:nowrap}
+.inst-foot #h-fleet{white-space:nowrap}
 .draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 1.8s .25s cubic-bezier(.6,.05,.25,1) forwards}
 .fade{opacity:0;animation:fadein .8s 1.6s forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
@@ -141,6 +143,8 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 .armada .hoist span{display:block;transition:transform .2s}
 .armada .hoist svg{width:46px;height:31px;display:block;box-shadow:0 2px 0 rgba(0,0,0,.35)}
 .armada .hoist .dim{opacity:.22}
+.armada .hoist.many{gap:5px}.armada .hoist.many svg{width:34px;height:23px}
+.armada .hoist.lots{gap:4px}.armada .hoist.lots svg{width:26px;height:17px;box-shadow:0 1px 0 rgba(0,0,0,.35)}
 .armada .hoist-note{font:500 13.5px Archivo;color:var(--dmuted);margin:0}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 22px}
 .chip{display:inline-flex;align-items:center;gap:8px;font:600 14px Archivo;color:var(--dtext);background:transparent;border:1px solid var(--drule-2);padding:8px 14px;cursor:pointer}
@@ -149,6 +153,18 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 .chip:hover{border-color:#fff}
 .chip[aria-pressed="true"]{background:#fff;color:var(--abyss);border-color:#fff}
 .chip[aria-pressed="true"] small{color:var(--muted)}
+.picker{display:flex;align-items:center;gap:12px 16px;flex-wrap:wrap;margin:0 0 22px}
+.picker label{font:500 13.5px Archivo;color:var(--dmuted)}
+.picker select{
+  font:700 15px Archivo,sans-serif;color:#fff;background-color:var(--abyss-2);border:1px solid var(--drule-2);
+  padding:9px 38px 9px 12px;min-width:300px;max-width:100%;appearance:none;-webkit-appearance:none;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,#E0A92C 50%),linear-gradient(135deg,#E0A92C 50%,transparent 50%);
+  background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat
+}
+.picker select:hover{border-color:#fff}
+.picker .flagmini svg{width:30px;height:20px;display:block}
+.picker .step{font:600 13px Archivo;background:transparent;border:1px solid var(--drule-2);color:var(--dtext);padding:8px 12px;cursor:pointer}
+.picker .step:hover{border-color:var(--brass)}
 .board{display:grid;grid-template-columns:1.55fr 1fr;border:1px solid var(--drule-2);background:rgba(15,44,66,.35)}
 .board .chart{border-right:1px solid var(--drule-2);position:relative;min-height:420px;display:flex;flex-direction:column}
 .chart-top{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;padding:20px 22px 0}
@@ -158,6 +174,8 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 #a-chart svg{display:block;width:100%}
 .readout{position:absolute;top:8px;right:22px;font:500 12.5px Archivo;color:var(--dmuted);background:rgba(6,20,31,.85);padding:4px 9px;pointer-events:none}
 .readout b{color:#fff}
+.hand-key{font:500 12px Archivo;color:var(--dmuted);margin:0;padding:0 22px 12px}
+.hand-key i{display:inline-block;width:9px;height:9px;border-radius:50%;background:#E0A92C;margin-right:6px;vertical-align:0}
 .months{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;padding:0 22px 22px}
 .months div{text-align:center;font:600 11.5px Archivo;padding:7px 0 6px;color:var(--dtext);background:rgba(214,230,240,.05)}
 .months div small{display:block;font-weight:500;color:var(--dmuted);font-size:10.5px}
@@ -283,6 +301,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
   .figs div:nth-child(2n){border-right:0}
   .figs dd{font-size:22px}
   .months{grid-template-columns:repeat(6,1fr)}
+  .picker select{min-width:0;width:100%}
   .posts{grid-template-columns:1fr}
   .post.feature{grid-column:auto;flex-direction:column}
   .post.feature .cover{height:160px;flex:none}
@@ -311,7 +330,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
       <a href="#tools">Tools</a>
       <a href="#writing">Writing</a>
       <a href="#about">About</a>
-      <a class="pill" href="#armada">Live results</a>
+      <a class="pill" href="#armada">Live signal</a>
     </nav>
   </div>
 </header>
@@ -323,9 +342,9 @@ footer .legal p{margin:0 0 8px;max-width:70em}
     <div>
       <p class="where"><i></i>Alicante, Spain. MetaTrader 5.</p>
       <h1>Trading tools that show their work.</h1>
-      <p class="lede">Expert Advisors with their rules written down, their parameters explained and their limits stated plainly. And Armada, one account where all of them trade in public, with every number it produces published.</p>
+      <p class="lede">Expert Advisors with their rules written down, their parameters explained and their limits stated plainly. A copy-trading signal that runs all of them in one account and publishes every number it produces.</p>
       <div class="actions">
-        <a class="btn brass" href="#armada">See the live results</a>
+        <a class="btn brass" href="#armada">See the live signal</a>
         <a class="btn line" href="#bots">Browse the bots</a>
       </div>
     </div>
@@ -375,7 +394,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
   <div class="wrap">
     <div class="head">
       <h2>The bots</h2>
-      <p>Each one is a compiled Expert Advisor, licensed to you, shipped with the settings I actually use rather than the ones that make a backtest look good. You get the .ex5, a configuration file and the reasoning behind it.</p>
+      <p>Each one is a compiled Expert Advisor, licensed to your account number, shipped with the settings I actually use rather than the ones that make a backtest look good. You get the .ex5, a configuration file and the reasoning behind it.</p>
     </div>
 
     <article class="product">
@@ -415,63 +434,6 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         </div>
       </div>
     </article>
-
-    <article class="product">
-      <figure class="art" id="art-bear" style="margin:0"><figcaption>Four bearish stacks, sell side only</figcaption></figure>
-      <div class="body">
-        <p class="status">Available now</p>
-        <h3>BearStack Pro</h3>
-        <p class="desc">Four independent condition stacks read every closed one-minute bar on gold, and a short is only opened when one of them lines up. One position at a time: no grid, no averaging, no lot multiplier.</p>
-        <table class="specs">
-          <tr><th scope="row">Market</th><td>XAUUSD, M1 closed bars, sell only</td></tr>
-          <tr><th scope="row">Risk controls</th><td>Hard stop, daily trade cap, daily loss stop, spread ceiling, cooldown, time exit</td></tr>
-          <tr><th scope="row">Licence</th><td>Key valid on up to three accounts</td></tr>
-          <tr><th scope="row">Try it</th><td>Free backtest build for the Strategy Tester</td></tr>
-        </table>
-        <div class="buy">
-          <div class="price">€29<small>per month, or €249 once</small></div>
-          <a class="btn ink" href="https://jsgaston.github.io/Charlie/">View BearStack Pro</a>
-        </div>
-      </div>
-    </article>
-
-    <article class="product">
-      <figure class="art" id="art-wick" style="margin:0"><figcaption>An edge study that switches sides off</figcaption></figure>
-      <div class="body">
-        <p class="status">Available now</p>
-        <h3>WickFlow Pro</h3>
-        <p class="desc">Five selectable strategies run across a list of symbols and timeframes from a single chart. Every few bars it re-measures its own edge on history and switches off the sides and regimes that have stopped paying.</p>
-        <table class="specs">
-          <tr><th scope="row">Markets</th><td>Multi-symbol, multi-timeframe, from one chart</td></tr>
-          <tr><th scope="row">Strategies</th><td>Indecision candle, price action, range, hidden-state regime</td></tr>
-          <tr><th scope="row">Self-audit</th><td>Out-of-sample expectancy per side and per regime</td></tr>
-          <tr><th scope="row">Licence</th><td>Key valid on up to three accounts</td></tr>
-        </table>
-        <div class="buy">
-          <div class="price">€39<small>per month, or €349 once</small></div>
-          <a class="btn ink" href="https://jsgaston.github.io/Delta/">View WickFlow Pro</a>
-        </div>
-      </div>
-    </article>
-
-    <article class="product">
-      <figure class="art" id="art-kalman" style="margin:0"><figcaption>A filter that re-fits itself</figcaption></figure>
-      <div class="body">
-        <p class="status">Available now</p>
-        <h3>KalmanFlow Pro</h3>
-        <p class="desc">A state-space filter that estimates where price is once the noise is removed and how fast it is moving, re-fitted from your own chart data. A change-point test notices within a few bars when the model has broken, and a three-state regime model sets how much size the conditions deserve.</p>
-        <table class="specs">
-          <tr><th scope="row">Market</th><td>XAUUSD supported; crypto still in testing</td></tr>
-          <tr><th scope="row">Upkeep</th><td>Re-estimates its filter as new bars close</td></tr>
-          <tr><th scope="row">Licence</th><td>Key valid on up to three accounts</td></tr>
-          <tr><th scope="row">Try it</th><td>Free backtest build for the Strategy Tester</td></tr>
-        </table>
-        <div class="buy">
-          <div class="price">€39<small>per month, or €349 once</small></div>
-          <a class="btn ink" href="https://jsgaston.github.io/kalmanflow-web-en/">View KalmanFlow Pro</a>
-        </div>
-      </div>
-    </article>
   </div>
 </section>
 
@@ -483,7 +445,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <div class="hoist" id="a-hoist"></div>
         <p class="hoist-note" id="a-hoist-note">Each bot sails under its own flag.</p>
       </div>
-      <p>One MetaTrader 5 account where every Wisfli bot trades, each added once it passes validation. It is a public record, not a signal: nothing here is for sale or can be copied. Pick a bot below to see its own record.</p>
+      <p>One MetaTrader 5 account running every algorithm I build, each added only after it passes validation. Your terminal mirrors every position it takes, scaled to your balance. Pick a bot below to see its own record.</p>
     </div>
 
     <div class="chips" id="a-chips" role="group" aria-label="Choose a bot"></div>
@@ -495,6 +457,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
           <span class="meta" id="a-meta"></span>
         </div>
         <div id="a-chart"><div class="empty"><b>The fleet hasn't sailed yet.</b><span>The record appears here the day the account closes its first trade.</span></div></div>
+        <p class="hand-key" id="a-hand" hidden><i></i>Gold dots are trades I closed by hand. They stay with the bot that opened them.</p>
         <div class="months" id="a-months" aria-label="Last 12 months"></div>
       </div>
       <dl class="figs" id="a-figs"></dl>
@@ -503,9 +466,9 @@ footer .legal p{margin:0 0 8px;max-width:70em}
     <div class="a-cta">
       <div class="actions">
         <a class="btn brass" id="a-full" href="https://jsgaston.github.io/armada/">See the full record</a>
-        <a class="btn line" href="#bots">Browse the bots</a>
+        <a class="btn line" href="https://jsgaston.github.io/armada/setup.html">Setup guide</a>
       </div>
-      <p class="a-price">Results only. To trade a bot, get it from its own page.</p>
+      <p class="a-price"><b>€59</b>per month for the first 100 accounts, cancel anytime</p>
     </div>
 
     <p class="disc" id="a-disc">Figures are published automatically from the trading account every 15 minutes and stay blank until the account produces them. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.</p>
@@ -569,10 +532,8 @@ footer .legal p{margin:0 0 8px;max-width:70em}
         <ul>
           <li><a href="https://jsgaston.github.io/candlegrid-web-en/">CandleGrid Pro</a></li>
           <li><a href="https://jsgaston.github.io/regimeswitch-web-en/">RegimeSwitch Pro</a></li>
-          <li><a href="https://jsgaston.github.io/Charlie/">BearStack Pro</a></li>
-          <li><a href="https://jsgaston.github.io/Delta/">WickFlow Pro</a></li>
-          <li><a href="https://jsgaston.github.io/kalmanflow-web-en/">KalmanFlow Pro</a></li>
-          <li><a href="https://jsgaston.github.io/armada/">Armada live results</a></li>
+          <li><a href="https://jsgaston.github.io/armada/">Armada signal</a></li>
+          <li><a href="https://jsgaston.github.io/armada/setup.html">Armada setup guide</a></li>
           <li><a href="#tools">Tools</a></li>
         </ul>
       </div>
@@ -676,26 +637,58 @@ var POSTS = [
 /* =====================================================================
    Flags (international code of signals)
    ===================================================================== */
-var F={
-  A:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30L46 20l14 20H30z" fill="#14528C"/>',
-  B:'<path d="M0 0h60L46 20l14 20H0z" fill="#C8322A"/>',
-  C:'<path d="M0 0h60v8H0z" fill="#14528C"/><path d="M0 8h60v8H0z" fill="#fff"/><path d="M0 16h60v8H0z" fill="#C8322A"/><path d="M0 24h60v8H0z" fill="#fff"/><path d="M0 32h60v8H0z" fill="#14528C"/>',
-  D:'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M0 11h60v18H0z" fill="#14528C"/>',
-  E:'<path d="M0 0h60v20H0z" fill="#14528C"/><path d="M0 20h60v20H0z" fill="#C8322A"/>',
-  F:'<path d="M0 0h60v40H0z" fill="#fff"/><path d="M30 3 57 20 30 37 3 20z" fill="#C8322A"/>',
-  G:'<path d="M0 0h60v40H0z" fill="#F2C230"/><path d="M10 0h10v40H10z" fill="#14528C"/><path d="M30 0h10v40H30z" fill="#14528C"/><path d="M50 0h10v40H50z" fill="#14528C"/>',
-  H:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30v40H30z" fill="#C8322A"/>',
-  I:'<path d="M0 0h60v40H0z" fill="#F2C230"/><circle cx="30" cy="20" r="11" fill="#101820"/>',
-  J:'<path d="M0 0h60v40H0z" fill="#14528C"/><path d="M0 13h60v14H0z" fill="#fff"/>'
-};
-var LETTERS='ABCDEFGHIJ'.split('');
+/* ---------- international code of signals, A–Z; A1, B1 ... add a numeral tab ---------- */
+var F = (function(){
+  var Y='#F2C230', B='#14528C', R='#C8322A', W='#fff', K='#101820';
+  var r=function(x,y,w,h,c){ return '<path d="M'+x+' '+y+'h'+w+'v'+h+'h-'+w+'z" fill="'+c+'"/>'; };
+  var edge='<path d="M.5 .5h59v39H.5z" fill="none" stroke="rgba(15,44,66,.25)"/>';
+  var saltire=function(c){ return '<path d="M0 0h7l53 34v6h-7L0 6z" fill="'+c+'"/><path d="M60 0v6L7 40H0v-6L53 0z" fill="'+c+'"/>'; };
+  var cross=function(c){ return r(25,0,10,40,c)+r(0,15,60,10,c); };
+  var checks=''; for(var i=0;i<4;i++) for(var j=0;j<4;j++) if((i+j)%2===0) checks+=r(i*15,j*10,15,10,B);
+  var stripes='<path d="M0 0L0 0L6 0L0 6zM0 12L12 0L18 0L0 18zM0 24L24 0L30 0L0 30zM0 40L0 36L36 0L42 0L2 40zM8 40L48 0L54 0L14 40zM20 40L60 0L60 0L60 6L26 40zM32 40L60 12L60 18L38 40zM44 40L60 24L60 30L50 40zM60 40L56 40L60 36z" fill="'+R+'"/>';
+  return {
+    A:r(0,0,30,40,W)+'<path d="M30 0h30L46 20l14 20H30z" fill="'+B+'"/>'+edge,
+    B:'<path d="M0 0h60L46 20l14 20H0z" fill="'+R+'"/>',
+    C:r(0,0,60,8,B)+r(0,8,60,8,W)+r(0,16,60,8,R)+r(0,24,60,8,W)+r(0,32,60,8,B),
+    D:r(0,0,60,40,Y)+r(0,11,60,18,B),
+    E:r(0,0,60,20,B)+r(0,20,60,20,R),
+    F:r(0,0,60,40,W)+'<path d="M30 3 57 20 30 37 3 20z" fill="'+R+'"/>'+edge,
+    G:r(0,0,60,40,Y)+r(10,0,10,40,B)+r(30,0,10,40,B)+r(50,0,10,40,B),
+    H:r(0,0,30,40,W)+r(30,0,30,40,R)+edge,
+    I:r(0,0,60,40,Y)+'<circle cx="30" cy="20" r="11" fill="'+K+'"/>',
+    J:r(0,0,60,40,B)+r(0,13,60,14,W),
+    K:r(0,0,30,40,Y)+r(30,0,30,40,B),
+    L:r(0,0,30,20,Y)+r(30,0,30,20,K)+r(0,20,30,20,K)+r(30,20,30,20,Y),
+    M:r(0,0,60,40,B)+saltire(W),
+    N:r(0,0,60,40,W)+checks,
+    O:r(0,0,60,40,Y)+'<path d="M0 0h60v40z" fill="'+R+'"/>',
+    P:r(0,0,60,40,B)+r(20,13,20,14,W),
+    Q:r(0,0,60,40,Y),
+    R:r(0,0,60,40,R)+cross(Y),
+    S:r(0,0,60,40,W)+r(20,13,20,14,B)+edge,
+    T:r(0,0,20,40,R)+r(20,0,20,40,W)+r(40,0,20,40,B),
+    U:r(0,0,30,20,R)+r(30,0,30,20,W)+r(0,20,30,20,W)+r(30,20,30,20,R)+edge,
+    V:r(0,0,60,40,W)+saltire(R)+edge,
+    W:r(0,0,60,40,B)+r(8,8,44,24,W)+r(18,14,24,12,R),
+    X:r(0,0,60,40,W)+cross(B)+edge,
+    Y:r(0,0,60,40,Y)+stripes,
+    Z:'<path d="M0 0h60L30 20z" fill="'+Y+'"/><path d="M60 0v40L30 20z" fill="'+B+'"/><path d="M60 40H0l30-20z" fill="'+R+'"/><path d="M0 40V0l30 20z" fill="'+K+'"/>'
+  };
+})();
+var LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+/* body of a flag for a code: "K", "A1", "C12". The numeral sits on a dark tab at the fly. */
+function flagBody(code){
+  code=String(code==null?'':code).toUpperCase();
+  var m=code.match(/^([A-Z])(\d{1,3})?$/);
+  if(!m){ var t=code.slice(0,2).replace(/[^A-Z0-9]/g,''); return t?'<path d="M0 0h60v40H0z" fill="#0F2C42"/><text x="30" y="28" text-anchor="middle" font-family="Archivo" font-weight="800" font-size="22" fill="#E0A92C">'+t+'</text>':''; }
+  var b=F[m[1]]; if(!m[2]) return b;
+  var n=m[2], w=10+n.length*8;
+  return b+'<path d="M'+(60-w)+' 22h'+w+'v18h-'+w+'z" fill="#06141F"/><text x="'+(60-w/2)+'" y="36" text-anchor="middle" font-family="Archivo" font-weight="800" font-size="15" fill="#E0A92C">'+n+'</text>';
+}
 var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function $(id){return document.getElementById(id);}
-function flag(l){
-  if(F[l]) return '<svg viewBox="0 0 60 40" aria-hidden="true">'+F[l]+'</svg>';
-  if(!l) return '';
-  return '<svg viewBox="0 0 60 40" aria-hidden="true"><path d="M0 0h60v40H0z" fill="#0F2C42"/><path d="M0 0h60v40H0z" fill="none" stroke="#E0A92C" stroke-width="3"/><text x="30" y="28" text-anchor="middle" font-family="Archivo" font-weight="800" font-size="22" fill="#E0A92C">'+esc(String(l).slice(0,2))+'</text></svg>';
-}
+function flag(l){var b=flagBody(l);return b?'<svg viewBox="0 0 60 40" aria-hidden="true">'+b+'</svg>':'';}
+function flagKey(f){var m=String(f||'').toUpperCase().match(/^([A-Z])(\d*)$/);return m?(+(m[2]||0))*26+m[1].charCodeAt(0)-65:1e6;}
 function nil(v){return v===null||v===undefined||(typeof v==='number'&&isNaN(v));}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function pct(n,d){d=d==null?2:d;return nil(n)?'—':(n>0?'+':(n<0?'−':''))+Math.abs(n).toFixed(d)+'%';}
@@ -707,7 +700,7 @@ function fdate(iso){var d=new Date(iso+'T00:00:00Z');return d.getUTCDate()+' '+M
 var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 $('yr').textContent=new Date().getFullYear();
-$('brandflag').innerHTML=flag('W')||'<svg viewBox="0 0 60 40" aria-hidden="true"><path d="M0 0h60v40H0z" fill="#14528C"/><path d="M8 8h44v24H8z" fill="#fff"/><path d="M18 14h24v12H18z" fill="#C8322A"/></svg>';
+$('brandflag').innerHTML=flag('W');
 $('brandflag2').innerHTML=$('brandflag').innerHTML;
 
 /* =====================================================================
@@ -763,80 +756,6 @@ function artRegime(){
   el.insertAdjacentHTML('afterbegin',g+'</svg>');
 }
 
-function artBear(){
-  var el=$('art-bear'), W=600, H=420, r=rng(31), n=96, PL=30, PR=30, PT=36, PH=190;
-  var price=[], p=0;
-  for(var i=0;i<n;i++){ p+=(r()-.5)*3.2 - (i>30&&i<52||i>70&&i<86?.9:.05); price.push(p); }
-  var lo=Math.min.apply(null,price), hi=Math.max.apply(null,price);
-  var X=function(i){return PL+i/(n-1)*(W-PL-PR);}, Y=function(v){return PT+(1-(v-lo)/(hi-lo))*PH;};
-  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
-  g+='<path d="'+price.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);}).join('')+'" fill="none" stroke="#DCE6EC" stroke-width="1.5" opacity=".85"/>';
-  var entries=[30,70], rows=4, top=PT+PH+46, rh=22, names=['Stack 1','Stack 2','Stack 3','Stack 4'];
-  entries.forEach(function(k){
-    var x=X(k), y=Y(price[k])-10;
-    g+='<line x1="'+x.toFixed(1)+'" x2="'+x.toFixed(1)+'" y1="'+PT+'" y2="'+(top+rows*rh-6)+'" stroke="#E0A92C" stroke-width="1" stroke-dasharray="3 4" opacity=".55"/>';
-    g+='<path d="M'+(x-7).toFixed(1)+' '+(y-8).toFixed(1)+'h14l-7 10z" fill="#E8715F"/>';
-  });
-  for(var q=0;q<rows;q++){
-    var y0=top+q*rh;
-    g+='<text x="'+PL+'" y="'+(y0+4)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">'+names[q]+'</text>';
-    for(var j=0;j<24;j++){
-      var cx=PL+86+j*((W-PL-PR-86)/23), sp=(W-PL-PR-86)/23;
-      var hot=entries.some(function(e){return Math.abs(X(e)-cx)<sp/2;}) && (q===1||q===3||r()<.5);
-      g+='<circle cx="'+cx.toFixed(1)+'" cy="'+y0+'" r="3.4" fill="'+(hot?'#E0A92C':'rgba(214,230,240,.16)')+'"/>';
-    }
-  }
-  el.insertAdjacentHTML('afterbegin',g+'</svg>');
-}
-
-function artWick(){
-  var el=$('art-wick'), W=600, H=420, r=rng(43), n=34, PL=30, PR=30, PT=34, PH=210;
-  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
-  var cw=(W-PL-PR)/n, price=.5, C=[];
-  for(var k0=0;k0<n;k0++){
-    var o0=price, c0=Math.min(.85,Math.max(.15,o0+(r()-.5)*.14)), lw=k0%7===4;
-    C.push([o0,c0,Math.max(o0,c0)+(lw?.14+r()*.06:r()*.05),Math.min(o0,c0)-(lw?.14+r()*.06:r()*.05)]); price=c0;
-  }
-  var mx=Math.max.apply(null,C.map(function(c){return c[2];})), mn=Math.min.apply(null,C.map(function(c){return c[3];}));
-  var Y=function(v){return PT+(1-(v-mn)/(mx-mn))*PH;};
-  for(var k=0;k<n;k++){
-    var o=C[k][0], c=C[k][1], hi=C[k][2], lo=C[k][3], longWick=k%7===4;
-    var x=PL+k*cw+cw*.2, col=longWick?'#E0A92C':(c>=o?'#45C29A':'#E8715F');
-    g+='<line x1="'+(x+cw*.3).toFixed(1)+'" x2="'+(x+cw*.3).toFixed(1)+'" y1="'+Y(hi).toFixed(1)+'" y2="'+Y(lo).toFixed(1)+'" stroke="'+col+'" stroke-width="1.2" opacity="'+(longWick?1:.55)+'"/>';
-    g+='<rect x="'+x.toFixed(1)+'" y="'+Y(Math.max(o,c)).toFixed(1)+'" width="'+(cw*.6).toFixed(1)+'" height="'+Math.max(1.5,Math.abs(Y(o)-Y(c))).toFixed(1)+'" fill="'+col+'" opacity="'+(longWick?1:.6)+'"/>';
-  }
-  var top=PT+PH+44, labels=['Buy side','Sell side'], segs=[[1,1,1,0,0,1,1,1,1,1,0,1],[1,0,0,0,1,1,1,0,0,0,0,1]];
-  g+='<text x="'+PL+'" y="'+(top-16)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">Out-of-sample study, per side</text>';
-  for(var q=0;q<2;q++){
-    var y0=top+q*30, sw=(W-PL-PR-86)/12;
-    g+='<text x="'+PL+'" y="'+(y0+12)+'" font-family="Archivo" font-size="12" fill="#DCE6EC">'+labels[q]+'</text>';
-    for(var j=0;j<12;j++) g+='<rect x="'+(PL+86+j*sw+1).toFixed(1)+'" y="'+(y0+2)+'" width="'+(sw-3).toFixed(1)+'" height="12" fill="'+(segs[q][j]?'#45C29A':'rgba(214,230,240,.08)')+'" opacity="'+(segs[q][j]?.8:1)+'"/>';
-  }
-  el.insertAdjacentHTML('afterbegin',g+'</svg>');
-}
-
-function artKalman(){
-  var el=$('art-kalman'), W=600, H=420, r=rng(57), n=110, PL=30, PR=30, PT=40, PB=70, brk=72;
-  var lvl=[], obs=[], v=0, slope=.35;
-  for(var i=0;i<n;i++){ if(i===brk) slope=-.55; v+=slope+(r()-.5)*.25; lvl.push(v); obs.push(v+(r()-.5)*7); }
-  var est=[], e=obs[0], sl=0;
-  for(var j=0;j<n;j++){ var pred=e+sl, k=j>=brk&&j<brk+5?.6:.18; e=pred+k*(obs[j]-pred); sl=sl+.05*(obs[j]-pred); est.push(e); }
-  var all=obs.concat(est.map(function(v){return v+4;}),est.map(function(v){return v-4;})), lo=Math.min.apply(null,all), hi=Math.max.apply(null,all);
-  var X=function(i){return PL+i/(n-1)*(W-PL-PR);}, Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
-  var g='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
-  var up=est.map(function(v,i){return [X(i),Y(v+4)];}), dn=est.map(function(v,i){return [X(i),Y(v-4)];}).reverse();
-  g+='<path d="'+up.concat(dn).map(function(q,i){return (i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1);}).join('')+'Z" fill="rgba(224,169,44,.1)"/>';
-  obs.forEach(function(o,i){ g+='<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(o).toFixed(1)+'" r="1.8" fill="#DCE6EC" opacity=".45"/>'; });
-  g+='<path d="'+est.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);}).join('')+'" fill="none" stroke="#E0A92C" stroke-width="2.2"/>';
-  var bx=X(brk+2);
-  g+='<line x1="'+bx.toFixed(1)+'" x2="'+bx.toFixed(1)+'" y1="'+(PT-6)+'" y2="'+(H-PB+8)+'" stroke="#E8715F" stroke-width="1" stroke-dasharray="3 4"/>';
-  g+='<text x="'+(bx+8).toFixed(1)+'" y="'+(PT+6)+'" font-family="Archivo" font-size="12" fill="#E8715F">break detected</text>';
-  var st=['#45C29A','#8DA4B4','#E8715F'], by=H-PB+26;
-  g+='<text x="'+PL+'" y="'+(by-8)+'" font-family="Archivo" font-size="12" fill="#8DA4B4">Regime</text>';
-  for(var s2=0;s2<n;s2++){ var c=s2<brk?0:(s2<brk+10?1:2); g+='<rect x="'+X(s2).toFixed(1)+'" y="'+by+'" width="'+((W-PL-PR)/(n-1)+.6).toFixed(1)+'" height="10" fill="'+st[c]+'" opacity=".55"/>'; }
-  el.insertAdjacentHTML('afterbegin',g+'</svg>');
-}
-
 function cover(seed, big){
   var r=rng(seed), W=big?700:400, H=big?360:150, n=big?60:36, p=H*.6, pts=[];
   for(var i=0;i<n;i++){ p+=(r()-.47)*H*.09; p=Math.max(H*.15,Math.min(H*.85,p)); pts.push(p); }
@@ -859,7 +778,7 @@ function drawPosts(){
 /* =====================================================================
    Armada data
    ===================================================================== */
-var SCOPES=[], ACC={}, CUR='EUR', CUR_ID='all';
+var SCOPES=[], ORDER=[], ACC={}, CUR='EUR', CUR_ID='all';
 
 function money(n,s){
   if(nil(n)) return '—';
@@ -867,14 +786,20 @@ function money(n,s){
   return (n<0?'−':(s&&n>0?'+':''))+v;
 }
 
+/* any number of bots: the big hoist shrinks as the fleet grows, the hero shows the first flags and a count */
 function hoist(strats){
-  var html=strats.map(function(s){return '<span class="'+(s.status==='live'?'':'dim')+'" title="'+esc(s.name)+(s.status==='live'?' is trading':' is not trading yet')+'">'+flag(s.flag)+'</span>';}).join('');
-  $('a-hoist').innerHTML=html; $('h-flags').innerHTML=html;
-  var live=strats.filter(function(s){return s.status==='live';}).length;
-  $('a-hoist-note').textContent=live===0?'No flags flying yet.':live+' of '+strats.length+' bots trading. Faded flags are still in the yard.';
-  $('h-fleet').textContent=live===0?'Every bot, one account':live+' of '+strats.length+' bots trading';
+  strats=strats.slice().sort(function(a,b){return flagKey(a.flag)-flagKey(b.flag);});
+  var one=function(s){return '<span class="'+(s.status==='live'?'':'dim')+'" title="'+esc(s.name)+(s.status==='live'?' is trading':' is not trading yet')+'">'+flag(s.flag)+'</span>';};
+  var n=strats.length, live=strats.filter(function(s){return s.status==='live';});
+  $('a-hoist').className='hoist'+(n>32?' lots':(n>16?' many':''));
+  $('a-hoist').innerHTML=strats.map(one).join('');
+  var shown=(live.length?live:strats).slice(0,12);
+  var rest=(live.length?live.length:n)-shown.length;
+  $('h-flags').innerHTML=shown.map(one).join('')+(rest>0?'<span class="more">+'+rest+'</span>':'');
+  $('a-hoist-note').textContent=live.length===0?'No flags flying yet.':live.length+' of '+n+' bots trading. Faded flags are still in the yard.';
+  $('h-fleet').textContent=live.length===0?'Every bot, one account':live.length+(live.length===1?' bot':' bots')+' trading';
 }
-hoist(LETTERS.map(function(l,i){return {flag:l,name:'Bot '+(i+1),status:'yard'};}));
+hoist(LETTERS.slice(0,10).map(function(l,i){return {flag:l,name:'Bot '+(i+1),status:'yard'};}));
 
 /* monotone cubic curve: smooth, but never invents a peak the data doesn't have */
 function smoothPath(P){
@@ -895,7 +820,7 @@ function curveSeries(sc){
   if(tl && tl.t && tl.t.length>=2 && eq.length<60){
     var pts=[{d:eq.length?eq[0].d:new Date(tl.t[0]*1000).toISOString().slice(0,10),v:100,p:0,dd:0,t:null}], v=100, p=0, pk=100;
     for(var i=0;i<tl.t.length;i++){ v*=1+tl.r[i]/100; if(tl.p) p+=tl.p[i]; pk=Math.max(pk,v);
-      pts.push({d:new Date(tl.t[i]*1000).toISOString().slice(0,10), t:tl.t[i]*1000, v:v, p:tl.p?p:null, dd:(v/pk-1)*100, r:tl.r[i], n:i+1}); }
+      pts.push({d:new Date(tl.t[i]*1000).toISOString().slice(0,10), t:tl.t[i]*1000, v:v, p:tl.p?p:null, dd:(v/pk-1)*100, r:tl.r[i], n:i+1, c:tl.c?tl.c[i]:null}); }
     pts.byTrade=true; return pts;
   }
   var out=eq.slice(); if(out.length===1) out=[{d:out[0].d,v:100,dd:0},out[0]]; return out;
@@ -912,6 +837,8 @@ function lineChart(eq, W, H, opts){
   var len=0; for(var i=1;i<eq.length;i++){ var dx=X(i)-X(i-1), dy=Y(eq[i].v)-Y(eq[i-1].v); len+=Math.sqrt(dx*dx+dy*dy); }
   return {d:d, area:d+'L'+X(n).toFixed(1)+' '+(H-PB)+'L'+X(0).toFixed(1)+' '+(H-PB)+'Z', X:X, Y:Y, lo:lo, hi:hi, len:Math.ceil(len*1.15)+20, up:vs[vs.length-1]>=100};
 }
+
+function isDemo(){ return String(ACC.type||'').toLowerCase()==='demo'; }
 
 function drawHero(sc, s){
   var R=sc.returns||{}, K=sc.risk||{}, T=sc.trades||{};
@@ -938,19 +865,46 @@ function drawHero(sc, s){
     var live=$('h-live'); live.classList.toggle('off',m>90);
     live.textContent='Updated '+(m<2?'just now':m<60?m+' min ago':Math.round(m/60)+' h ago');
   }
-  if(ACC.type==='demo') $('h-badge').hidden=false;
+  if(isDemo()) $('h-badge').hidden=false;
 }
 
-function chips(){
-  var list=SCOPES.filter(function(x){return !x.empty;});
-  $('a-chips').innerHTML=list.map(function(sc){
-    var sub=sc.kind==='account'?'all bots':(sc.kind==='group'?'group':(sc.magics?'#'+sc.magics[0]:''));
-    return '<button type="button" class="chip" data-id="'+esc(sc.id)+'" aria-pressed="'+(sc.id===CUR_ID)+'">'+(sc.flag?flag(sc.flag):'')+esc(sc.kind==='account'?'Whole account':sc.name)+(sub&&sc.kind!=='account'?' <small>'+esc(sub)+'</small>':'')+'</button>';
-  }).join('');
-  if(list.length<2) $('a-chips').hidden=true;
-  Array.prototype.forEach.call($('a-chips').querySelectorAll('.chip'),function(b){
-    b.addEventListener('click',function(){ select(b.dataset.id); });
+/* account, then each bot in flag order with its own magic numbers under it, then custom groups */
+function isBot(x){ return (x.kind==='group'&&!x.custom)||(x.kind==='magic'&&!x.parent); }
+function orderScopes(){
+  var out=SCOPES.filter(function(x){return x.kind==='account';});
+  SCOPES.filter(isBot).sort(function(a,b){return flagKey(a.flag)-flagKey(b.flag)||((a.magics&&b.magics)?a.magics[0]-b.magics[0]:0);}).forEach(function(b){
+    out.push(b); SCOPES.forEach(function(x){ if(x.parent===b.id) out.push(x); });
   });
+  SCOPES.forEach(function(x){ if(out.indexOf(x)<0) out.push(x); });
+  return out;
+}
+
+/* a handful of bots: buttons. A fleet: a drop-down with previous / next. */
+function chips(){
+  var list=ORDER.filter(function(x){return !x.empty;});
+  var box=$('a-chips');
+  if(list.length<2){ box.hidden=true; return; }
+  if(list.length<=8){
+    box.className='chips';
+    box.innerHTML=list.map(function(sc){
+      var sub=sc.kind==='account'?'all bots':(sc.kind==='group'?'group':(sc.magics?'#'+sc.magics[0]:''));
+      return '<button type="button" class="chip" data-id="'+esc(sc.id)+'" aria-pressed="'+(sc.id===CUR_ID)+'">'+(sc.flag?flag(sc.flag):'')+esc(sc.kind==='account'?'Whole account':sc.name)+(sub&&sc.kind!=='account'?' <small>'+esc(sub)+'</small>':'')+'</button>';
+    }).join('');
+    Array.prototype.forEach.call(box.querySelectorAll('.chip'),function(b){ b.addEventListener('click',function(){ select(b.dataset.id); }); });
+    return;
+  }
+  var bots=list.filter(isBot).length;
+  box.className='picker'; box.removeAttribute('role');
+  box.innerHTML='<label for="a-select">Showing</label><span class="flagmini" id="a-flag"></span>'+
+    '<select id="a-select">'+list.map(function(sc){
+      return '<option value="'+esc(sc.id)+'">'+(sc.parent?' ↳ ':'')+(sc.flag&&!sc.parent?esc(sc.flag)+' · ':'')+esc(sc.kind==='account'?'Whole account ('+bots+' bots)':sc.name)+(sc.kind==='magic'&&!sc.parent&&sc.magics?' ('+sc.magics[0]+')':'')+'</option>';
+    }).join('')+'</select>'+
+    '<button type="button" class="step" data-d="-1" aria-label="Previous bot">Previous</button><button type="button" class="step" data-d="1" aria-label="Next bot">Next</button>';
+  $('a-select').addEventListener('change',function(e){ select(e.target.value); });
+  Array.prototype.forEach.call(box.querySelectorAll('.step'),function(b){ b.addEventListener('click',function(){
+    var i=0; for(var k=0;k<list.length;k++) if(list[k].id===CUR_ID) i=k;
+    select(list[(i+ +b.dataset.d+list.length)%list.length].id);
+  }); });
 }
 
 function select(id){
@@ -958,6 +912,7 @@ function select(id){
   var sc=null; for(var i=0;i<SCOPES.length;i++) if(SCOPES[i].id===id) sc=SCOPES[i];
   if(!sc) return;
   Array.prototype.forEach.call($('a-chips').querySelectorAll('.chip'),function(b){ b.setAttribute('aria-pressed', b.dataset.id===id); });
+  if($('a-select')){ $('a-select').value=id; $('a-flag').innerHTML=sc.flag?flag(sc.flag):''; }
   var R=sc.returns||{}, K=sc.risk||{}, T=sc.trades||{};
   $('a-name').textContent=sc.kind==='account'?'Whole account':sc.name;
   var meta=[];
@@ -970,11 +925,12 @@ function select(id){
 
   var net = sc.kind==='account' ? ACC.net_profit : sc.net;
   var cs=T.current_streak;
+  var hand=((sc.closes||{}).manual||{}).trades||0;
   var items=[
     ['Return', '<span class="'+sign(R.total_pct)+'">'+pct(R.total_pct)+'</span>', nil(R.cagr_pct)?'':'annualised '+pct(R.cagr_pct,1), 'Time-weighted growth. For a single bot, its contribution to the account.'],
     ['Net profit', '<span class="'+sign(net)+'">'+(ACC.publish_money&&!nil(net)?money(net,true):pct(R.roi_pct))+'</span>', nil(R.share_of_profit_pct)||sc.kind==='account'?(nil(R.roi_pct)?'':'ROI '+pct(R.roi_pct)):R.share_of_profit_pct.toFixed(1)+'% of account profit'],
     ['Profit factor', num(T.profit_factor), nil(T.payoff_ratio)?'':'payoff '+num(T.payoff_ratio), 'Gross profit divided by gross loss.'],
-    ['Hits', upct(T.win_rate_pct), nil(T.trades)?'':T.trades+' closed trades', 'Share of trades closed in profit, costs included.'],
+    ['Hits', upct(T.win_rate_pct), nil(T.trades)?'':T.trades+' closed trades'+(hand?', '+hand+' closed by hand':''), 'Share of trades closed in profit, costs included. Trades closed by hand count with the bot that opened them.'],
     ['Max drawdown', dd(K.max_drawdown_pct), nil(K.current_drawdown_pct)?'':(K.current_drawdown_pct>0?'now −'+K.current_drawdown_pct.toFixed(2)+'%':'at a new high'), 'Largest fall from a peak.'],
     ['Recovery factor', num(K.recovery_factor), nil(K.longest_underwater_days)?'':'longest under water '+K.longest_underwater_days+' d', 'Net profit divided by the largest drawdown.'],
     ['Sharpe', num(K.sharpe), nil(K.sortino)?'':'Sortino '+num(K.sortino), 'Return per unit of volatility, annualised.'],
@@ -992,6 +948,7 @@ function select(id){
 
 function drawBoardChart(sc){
   var box=$('a-chart'), eq=curveSeries(sc);
+  $('a-hand').hidden=true;
   if(!eq.length){ box.innerHTML='<div class="empty"><b>No closed trades yet.</b><span>This bot\'s record starts with its first closed trade.</span></div>'; return; }
   var W=Math.max(300,box.clientWidth||700), H=W<560?250:320, PR=W<560?52:62, DDH=56;
   var c=lineChart(eq,W,H-DDH,{pl:22,pr:PR,pt:22,pb:24});
@@ -1012,8 +969,11 @@ function drawBoardChart(sc){
   } else {
     eq.forEach(function(p,i){ var m=p.d.slice(0,7); if(m!==last){ last=m; var x=c.X(i); if(x-lastX>50 && x<W-PR-16){ xl+='<text x="'+x.toFixed(1)+'" y="'+(H-DDH-6)+'" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+MONTHS[+m.slice(5)-1]+'</text>'; lastX=x; } } });
   }
-  var dots='';
-  if(eq.byTrade && eq.length<=60) eq.forEach(function(p,i){ if(p.r==null) return; dots+='<circle cx="'+c.X(i).toFixed(1)+'" cy="'+c.Y(p.v).toFixed(1)+'" r="3.2" fill="'+(p.r>=0?'#45C29A':'#E8715F')+'" stroke="#06141F" stroke-width="1.5"/>'; });
+  /* trade dots: green / red by result, gold when I closed the trade by hand */
+  var dots='', few=eq.length<=60, anyHand=false;
+  if(eq.byTrade) eq.forEach(function(p,i){ if(p.r==null) return; var h=p.c==='m'; if(h) anyHand=true; if(!few && !h) return;
+    dots+='<circle cx="'+c.X(i).toFixed(1)+'" cy="'+c.Y(p.v).toFixed(1)+'" r="'+(h?4:3.2)+'" fill="'+(h?'#E0A92C':(p.r>=0?'#45C29A':'#E8715F'))+'" stroke="#06141F" stroke-width="1.5"/>'; });
+  $('a-hand').hidden=!anyHand;
   var dmin=Math.min.apply(null,eq.map(function(p){return p.dd||0;}).concat([-0.5]))*1.1;
   var DY=function(v){return H-DDH+6+(v/dmin)*(DDH-12);};
   var dpath=smoothPath(eq.map(function(p,i){return [c.X(i),DY(p.dd||0)];}))+'L'+c.X(eq.length-1).toFixed(1)+' '+DY(0)+'L'+c.X(0).toFixed(1)+' '+DY(0)+'Z';
@@ -1033,7 +993,7 @@ function drawBoardChart(sc){
     var p=eq[i], x=c.X(i);
     bx.setAttribute('x1',x); bx.setAttribute('x2',x); bx.setAttribute('opacity','.25');
     dot.setAttribute('cx',x); dot.setAttribute('cy',c.Y(p.v)); dot.setAttribute('opacity','1');
-    ro.hidden=false; ro.innerHTML=(p.n?'Trade #'+p.n+' &nbsp;':'')+fdate(p.d)+(p.r!=null?' &nbsp;<b style="color:'+(p.r>=0?'#45C29A':'#E8715F')+'">'+pct(p.r,3)+'</b>':'')+' &nbsp;growth <b>'+pct(p.v-100)+'</b>'+(!nil(p.p)&&ACC.publish_money?' &nbsp;'+money(p.p,true):'')+(p.dd<0?' &nbsp;DD '+pct(p.dd):'');
+    ro.hidden=false; ro.innerHTML=(p.n?'Trade #'+p.n+' &nbsp;':'')+fdate(p.d)+(p.r!=null?' &nbsp;<b style="color:'+(p.r>=0?'#45C29A':'#E8715F')+'">'+pct(p.r,3)+'</b>':'')+(p.c==='m'?' &nbsp;<b style="color:#E0A92C">closed by hand</b>':'')+' &nbsp;growth <b>'+pct(p.v-100)+'</b>'+(!nil(p.p)&&ACC.publish_money?' &nbsp;'+money(p.p,true):'')+(p.dd<0?' &nbsp;DD '+pct(p.dd):'');
   });
   svg.addEventListener('pointerleave',function(){ bx.setAttribute('opacity','0'); dot.setAttribute('opacity','0'); ro.hidden=true; });
 }
@@ -1052,16 +1012,17 @@ function drawMonths(sc){
   $('a-months').innerHTML=cells.join('');
 }
 
-artCandles(); artRegime(); artBear(); artWick(); artKalman(); drawTools(); drawPosts();
+artCandles(); artRegime(); drawTools(); drawPosts();
 
-fetch(ARMADA_BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
+var STATS_URL = /[?&]preview\b/.test(location.search) ? 'stats.preview.json' : ARMADA_BASE+'stats.json';
+fetch(STATS_URL+'?t='+Date.now(),{cache:'no-store'})
   .then(function(r){return r.ok?r.json():null;})
   .then(function(s){
     if(!s) return;
     ACC=s.account||{}; if(ACC.currency) CUR=ACC.currency;
     if(s.strategies&&s.strategies.length) hoist(s.strategies);
-    SCOPES=(s.scopes||[]);
-    if(ACC.type==='demo') $('a-disc').textContent='Figures come from a demo account and are published automatically every 15 minutes. Demo fills are usually kinder than real-money execution. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.';
+    SCOPES=(s.scopes||[]); ORDER=orderScopes();
+    if(isDemo()) $('a-disc').textContent='Figures come from a demo account and are published automatically every 15 minutes. Demo fills are usually kinder than real-money execution. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.';
     var main=null; for(var i=0;i<SCOPES.length;i++) if(SCOPES[i].id==='all') main=SCOPES[i];
     if(!main || main.empty) return;
     drawHero(main,s);
