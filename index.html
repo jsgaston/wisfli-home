@@ -62,6 +62,7 @@ a{color:inherit;text-underline-offset:3px;text-decoration-thickness:1px}
 .hero h1{margin:0 0 28px;color:#fff;font-weight:800;font-stretch:112%;font-size:clamp(46px,6.4vw,90px);line-height:.96;letter-spacing:-.025em;max-width:13em}
 .hero .lede{font-size:21px;line-height:1.55;color:#BCCDD8;max-width:36em;margin:0 0 18px;font-weight:300}
 .hero .lede b{color:#fff;font-weight:500}
+.hero .lede a{color:#fff}
 .actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:36px}
 .btn{display:inline-flex;align-items:center;gap:10px;font:700 16px Archivo;text-decoration:none;padding:15px 26px;border:1px solid transparent;cursor:pointer;transition:background .15s,border-color .15s}
 .btn.brass{background:var(--brass);color:#1A1206}
@@ -139,12 +140,27 @@ h2{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1;font-weight:800;font-
 .plan .n{font:800 15px Archivo;color:var(--brass);margin:0 0 10px;letter-spacing:.04em}
 .plan h3{margin:0 0 10px;font-size:22px;font-weight:700;color:#fff;font-stretch:106%}
 .plan .steps p{margin:0;font-size:16px;color:#B4C6D2;line-height:1.6}
+.plan .steps p a{color:#fff}
 .plan .honest{margin:56px 0 0;padding:26px 28px;border-left:3px solid var(--brass);background:rgba(15,44,66,.45);max-width:52em}
 .plan .honest h3{font-size:18px;margin-bottom:8px}
 .plan .honest p{margin:0 0 10px;font-size:16px;color:#B4C6D2}
 .plan .honest p:last-child{margin:0}
 .plan .contact{margin:34px 0 0;font:500 15.5px Archivo;color:var(--dmuted)}
 .plan .contact a{color:#fff}
+
+/* ---------- conditions for families ---------- */
+.families{margin:80px 0 0;padding-top:44px;border-top:1px solid var(--drule-2)}
+.families .fhead{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-bottom:34px}
+.families h3.big{margin:0 0 16px;font-size:clamp(28px,3.2vw,40px);line-height:1.05;font-weight:800;font-stretch:110%;letter-spacing:-.015em;color:#fff}
+.families h3.big .badge{vertical-align:8px}
+.families .fhead p{margin:0 0 12px;color:#B4C6D2;font-size:17px;max-width:32em}
+.families .fhead p:last-child{margin:0}
+.families .cycle{width:100%;max-width:460px;height:auto;display:block;justify-self:end}
+.families ol{list-style:none;margin:0;padding:0;counter-reset:cond;display:grid;grid-template-columns:1fr 1fr;gap:0 48px;border-top:1px solid var(--drule)}
+.families li{counter-increment:cond;position:relative;padding:24px 0 24px 52px;border-bottom:1px solid var(--drule)}
+.families li::before{content:counter(cond,decimal-leading-zero);position:absolute;left:0;top:26px;font:800 15px Archivo;color:var(--brass);letter-spacing:.04em}
+.families li h4{margin:0 0 6px;font:700 19px/1.25 Archivo;font-stretch:106%;color:#fff}
+.families li p{margin:0;font-size:16px;color:#B4C6D2;line-height:1.6}
 
 /* ---------- footer ---------- */
 footer{background:var(--abyss);color:var(--dmuted);font:14px/1.6 Archivo;padding:64px 0 56px;border-top:1px solid var(--drule)}
@@ -165,6 +181,11 @@ footer .legal p{margin:0 0 8px;max-width:70em}
   .figs div:nth-child(2n){border-right:1px solid var(--drule)}
   .figs div:nth-child(3n){border-right:0}
 }
+@media (max-width:860px){
+  .families .fhead{grid-template-columns:1fr;gap:28px}
+  .families .cycle{justify-self:start}
+  .families ol{grid-template-columns:1fr}
+}
 @media (max-width:760px){
   body{font-size:16.5px}
   .wrap{padding:0 16px}
@@ -183,6 +204,8 @@ footer .legal p{margin:0 0 8px;max-width:70em}
   .plan .steps div{border-right:0;margin-right:0;padding:24px 0;border-bottom:1px solid var(--drule)}
   .plan .steps div:last-child{border-bottom:0}
   .plan .honest{padding:22px 20px}
+  .families{margin-top:56px;padding-top:36px}
+  .families li{padding-left:44px}
   footer .cols{grid-template-columns:1fr;gap:32px}
 }
 @media (prefers-reduced-motion:reduce){
@@ -200,6 +223,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
     <nav aria-label="Main">
       <a href="#armada">Armada</a>
       <a href="#plan">The plan</a>
+      <a href="#families">For families</a>
       <a href="https://jsgaston.github.io/armada/">Full record</a>
       <a class="pill" href="#armada">Live record</a>
     </nav>
@@ -213,7 +237,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
     <p class="where"><i></i>Alicante, Spain. MetaTrader 5.</p>
     <h1>Wisfli has changed course.</h1>
     <p class="lede"><b>Nothing is for sale here any more.</b> No bots, no licences, no subscriptions. I've stopped selling trading systems one by one so I can put all of my time into one thing: Armada, a single account where every bot I build trades together.</p>
-    <p class="lede">The goal is a fleet of 50 to 100 bots. If it earns its keep, I'll leave Spain and work from the road. Along the way I want to share the fleet's signal with more than 500 families who need it, under conditions I'm still working out.</p>
+    <p class="lede">The goal is a fleet of 50 to 100 bots. If it earns its keep, I'll leave Spain and work from the road. Along the way I want to help more than 500 families who need it, a group at a time, under <a href="#families">the conditions set out below</a>.</p>
     <div class="actions">
       <a class="btn brass" href="#armada">See the live record</a>
       <a class="btn line" href="#plan">Read the plan</a>
@@ -274,15 +298,79 @@ footer .legal p{margin:0 0 8px;max-width:70em}
       </div>
       <div>
         <p class="n">03</p>
-        <h3>Share the signal</h3>
-        <p>The aim is to offer the fleet's signal to more than 500 families who need it, to help them out of poverty. I'm still working out the conditions, and I'll publish them here before anyone joins.</p>
+        <h3>Help families out of a bad spot</h3>
+        <p>Travelling, I want to help families who are going through a hard time. If they have nothing to start with, I fund an account that follows the fleet while they build another way to make a living. When they manage it, the account passes to the next family. <a href="#families">The conditions are below.</a></p>
       </div>
+    </div>
+
+    <div class="families" id="families">
+      <div class="fhead">
+        <div>
+          <h3 class="big">Conditions for families<span class="badge">DRAFT</span></h3>
+          <p>This starts only once the fleet pays my own way. Here's how I intend it to work. It will be refined as I go, and any change will be published here before it applies to anyone.</p>
+          <p>The idea is simple: an account that works as a bridge, not as a destination. One family crosses it, and it passes to the next.</p>
+        </div>
+        <svg class="cycle" viewBox="0 0 420 222" role="img" aria-label="The cycle: I fund an account, a family joins, the family builds another income, then steps out and the account passes to the next family.">
+          <defs>
+            <marker id="cyc-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10z" fill="#E0A92C"/>
+            </marker>
+          </defs>
+          <ellipse cx="210" cy="110" rx="150" ry="72" fill="none" stroke="rgba(214,230,240,.08)" stroke-width="18"/>
+          <g fill="none" stroke="#E0A92C" stroke-width="1.6" marker-end="url(#cyc-arrow)">
+            <path d="M236 39.1A150 72 0 0 1 357.7 97.5"/>
+            <path d="M357.7 122.5A150 72 0 0 1 236 180.9"/>
+            <path d="M184 180.9A150 72 0 0 1 62.3 122.5"/>
+            <path d="M62.3 97.5A150 72 0 0 1 184 39.1"/>
+          </g>
+          <g font-family="Archivo" font-weight="800" font-size="11" text-anchor="middle" fill="#E0A92C">
+            <rect x="201" y="29" width="18" height="18" fill="#06141F" stroke="#E0A92C"/><text x="210" y="42">1</text>
+            <rect x="351" y="101" width="18" height="18" fill="#06141F" stroke="#E0A92C"/><text x="360" y="114">2</text>
+            <rect x="201" y="173" width="18" height="18" fill="#06141F" stroke="#E0A92C"/><text x="210" y="186">3</text>
+            <rect x="51" y="101" width="18" height="18" fill="#06141F" stroke="#E0A92C"/><text x="60" y="114">4</text>
+          </g>
+          <g font-family="Archivo" font-weight="500" font-size="13" fill="#DCE6EC">
+            <text x="210" y="18" text-anchor="middle">I fund the account</text>
+            <text x="342" y="114" text-anchor="end">A family joins</text>
+            <text x="210" y="213" text-anchor="middle">They build another income</text>
+            <text x="78" y="106">They step out,</text>
+            <text x="78" y="122">the next family in</text>
+          </g>
+        </svg>
+      </div>
+
+      <ol>
+        <li>
+          <h4>I put up the money</h4>
+          <p>A family with nothing to start with never puts in savings of its own. I fund the trading account, and joining costs the family nothing.</p>
+        </li>
+        <li>
+          <h4>The account follows the fleet</h4>
+          <p>It copies Armada. What it earns while the family is in is theirs to live on. If it loses, the loss is mine: the family owes nothing.</p>
+        </li>
+        <li>
+          <h4>One condition: build another way to live</h4>
+          <p>The account is a bridge, not a job. While they're in, the family works on something that can support them without it: a trade, a small business, a job, studies.</p>
+        </li>
+        <li>
+          <h4>Step out, pass it on</h4>
+          <p>Once that other income is working, the family leaves the account, and it goes to the next family who needs it.</p>
+        </li>
+        <li>
+          <h4>Always a group</h4>
+          <p>The aim is to always have a group of families in the programme, some on their way in and some on their way out, so the help keeps moving.</p>
+        </li>
+        <li>
+          <h4>No income is guaranteed</h4>
+          <p>Trading earns unevenly, and some months the account will lose. Nobody should count on it alone, which is exactly why the third condition exists.</p>
+        </li>
+      </ol>
     </div>
 
     <div class="honest">
       <h3>What this is not</h3>
       <p>This is a goal, not a promise. The account can lose money, and when it does this page will show it. No return is promised or implied to anyone, and nobody should put in money they need.</p>
-      <p>Nothing is being offered yet. There's no sign-up and nothing to pay for.</p>
+      <p>Nothing is being offered yet. There's no sign-up and nothing to pay for. The family programme starts only once the fleet pays its own way; until then, its conditions are a draft.</p>
     </div>
 
     <p class="contact">Questions, or a number that doesn't add up: <a href="mailto:support@wisfli.com">support@wisfli.com</a></p>
@@ -304,6 +392,7 @@ footer .legal p{margin:0 0 8px;max-width:70em}
           <li><a href="#armada">Armada live record</a></li>
           <li><a href="https://jsgaston.github.io/armada/">Armada full record</a></li>
           <li><a href="#plan">The plan</a></li>
+          <li><a href="#families">Conditions for families</a></li>
           <li><a href="/terms.html">Terms</a></li>
           <li><a href="/privacy.html">Privacy</a></li>
           <li><a href="mailto:support@wisfli.com">support@wisfli.com</a></li>
